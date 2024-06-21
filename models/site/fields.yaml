@@ -1,0 +1,63 @@
+fields:
+    name:
+        label: Name
+        span: auto
+        type: text
+    short_description:
+        label: Description
+        span: auto
+        type: textarea
+    gmap_objects_file:
+        label: Google Map Objects file
+        type: mediafinder
+        mode: file
+    gmap_style_file:
+        label: Google Map Style file
+        type: mediafinder
+        mode: file
+    threats:
+        label: Threats
+        type: partial
+        path: ~/plugins/pensoft/restcoast/controllers/sites/_field_threats.htm
+    content_blocks:
+        type: repeater
+        label: Blocks
+        prompt: Add Block
+        groups:
+            text:
+                name: Textarea
+                description: Basic text field
+                icon: icon-file-text-o
+                fields:
+                    text:
+                        label: Text Content
+                        type: textarea
+                        size: large
+            rich_text:
+                name: Rich Text
+                description: Rich text field
+                icon: icon-file-text-o
+                fields:
+                    text:
+                        label: Text Content
+                        type: richeditor
+                        size: large
+            audio:
+                name: Audio
+                description: Audio file
+                icon: icon-file-audio
+                fields:
+                    file:
+                        label: Audio File
+                        type: mediafinder
+                        mode: file
+            video:
+                name: Video
+                description: Video file
+                icon: icon-file-video
+                fields:
+                    file:
+                        label: Video File
+                        type: mediafinder
+                        mode: file
+

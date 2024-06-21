@@ -1,0 +1,8 @@
+sites:
+    label: Sites
+    view:
+        list: $/pensoft/restcoast/models/site/columns.yaml
+        toolbarButtons: add|remove
+    manage:
+        form: $/pensoft/restcoast/models/site/fields.yaml
+        list: $/pensoft/restcoast/models/site/columns.yaml

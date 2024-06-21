@@ -8,19 +8,11 @@ columns:
         type: text
         searchable: true
         sortable: true
-    start_date:
-        label: start_date
+    description:
+        label: description
         type: text
         searchable: true
-        sortable: true
-    end_date:
-        label: end_date
-        type: text
-        searchable: true
-        sortable: true
-    location:
-        label: location
-        type: text
+        sortable: false
     created_at:
         label: created_at
         type: datetime

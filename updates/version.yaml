@@ -1,3 +1,5 @@
-1.0.1:
-    - 'Update events table'
-    - create_events_table.php
+1.1.0:
+    - 'Create sites and threats tables'
+    - create_sites_table.php
+    - create_threats_table.php
+    - create_site_threat_table.php
