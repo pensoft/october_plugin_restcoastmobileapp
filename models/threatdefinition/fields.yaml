@@ -9,8 +9,12 @@ fields:
         type: textarea
     description:
         label: Description
-        span: auto
-        type: text
+        span: full
+        type: richeditor
+#    measures:
+#        label: Measures
+#        type: partial
+#        path: ~/plugins/pensoft/restcoast/controllers/threats/_field_measures.htm
     content_blocks:
         type: repeater
         label: Blocks
@@ -52,4 +56,17 @@ fields:
                         label: Video File
                         type: mediafinder
                         mode: file
-
+#    outcomes:
+#        type: repeater
+#        label: Outcomes
+#        prompt: Add Outcome
+#        form:
+#            fields:
+#                text:
+#                    label: Outcome text
+#                    type: richeditor
+#                    size: large
+#                measures:
+#                    label: Measures
+#                    type: checkboxlist
+#                    options: getMeasures

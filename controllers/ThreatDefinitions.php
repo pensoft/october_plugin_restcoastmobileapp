@@ -2,8 +2,9 @@
 
 use Backend\Classes\Controller;
 use BackendMenu;
+use Pensoft\Restcoast\Services\JsonUploader;
 
-class Threats extends Controller
+class ThreatDefinitions extends Controller
 {
     public $implement = [
         'Backend\Behaviors\ListController',
@@ -15,9 +16,13 @@ class Threats extends Controller
     public $formConfig = 'config_form.yaml';
     public $relationConfig = 'config_relation.yaml';
 
-    public function __construct()
+    public function __construct(JsonUploader $uploader)
     {
         parent::__construct();
-        BackendMenu::setContext('Pensoft.Restcoast', 'threats', 'threats');
+        BackendMenu::setContext(
+            'Pensoft.Restcoast',
+            'threat-definitions',
+            'threat-definitions'
+        );
     }
 }
