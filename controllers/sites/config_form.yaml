@@ -1,4 +1,4 @@
-name: Sites
+name: Site
 modelClass: Pensoft\Restcoast\Models\Site
 form: $/pensoft/restcoast/models/site/fields.yaml
 defaultRedirect: pensoft/restcoast/sites

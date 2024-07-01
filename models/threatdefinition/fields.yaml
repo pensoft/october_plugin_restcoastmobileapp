@@ -2,20 +2,22 @@ fields:
     name:
         label: Name
         span: auto
+        type: mltext
+        translatable: true
+    code:
+        label: Code
+        span: auto
         type: text
     short_description:
         label: Short Description
-        span: auto
-        type: textarea
-    description:
-        label: Description
         span: full
-        type: richeditor
+        type: textarea
+        translatable: true
 #    measures:
 #        label: Measures
 #        type: partial
 #        path: ~/plugins/pensoft/restcoast/controllers/threats/_field_measures.htm
-    content_blocks:
+    base_outcome:
         type: repeater
         label: Blocks
         prompt: Add Block

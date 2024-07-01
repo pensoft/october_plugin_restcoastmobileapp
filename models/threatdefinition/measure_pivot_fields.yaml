@@ -1,0 +1,11 @@
+fields:
+    name:
+        label: Name
+        type: text
+        span: left
+        readOnly: true
+    short_description:
+        label: Definition
+        type: textarea
+        span: right
+        readOnly: true

@@ -1,0 +1,11 @@
+name: Measure Definitions
+modelClass: Pensoft\Restcoast\Models\MeasureDefinition
+form: $/pensoft/restcoast/models/measuredefinition/fields.yaml
+defaultRedirect: pensoft/restcoast/measuredefinitions
+create:
+    redirect: 'pensoft/restcoast/measuredefinitions/update/:id'
+    redirectClose: pensoft/restcoast/measuredefinitions
+update:
+    redirect: pensoft/restcoast/measuredefinitions
+    redirectClose: pensoft/restcoast/measuredefinitions
+preview: {  }

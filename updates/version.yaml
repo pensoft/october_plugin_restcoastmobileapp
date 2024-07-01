@@ -1,5 +1,13 @@
-1.1.0:
-    - 'Create sites and threats tables'
+1.2.5:
+    - 'Create all tables'
     - create_sites_table.php
-    - create_threats_table.php
-    - create_site_threat_table.php
+    - create_threat_definitions_table.php
+    - create_site_threat_impact_entries_table.php
+    - create_measure_definitions_table.php
+    - create_threat_measure_impact_entries_table.php
+1.2.6:
+    - 'Modifies Threat Measure Impact entries table'
+    - update_measure_impact_entries_table.php
+1.2.7:
+    - 'Modifies Site Threat Impact entries table'
+    - add_outcomes_to_site_threat_impact_entries_table.php

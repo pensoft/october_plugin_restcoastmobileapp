@@ -1,11 +1,11 @@
-name: Threats
-modelClass: Pensoft\Restcoast\Models\Threat
-form: $/pensoft/restcoast/models/threat/fields.yaml
-defaultRedirect: pensoft/restcoast/threats
+name: Threat Definition
+modelClass: Pensoft\Restcoast\Models\ThreatDefinition
+form: $/pensoft/restcoast/models/threatdefinition/fields.yaml
+defaultRedirect: pensoft/restcoast/threatdefinitions
 create:
-    redirect: 'pensoft/restcoast/threats/update/:id'
-    redirectClose: pensoft/restcoast/threats
+    redirect: 'pensoft/restcoast/threatdefinitions/update/:id'
+    redirectClose: pensoft/restcoast/threatdefinitions
 update:
-    redirect: pensoft/restcoast/threats
-    redirectClose: pensoft/restcoast/threats
+    redirect: pensoft/restcoast/threatdefinitions
+    redirectClose: pensoft/restcoast/threatdefinitions
 preview: {  }

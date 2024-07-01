@@ -1,43 +1,42 @@
 <?php namespace Pensoft\Restcoast\Services;
 
-use Google\Cloud\Core\Exception\GoogleException;
-use Google\Cloud\Storage\StorageClient;
+
+use Illuminate\Support\Facades\Storage;
 
 class JsonUploader
 {
-    protected $storageClient;
-    protected $bucketName;
 
-    /**
-     * @throws GoogleException
-     */
+    protected $bucket;
+    protected $adapter;
+
     public function __construct()
     {
-        $this->storageClient = new StorageClient([
-            'keyFilePath' => __DIR__ . '/gcp-key.json', // Path to your service account key file
-        ]);
-        $this->bucketName = 'restcoast-dev-bucket'; // Replace with your bucket name
+        $this->adapter = Storage::disk('gcs')->getAdapter();
+        $this->bucket = $this->adapter->getBucket();
     }
 
-    public function generateJson()
-    {
-        // Your logic to generate the JSON data
-        $data = [
-            'example' => 'This is a JSON example.',
-            'timestamp' => now()->toDateTimeString(),
-        ];
-
-        return json_encode($data, JSON_PRETTY_PRINT);
-    }
-
+    /**
+     * @param $jsonContent
+     * @param $fileName
+     * @return void
+     */
     public function uploadJson($jsonContent, $fileName)
     {
-        $bucket = $this->storageClient->bucket($this->bucketName);
-        $object = $bucket->upload($jsonContent, [
+        $options = [
             'name' => $fileName,
-            'metadata' => ['contentType' => 'application/json'],
-        ]);
-
-        return $object->info();
+            'metadata' => [
+                'contentType' => 'application/json'
+            ],
+        ];
+        $bucketName = $this->bucket->name();
+        $this->bucket->upload($jsonContent, $options);
     }
+
+//    public function fetchFiles()
+//    {
+//        $data = $this->adapter->read('anothertest.json');
+//        echo '<pre>';
+//        print_r($data);
+//
+//    }
 }

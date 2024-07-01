@@ -1,0 +1,82 @@
+fields:
+    name:
+        label: Name
+        span: auto
+        type: text
+#    short_description:
+#        label: Short Description
+#        span: auto
+#        type: textarea
+    measure_definition:
+        label: Measure Definition
+        type: relation
+    site_threat_impact:
+        label: Site Threat Impact
+        type: relation
+    content_blocks:
+        type: repeater
+        label: Content
+        prompt: Add Block
+        groups:
+            rich_text:
+                name: Rich Text
+                description: Rich text field
+                icon: icon-file-text-o
+                fields:
+                    text:
+                        label: Text Content
+                        type: richeditor
+                        size: large
+
+#    content_blocks:
+#        type: repeater
+#        label: Blocks
+#        prompt: Add Outcome
+#        form:
+#            fields:
+#                content:
+#                    label: Content
+#                    type: richeditor
+#                measures:
+#                    label: Measures
+#                    type: checkboxlist
+#                    options: 'listRelatedMeasureImpactEntries'
+
+#        groups:
+#            text:
+#                name: Textarea
+#                description: Basic text field
+#                icon: icon-file-text-o
+#                fields:
+#                    text:
+#                        label: Text Content
+#                        type: textarea
+#                        size: large
+#            rich_text:
+#                name: Rich Text
+#                description: Rich text field
+#                icon: icon-file-text-o
+#                fields:
+#                    text:
+#                        label: Text Content
+#                        type: richeditor
+#                        size: large
+#            audio:
+#                name: Audio
+#                description: Audio file
+#                icon: icon-file-audio
+#                fields:
+#                    file:
+#                        label: Audio File
+#                        type: mediafinder
+#                        mode: file
+#            video:
+#                name: Video
+#                description: Video file
+#                icon: icon-file-video
+#                fields:
+#                    file:
+#                        label: Video File
+#                        type: mediafinder
+#                        mode: file
+

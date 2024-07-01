@@ -1,0 +1,8 @@
+#threats:
+#    label: Threats
+#    view:
+#        list: $/pensoft/restcoast/models/threat/columns.yaml
+#        toolbarButtons: add|remove
+#    manage:
+#        form: $/pensoft/restcoast/models/threat/fields.yaml
+#        list: $/pensoft/restcoast/models/threat/columns.yaml

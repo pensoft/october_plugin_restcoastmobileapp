@@ -1,8 +1,8 @@
-threats:
-    label: Threats
+threat_impact_entries:
+    label: Threat Impact Entries
     view:
-        list: $/pensoft/restcoast/models/threat/columns.yaml
+        list: $/pensoft/restcoast/models/sitethreatimpactentry/columns.yaml
         toolbarButtons: add|remove
     manage:
-        form: $/pensoft/restcoast/models/threat/fields.yaml
-        list: $/pensoft/restcoast/models/threat/columns.yaml
+        form: $/pensoft/restcoast/models/sitethreatimpactentry/fields.yaml
+        list: $/pensoft/restcoast/models/sitethreatimpactentry/columns.yaml

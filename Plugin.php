@@ -16,7 +16,6 @@ class Plugin extends PluginBase
 
     public function boot()
     {
-
         // Optional: You can add any boot logic here if needed
     }
 
@@ -32,16 +31,34 @@ class Plugin extends PluginBase
                 'order' => 500,
 
                 'sideMenu' => [
-                    'users' => [
+                    'sites' => [
                         'label' => 'Sites',
                         'icon' => 'icon-mountain',
                         'url' => \Backend::url('pensoft/restcoast/sites'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
-                    'threats' => [
-                        'label' => 'Threats',
+                    'site_threat_impact_entries' => [
+                        'label' => 'Site Threat Impact Entries',
+                        'icon' => 'icon-mountain',
+                        'url' => \Backend::url('pensoft/restcoast/sitethreatimpactentries'),
+                        'permissions' => ['pensoft.restcoast.*'],
+                    ],
+                    'threat_definitions' => [
+                        'label' => 'Threats Definitions',
                         'icon' => 'triangle-exclamation',
-                        'url' => \Backend::url('pensoft/restcoast/threats'),
+                        'url' => \Backend::url('pensoft/restcoast/threatdefinitions'),
+                        'permissions' => ['pensoft.restcoast.*'],
+                    ],
+                    'measures_definitions' => [
+                        'label' => 'Measures Definitions',
+                        'icon' => 'triangle-exclamation',
+                        'url' => \Backend::url('pensoft/restcoast/measuredefinitions'),
+                        'permissions' => ['pensoft.restcoast.*'],
+                    ],
+                    'threat_measure_impact_entries' => [
+                        'label' => 'Threat Measure Impact Entries',
+                        'icon' => 'triangle-exclamation',
+                        'url' => \Backend::url('pensoft/restcoast/threatmeasureimpactentries'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ]
                 ]

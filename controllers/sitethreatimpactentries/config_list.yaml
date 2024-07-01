@@ -1,0 +1,12 @@
+title: Site Threat Impact Entry
+modelClass: Pensoft\Restcoast\Models\SiteThreatImpactEntry
+list: $/pensoft/restcoast/models/sitethreatimpactentry/columns.yaml
+recordUrl: 'pensoft/restcoast/sitethreatimpactentries/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'

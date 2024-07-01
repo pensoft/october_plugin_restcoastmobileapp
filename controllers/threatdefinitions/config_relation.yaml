@@ -27,6 +27,6 @@ measures:
                     sortable: false
         toolbarButtons: add|remove
     manage:
-        form: $/pensoft/restcoast/models/threat/measure_pivot_fields.yaml
+        form: $/pensoft/restcoast/models/threatdefinition/measure_pivot_fields.yaml
     pivot:
-        form: $/pensoft/restcoast/models/threat/measure_pivot_fields.yaml
+        form: $/pensoft/restcoast/models/threatdefinition/measure_pivot_fields.yaml

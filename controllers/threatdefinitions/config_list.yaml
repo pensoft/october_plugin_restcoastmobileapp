@@ -1,7 +1,7 @@
-title: Threats
-modelClass: Pensoft\Restcoast\Models\Threat
-list: $/pensoft/restcoast/models/threat/columns.yaml
-recordUrl: 'pensoft/restcoast/threats/update/:id'
+title: Threat Definition
+modelClass: Pensoft\Restcoast\Models\ThreatDefinition
+list: $/pensoft/restcoast/models/threatdefinition/columns.yaml
+recordUrl: 'pensoft/restcoast/threatdefinitions/update/:id'
 noRecordsMessage: 'backend::lang.list.no_records'
 recordsPerPage: 20
 showSetup: true

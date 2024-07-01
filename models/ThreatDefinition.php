@@ -2,70 +2,40 @@
 
 use Model;
 
-class Threat extends Model
+class ThreatDefinition extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
-    public $table = 'pensoft_restcoast_threats';
-
+    public $table = 'restcoast_threat_definitions';
 
     public $rules = [
         'name' => 'required',
-        'description' => 'required',
+        'code' => 'required|unique:restcoast_threat_definitions,code|max:16',
+        'short_description' => 'required',
     ];
 
     public $translatable = [
         'name',
-        'description',
         'short_description',
-        'content_blocks',
-        'measures[pivot][content]'
+        'base_outcome',
     ];
 
-    public $jsonable = ['content_blocks'];
+    public $jsonable = ['base_outcome'];
 
     public $implement = ['@RainLab.Translate.Behaviors.TranslatableModel'];
 
     protected $fillable = [
         'name',
-        'description',
+        'code',
         'short_description',
-        'content_blocks',
-        'measures'
+        'base_outcome',
     ];
 
-
-    public $belongsToMany = [
-//        'sites' => [
-//            Site::class,
-//            'table' => 'pensoft_restcoast_site_threat',
-//            'order' => 'name'
-//        ],
-        'measures' => [
-            Measure::class,
-            'table' => 'pensoft_restcoast_measure_threat',
-            'pivot' => ['content'],
-            'timestamps' => true,
-            'pivotModel' => ThreatMeasurePivot::class,
+    public $hasMany = [
+        'threat_impact_entries' => [
+           SiteThreatImpactEntry::class,
+            'key' => 'threat_definition_id'
         ]
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-//        $uploader = new JsonUploader();
-//        static::updating(function($model) use ($uploader) {
-//            $englishJsonContent = $model->toJson();
-//            $uploader->uploadJson($englishJsonContent, 'en/threats/threat-1.json');
-//            $model->translateContext('es');
-//            $spanishJsonContent = $model->toJson();
-//            $uploader->uploadJson($spanishJsonContent, 'es/threats/threat-1.json');
-//        });
-    }
-
-//    public function getMeasures($model)
-//    {
-//        return Measure::all()->pluck('name', 'id')->toArray();
-//    }
 
 }

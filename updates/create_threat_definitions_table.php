@@ -7,18 +7,18 @@ class CreateThreatTable extends Migration
 {
     public function up()
     {
-        Schema::create('pensoft_restcoast_threats', function ($table) {
+        Schema::create('restcoast_threat_definitions', function ($table) {
             $table->increments('id');
             $table->string('name', 64);
+            $table->string('code', 16)->unique();
             $table->mediumText('short_description')->nullable();
-            $table->text('description');
-            $table->json('content_blocks')->nullable();
+            $table->json('base_outcome')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('pensoft_restcoast_threats');
+        Schema::dropIfExists('restcoast_threat_definitions');
     }
 }

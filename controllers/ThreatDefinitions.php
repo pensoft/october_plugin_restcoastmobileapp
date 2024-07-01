@@ -25,4 +25,5 @@ class ThreatDefinitions extends Controller
             'threat-definitions'
         );
     }
+
 }

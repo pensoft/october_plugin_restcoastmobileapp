@@ -7,12 +7,14 @@ class CreateSitesTable extends Migration
 {
     public function up()
     {
-        Schema::create('pensoft_restcoast_sites', function ($table) {
+        Schema::create('restcoast_sites', function ($table) {
             $table->increments('id');
             $table->string('name', 64);
             $table->mediumText('short_description')->nullable();
             $table->string('gmap_objects_file')->nullable();
             $table->string('gmap_style_file')->nullable();
+            $table->decimal('lat', 10, 6)->nullable();
+            $table->decimal('long', 10, 6)->nullable();
             $table->json('content_blocks')->nullable();
             $table->timestamps();
         });
@@ -20,6 +22,6 @@ class CreateSitesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('pensoft_restcoast_sites');
+        Schema::dropIfExists('restcoast_sites');
     }
 }

@@ -1,0 +1,12 @@
+title: Threat Measure Impact Entry
+modelClass: Pensoft\Restcoast\Models\ThreatMeasureImpactEntry
+list: $/pensoft/restcoast/models/threatmeasureimpactentry/columns.yaml
+recordUrl: 'pensoft/restcoast/threatmeasureimpactentries/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
