@@ -3,6 +3,10 @@ fields:
         label: Name
         span: auto
         type: text
+    country:
+        label: Country
+        span: auto
+        type: text
     short_description:
         label: Description
         span: full
@@ -15,6 +19,11 @@ fields:
         label: Longitude
         span: auto
         type: number
+    image:
+        label: Image
+        type: mediafinder
+        mode: file
+        span: full
     gmap_objects_file:
         label: Google Map Objects file
         type: mediafinder
@@ -23,7 +32,13 @@ fields:
         label: Google Map Style file
         type: mediafinder
         mode: file
+    content_blocks:
+        type: repeater
+        label: Content Blocks
+        prompt: Add Block
+        groups: $/pensoft/restcoast/config/content_blocks.yaml
     threat_impact_entries:
         label: Threat Impact Entries
         type: relation
         readOnly: true
+        comment: Every of these entries has this Site assigned to them. You can't edit them here.

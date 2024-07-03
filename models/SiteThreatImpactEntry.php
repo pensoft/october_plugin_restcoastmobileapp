@@ -11,23 +11,33 @@ class SiteThreatImpactEntry extends Model
     // The database table used by the model
     public $table = 'restcoast_site_threat_impact_entries';
 
-
     public $rules = [
         'name' => 'required',
     ];
 
-    public $jsonable = ['content_blocks', 'outcomes'];
+    public $jsonable = [
+        'content_blocks',
+        'outcomes'
+    ];
 
+    // Translate the model
+    public $implement = [
+        '@RainLab.Translate.Behaviors.TranslatableModel',
+    ];
+
+    // Add all translatable fields here
     public $translatable = [
         'name',
         'short_description',
         'content_blocks',
+        'outcomes'
     ];
 
     protected $fillable = [
         'name',
         'short_description',
         'content_blocks',
+        'outcomes'
     ];
 
     // Define the relationship
@@ -49,6 +59,12 @@ class SiteThreatImpactEntry extends Model
         ]
     ];
 
+    /**
+     * Returns of list (id => name) of all Measure Impact entries
+     * assigned to this Site Threat Impact entry
+     *
+     * @return mixed
+     */
     public function listRelatedMeasureImpactEntries() {
         return $this->measure_impact_entries->pluck('name', 'id')
             ->toArray();

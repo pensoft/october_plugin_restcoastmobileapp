@@ -2,73 +2,23 @@ fields:
     name:
         label: Name
         span: auto
-        type: mltext
+        type: text
         translatable: true
     code:
         label: Code
         span: auto
         type: text
+    image:
+        label: Image
+        type: mediafinder
+        mode: file
     short_description:
         label: Short Description
         span: full
         type: textarea
         translatable: true
-#    measures:
-#        label: Measures
-#        type: partial
-#        path: ~/plugins/pensoft/restcoast/controllers/threats/_field_measures.htm
     base_outcome:
         type: repeater
-        label: Blocks
+        label: Outcome
         prompt: Add Block
-        groups:
-            text:
-                name: Textarea
-                description: Basic text field
-                icon: icon-file-text-o
-                fields:
-                    text:
-                        label: Text Content
-                        type: textarea
-                        size: large
-            rich_text:
-                name: Rich Text
-                description: Rich text field
-                icon: icon-file-text-o
-                fields:
-                    text:
-                        label: Text Content
-                        type: richeditor
-                        size: large
-            audio:
-                name: Audio
-                description: Audio file
-                icon: icon-file-audio
-                fields:
-                    file:
-                        label: Audio File
-                        type: mediafinder
-                        mode: file
-            video:
-                name: Video
-                description: Video file
-                icon: icon-file-video
-                fields:
-                    file:
-                        label: Video File
-                        type: mediafinder
-                        mode: file
-#    outcomes:
-#        type: repeater
-#        label: Outcomes
-#        prompt: Add Outcome
-#        form:
-#            fields:
-#                text:
-#                    label: Outcome text
-#                    type: richeditor
-#                    size: large
-#                measures:
-#                    label: Measures
-#                    type: checkboxlist
-#                    options: getMeasures
+        groups: $/pensoft/restcoast/config/content_blocks.yaml

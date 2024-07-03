@@ -3,7 +3,6 @@
 namespace Pensoft\Restcoast\Models;
 
 use Model;
-use Pensoft\Restcoast\Controllers\Sites;
 use Pensoft\Restcoast\Services\JsonUploader;
 
 class Site extends Model
@@ -15,7 +14,8 @@ class Site extends Model
     public $rules = [
         'name' => 'required',
         'lat' => 'required',
-        'long' => 'required'
+        'long' => 'required',
+        'country' => 'required'
     ];
 
     protected $fillable = [
@@ -28,12 +28,15 @@ class Site extends Model
 
     public $jsonable = ['content_blocks'];
 
+    // Translate the model
     public $implement = [
         '@RainLab.Translate.Behaviors.TranslatableModel',
     ];
 
+    // Add all translatable fields here
     public $translatable = [
         'name',
+        'country',
         'short_description',
         'content_blocks',
     ];
@@ -44,4 +47,19 @@ class Site extends Model
             'key' => 'site_id'
         ]
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            $uploader = new JsonUploader();
+            $sites = Site::query()->get()->toArray();
+            $uploader->uploadJson(
+                $sites,
+                'l/en/sites.json'
+            );
+        });
+
+    }
 }

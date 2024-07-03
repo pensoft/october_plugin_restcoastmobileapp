@@ -1,12 +1,12 @@
 fields:
     name:
         label: Name
-        span: auto
+        span: full
         type: text
     short_description:
         label: Description
         span: full
-        type: textarea
+        type: richeditor
     site:
         label: Site
         type: relation
@@ -30,45 +30,17 @@ fields:
                     label: Measures
                     type: checkboxlist
                     options: 'listRelatedMeasureImpactEntries'
+                economic_score:
+                    label: Economic Score
+                    type: number
+                    span: left
+                environmental_score:
+                    label: Enviromental Score
+                    type: number
+                    span: right
     content_blocks:
         type: repeater
-        label: Blocks
+        label: Content Blocks
         prompt: Add Block
-        groups:
-            text:
-                name: Textarea
-                description: Basic text field
-                icon: icon-file-text-o
-                fields:
-                    text:
-                        label: Text Content
-                        type: textarea
-                        size: large
-            rich_text:
-                name: Rich Text
-                description: Rich text field
-                icon: icon-file-text-o
-                fields:
-                    text:
-                        label: Text Content
-                        type: richeditor
-                        size: large
-            audio:
-                name: Audio
-                description: Audio file
-                icon: icon-file-audio
-                fields:
-                    file:
-                        label: Audio File
-                        type: mediafinder
-                        mode: file
-            video:
-                name: Video
-                description: Video file
-                icon: icon-file-video
-                fields:
-                    file:
-                        label: Video File
-                        type: mediafinder
-                        mode: file
+        groups: $/pensoft/restcoast/config/content_blocks.yaml
 

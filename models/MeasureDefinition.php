@@ -18,6 +18,7 @@ class MeasureDefinition extends Model
 
     public $jsonable = ['content_blocks'];
 
+    // Translate the model
     public $implement = [
         '@RainLab.Translate.Behaviors.TranslatableModel',
     ];
@@ -39,11 +40,5 @@ class MeasureDefinition extends Model
             'key' => 'measure_definition'
         ]
     ];
-
-
-    protected static function boot()
-    {
-        parent::boot();
-    }
 
 }

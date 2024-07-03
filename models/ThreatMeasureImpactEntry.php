@@ -17,6 +17,11 @@ class ThreatMeasureImpactEntry extends Model
 
     public $jsonable = ['content_blocks'];
 
+    // Translate the model
+    public $implement = [
+        '@RainLab.Translate.Behaviors.TranslatableModel',
+    ];
+
     public $translatable = [
         'name',
         'short_description',

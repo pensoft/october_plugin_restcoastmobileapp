@@ -1,0 +1,18 @@
+text:
+    name: Textarea
+    description: Basic text field
+    icon: icon-file-text-o
+    fields:
+        text:
+            label: Text Content
+            type: textarea
+            size: large
+rich_text:
+    name: Rich Text
+    description: Rich text field
+    icon: icon-file-text-o
+    fields:
+        text:
+            label: Text Content
+            type: richeditor
+            size: large

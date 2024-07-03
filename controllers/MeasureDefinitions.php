@@ -2,8 +2,6 @@
 
 use Backend\Classes\Controller;
 use BackendMenu;
-use Pensoft\Restcoast\Models\Site;
-use Pensoft\Restcoast\Models\ThreatDefinition;
 use Pensoft\Restcoast\Services\JsonUploader;
 
 class MeasureDefinitions extends Controller
@@ -11,12 +9,10 @@ class MeasureDefinitions extends Controller
     public $implement = [
         'Backend\Behaviors\ListController',
         'Backend\Behaviors\FormController',
-        'Backend\Behaviors\RelationController',
     ];
 
     public $listConfig = 'config_list.yaml';
     public $formConfig = 'config_form.yaml';
-    public $relationConfig = 'config_relation.yaml';
 
     public function __construct(JsonUploader $uploader)
     {
@@ -27,5 +23,4 @@ class MeasureDefinitions extends Controller
             'measure-definitions'
         );
     }
-
 }

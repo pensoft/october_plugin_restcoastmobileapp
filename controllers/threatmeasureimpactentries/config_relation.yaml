@@ -1,8 +1,0 @@
-measure_definitions:
-    label: Measure Definitions
-    view:
-        list: $/pensoft/restcoast/models/measuredefinition/columns.yaml
-        toolbarButtons: add|remove
-    manage:
-        form: $/pensoft/restcoast/models/measuredefinition/fields.yaml
-        list: $/pensoft/restcoast/models/measuredefinition/columns.yaml

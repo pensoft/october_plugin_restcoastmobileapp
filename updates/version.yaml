@@ -11,3 +11,15 @@
 1.2.7:
     - 'Modifies Site Threat Impact entries table'
     - add_outcomes_to_site_threat_impact_entries_table.php
+1.2.8:
+    - 'Adds base outcome'
+    - add_base_outcome_to_site_threat_impact_entries.php
+1.2.9:
+    - 'Adds content blocks to sites'
+    - add_content_to_sites_table.php
+1.2.11:
+    - 'Adds country to sites'
+    - add_country_to_sites_table.php
+1.2.12:
+    - 'Adds images fields'
+    - add_images_fields_to_sites_and_threats.php
