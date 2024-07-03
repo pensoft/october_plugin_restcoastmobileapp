@@ -1,7 +1,7 @@
 title: Measure Definitions
-modelClass: Pensoft\Restcoast\Models\MeasureDefinition
-list: $/pensoft/restcoast/models/measuredefinition/columns.yaml
-recordUrl: 'pensoft/restcoast/measuredefinitions/update/:id'
+modelClass: Pensoft\RestcoastMobileApp\Models\MeasureDefinition
+list: $/pensoft/restcoastmobileapp/models/measure-definition/columns.yaml
+recordUrl: 'pensoft/restcoastmobileapp/measuredefinitions/update/:id'
 noRecordsMessage: 'backend::lang.list.no_records'
 recordsPerPage: 20
 showSetup: true

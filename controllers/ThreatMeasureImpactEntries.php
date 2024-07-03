@@ -1,8 +1,8 @@
-<?php namespace Pensoft\Restcoast\Controllers;
+<?php namespace Pensoft\RestcoastMobileApp\Controllers;
 
 use Backend\Classes\Controller;
 use BackendMenu;
-use Pensoft\Restcoast\Models\ThreatMeasureImpactEntry;
+use Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry;
 
 class ThreatMeasureImpactEntries extends Controller
 {
@@ -18,9 +18,9 @@ class ThreatMeasureImpactEntries extends Controller
     {
         parent::__construct();
         BackendMenu::setContext(
-            'Pensoft.Restcoast',
-            'threat-measure-impact-entries',
-            'threat-measure-impact-entries'
+            'Pensoft.RestcoastMobileApp',
+            'restcoast',
+            'threat_measure_impact_entries'
         );
     }
 

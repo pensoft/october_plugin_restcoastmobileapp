@@ -8,7 +8,7 @@ class CreateThreatMeasureImpactEntriesTable extends Migration
     public function up()
     {
         Schema::create(
-            'restcoast_threat_measure_impact_entries',
+            'rcm_threat_measure_impact_entries',
             function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name', 64);
@@ -20,8 +20,19 @@ class CreateThreatMeasureImpactEntriesTable extends Migration
                     'measure_fk'
                 )
                     ->references('id')
-                    ->on('restcoast_measure_definitions')
+                    ->on('rcm_measure_definitions')
                     ->onDelete('cascade');
+                $table->integer('site_threat_impact_id')
+                    ->unsigned()
+                    ->nullable();
+                $table->foreign(
+                    'site_threat_impact_id',
+                    'site_threat_impact_fk'
+                )
+                    ->references('id')
+                    ->on('rcm_site_threat_impact_entries')
+                    ->onDelete('cascade');
+
                 $table->mediumText('short_description')->nullable();
                 $table->json('content_blocks')->nullable();
                 $table->json('outcomes')->nullable();
@@ -31,9 +42,10 @@ class CreateThreatMeasureImpactEntriesTable extends Migration
 
     public function down()
     {
-        Schema::table('restcoast_threat_measure_impact_entries', function (Blueprint $table) {
+        Schema::table('rcm_threat_measure_impact_entries', function (Blueprint $table) {
             $table->dropForeign('measure_fk');
+            $table->dropForeign('site_threat_impact_fk');
         });
-        Schema::dropIfExists('restcoast_threat_measure_impact_entries');
+        Schema::dropIfExists('rcm_threat_measure_impact_entries');
     }
 }

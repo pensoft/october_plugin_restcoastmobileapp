@@ -1,8 +1,7 @@
-<?php namespace Pensoft\Restcoast\Controllers;
+<?php namespace Pensoft\RestcoastMobileApp\Controllers;
 
 use Backend\Classes\Controller;
 use BackendMenu;
-use Pensoft\Restcoast\Services\JsonUploader;
 
 class MeasureDefinitions extends Controller
 {
@@ -14,13 +13,19 @@ class MeasureDefinitions extends Controller
     public $listConfig = 'config_list.yaml';
     public $formConfig = 'config_form.yaml';
 
-    public function __construct(JsonUploader $uploader)
+    public function __construct()
     {
         parent::__construct();
         BackendMenu::setContext(
-            'Pensoft.Restcoast',
-            'measure-definitions',
-            'measure-definitions'
+            'Pensoft.RestcoastMobileApp',
+            'restcoast',
+            'measure_definitions'
         );
+    }
+
+    public function index()
+    {
+        // Ensure this action is correctly set up to handle the request
+        $this->asExtension('ListController')->index();
     }
 }

@@ -1,11 +1,11 @@
 name: Site Threat Impact Entry
-modelClass: Pensoft\Restcoast\Models\SiteThreatImpactEntry
-form: $/pensoft/restcoast/models/sitethreatimpactentry/fields.yaml
-defaultRedirect: pensoft/restcoast/sitethreatimpactentries
+modelClass: Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry
+form: $/pensoft/restcoastmobileapp/models/site-threat-impact-entry/fields.yaml
+defaultRedirect: pensoft/restcoastmobileapp/sitethreatimpactentries
 create:
-    redirect: 'pensoft/restcoast/sitethreatimpactentries/update/:id'
-    redirectClose: pensoft/restcoast/sitethreatimpactentries
+    redirect: 'pensoft/restcoastmobileapp/sitethreatimpactentries/update/:id'
+    redirectClose: pensoft/restcoastmobileapp/sitethreatimpactentries
 update:
-    redirect: pensoft/restcoast/sitethreatimpactentries
-    redirectClose: pensoft/restcoast/sitethreatimpactentries
+    redirect: pensoft/restcoastmobileapp/sitethreatimpactentries
+    redirectClose: pensoft/restcoastmobileapp/sitethreatimpactentries
 preview: {  }

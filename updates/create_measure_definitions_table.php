@@ -1,4 +1,4 @@
-<?php namespace Pensoft\Restcoast\Updates;
+<?php namespace Pensoft\RestcoastMobileApp\Updates;
 
 use Schema;
 use October\Rain\Database\Updates\Migration;
@@ -7,7 +7,7 @@ class CreateMeasureDefinitionsTable extends Migration
 {
     public function up()
     {
-        Schema::create('restcoast_measure_definitions', function ($table) {
+        Schema::create('rcm_measure_definitions', function ($table) {
             $table->increments('id');
             $table->string('name', 64);
             $table->string('code', 16)->unique();
@@ -18,6 +18,6 @@ class CreateMeasureDefinitionsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('restcoast_measure_definitions');
+        Schema::dropIfExists('rcm_measure_definitions');
     }
 }

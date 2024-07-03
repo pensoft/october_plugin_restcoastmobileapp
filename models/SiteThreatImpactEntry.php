@@ -1,5 +1,5 @@
 <?php
-namespace Pensoft\Restcoast\Models;
+namespace Pensoft\RestcoastMobileApp\Models;
 
 use Model;
 
@@ -9,7 +9,7 @@ class SiteThreatImpactEntry extends Model
     public $timestamps = true;
 
     // The database table used by the model
-    public $table = 'restcoast_site_threat_impact_entries';
+    public $table = 'rcm_site_threat_impact_entries';
 
     public $rules = [
         'name' => 'required',

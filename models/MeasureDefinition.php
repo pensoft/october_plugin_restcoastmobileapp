@@ -1,6 +1,6 @@
 <?php
 
-namespace Pensoft\Restcoast\Models;
+namespace Pensoft\RestcoastMobileApp\Models;
 
 use Model;
 
@@ -8,11 +8,11 @@ class MeasureDefinition extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
-    public $table = 'restcoast_measure_definitions';
+    public $table = 'rcm_measure_definitions';
 
     public $rules = [
         'name' => 'required',
-        'code' => 'required|unique:restcoast_measure_definitions,code|max:16',
+        'code' => 'required|unique:rcm_measure_definitions,code|max:16',
         'short_description' => 'required',
     ];
 

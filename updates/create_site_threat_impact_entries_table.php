@@ -8,7 +8,7 @@ class CreateSiteThreatImpactEntriesTable extends Migration
     public function up()
     {
         Schema::create(
-            'restcoast_site_threat_impact_entries',
+            'rcm_site_threat_impact_entries',
             function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name', 64);
@@ -20,26 +20,27 @@ class CreateSiteThreatImpactEntriesTable extends Migration
                     ->nullable();
                 $table->foreign('site_id', 'site_fk')
                     ->references('id')
-                    ->on('restcoast_sites')
+                    ->on('rcm_sites')
                     ->onDelete('cascade');
 
                 $table->foreign('threat_definition_id', 'threat_def_fk')
                     ->references('id')
-                    ->on('restcoast_threat_definitions')
+                    ->on('rcm_threat_definitions')
                     ->onDelete('cascade');
                 $table->mediumText('short_description')->nullable();
                 $table->json('content_blocks')->nullable();
+                $table->json('outcomes')->nullable();
                 $table->timestamps();
             });
     }
 
     public function down()
     {
-        Schema::table('restcoast_site_threat_impact_entries', function (Blueprint $table) {
+        Schema::table('rcm_site_threat_impact_entries', function (Blueprint $table) {
             // Drop foreign key constraints with the shorter names
             $table->dropForeign('site_fk');
             $table->dropForeign('threat_def_fk');
         });
-        Schema::dropIfExists('restcoast_site_threat_impact_entries');
+        Schema::dropIfExists('rcm_site_threat_impact_entries');
     }
 }

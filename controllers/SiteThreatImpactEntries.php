@@ -1,8 +1,8 @@
-<?php namespace Pensoft\Restcoast\Controllers;
+<?php namespace Pensoft\RestcoastMobileApp\Controllers;
 
 use Backend\Classes\Controller;
 use BackendMenu;
-use Pensoft\Restcoast\Models\SiteThreatImpactEntry;
+use Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry;
 
 class SiteThreatImpactEntries extends Controller
 {
@@ -18,9 +18,9 @@ class SiteThreatImpactEntries extends Controller
     {
         parent::__construct();
         BackendMenu::setContext(
-            'Pensoft.Restcoast',
-            'site-threat-impact-entries',
-            'site-threat-impact-entries'
+            'Pensoft.RestcoastMobileApp',
+            'restcoast',
+            'site_threat_impact_entries'
         );
 
         // Listen for the form.extendFields event to dynamically modify form fields
@@ -55,7 +55,7 @@ class SiteThreatImpactEntries extends Controller
                     'no_measures_message' => [
                         'label' => '',
                         'type' => 'partial',
-                        'path' => '$/pensoft/restcoast/partials/_no_measure_impact_entries_message.htm',
+                        'path' => '$/pensoft/restcoastmobileapp/partials/_no_measure_impact_entries_message.htm',
                         'span' => 'full'
                     ]
                 ]);

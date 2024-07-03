@@ -1,7 +1,7 @@
 title: Threat Measure Impact Entry
-modelClass: Pensoft\Restcoast\Models\ThreatMeasureImpactEntry
-list: $/pensoft/restcoast/models/threatmeasureimpactentry/columns.yaml
-recordUrl: 'pensoft/restcoast/threatmeasureimpactentries/update/:id'
+modelClass: Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry
+list: $/pensoft/restcoastmobileapp/models/threat-measure-impact-entry/columns.yaml
+recordUrl: 'pensoft/restcoastmobileapp/threatmeasureimpactentries/update/:id'
 noRecordsMessage: 'backend::lang.list.no_records'
 recordsPerPage: 20
 showSetup: true

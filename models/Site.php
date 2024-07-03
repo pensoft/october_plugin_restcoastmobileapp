@@ -1,15 +1,16 @@
 <?php
 
-namespace Pensoft\Restcoast\Models;
+namespace Pensoft\RestcoastMobileApp\Models;
 
+use Event;
 use Model;
-use Pensoft\Restcoast\Services\JsonUploader;
+use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 
 class Site extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
-    public $table = 'restcoast_sites';
+    public $table = 'rcm_sites';
 
     public $rules = [
         'name' => 'required',
@@ -53,12 +54,7 @@ class Site extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            $uploader = new JsonUploader();
-            $sites = Site::query()->get()->toArray();
-            $uploader->uploadJson(
-                $sites,
-                'l/en/sites.json'
-            );
+            Event::fire(new SiteUpdated($model));
         });
 
     }

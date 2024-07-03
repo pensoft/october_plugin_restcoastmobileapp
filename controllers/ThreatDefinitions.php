@@ -1,8 +1,7 @@
-<?php namespace Pensoft\Restcoast\Controllers;
+<?php namespace Pensoft\RestcoastMobileApp\Controllers;
 
 use Backend\Classes\Controller;
 use BackendMenu;
-use Pensoft\Restcoast\Services\JsonUploader;
 
 class ThreatDefinitions extends Controller
 {
@@ -14,13 +13,13 @@ class ThreatDefinitions extends Controller
     public $listConfig = 'config_list.yaml';
     public $formConfig = 'config_form.yaml';
 
-    public function __construct(JsonUploader $uploader)
+    public function __construct()
     {
         parent::__construct();
         BackendMenu::setContext(
-            'Pensoft.Restcoast',
-            'threat-definitions',
-            'threat-definitions'
+            'Pensoft.RestcoastMobileApp',
+            'restcoast',
+            'threat_definitions'
         );
     }
 

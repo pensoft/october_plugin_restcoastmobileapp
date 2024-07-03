@@ -1,6 +1,6 @@
 <div data-control="toolbar">
     <a
-        href="<?= Backend::url('pensoft/restcoast/sitethreatimpactentries/create') ?>"
+        href="<?= Backend::url('pensoft/restcoastmobileapp/sitethreatimpactentries/create') ?>"
         class="btn btn-primary oc-icon-plus">
         <?= e(trans('backend::lang.form.create')) ?>
     </a>

@@ -1,4 +1,4 @@
-<?php namespace Pensoft\Restcoast\Controllers;
+<?php namespace Pensoft\RestcoastMobileApp\Controllers;
 
 use Backend\Classes\Controller;
 use BackendMenu;
@@ -16,7 +16,7 @@ class Sites extends Controller
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('Pensoft.Restcoast', 'sites', 'sites');
+        BackendMenu::setContext('Pensoft.RestcoastMobileApp', 'restcoast', 'sites');
     }
 
 }

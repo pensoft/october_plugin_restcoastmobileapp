@@ -21,4 +21,4 @@ fields:
         type: repeater
         label: Outcome
         prompt: Add Block
-        groups: $/pensoft/restcoast/config/content_blocks.yaml
+        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml

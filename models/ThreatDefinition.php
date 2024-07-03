@@ -1,18 +1,18 @@
-<?php namespace Pensoft\Restcoast\Models;
+<?php namespace Pensoft\RestcoastMobileApp\Models;
 
+use Event;
 use Model;
-use Pensoft\Restcoast\Services\JsonUploader;
-use RainLab\Translate\Models\Locale;
+use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 
 class ThreatDefinition extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
-    public $table = 'restcoast_threat_definitions';
+    public $table = 'rcm_threat_definitions';
 
     public $rules = [
         'name' => 'required',
-        'code' => 'required|unique:restcoast_threat_definitions,code|max:16',
+        'code' => 'required|unique:rcm_threat_definitions,code|max:16',
         'short_description' => 'required',
     ];
 
@@ -49,32 +49,8 @@ class ThreatDefinition extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            $uploader = new JsonUploader();
-            $mediaFolder = config('system.storage.media.folder');
-
-            $allThreatDefinitions = ThreatDefinition::query()
-                ->select('id', 'image', 'name', 'short_description')
-                ->get();
-            $languages = Locale::listAvailable();
-
-            foreach ($languages as $lang => $label) {
-                $threatsArray = [];
-                foreach ($allThreatDefinitions as $threat) {
-                    $threat->translateContext($lang);
-                    $threatsArray[] = [
-                        'id' => $threat->id,
-                        'name' => $threat->name,
-                        'image' => $threat->image,
-                        'short_description' => $threat->short_description,
-                    ];
-                }
-                // fileName is the endpoint in the CDN
-                $fileName = "l/" . $lang . "/threats.json";
-                $uploader->uploadJson(
-                    $threatsArray,
-                    $fileName
-                );
-            }
+            Event::fire(new ThreatDefinitionUpdated($model));
+        });
 
 //            $relatedThreatImpactEntriesIds = SiteThreatImpactEntry::query()
 //                ->select('id', 'site_id')
@@ -108,7 +84,7 @@ class ThreatDefinition extends Model
 //                $threatDefinition,
 //                $fileName
 //            );
-        });
+//        });
     }
 
 }
