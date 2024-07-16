@@ -60,4 +60,12 @@ fields:
                         label: Video File
                         type: mediafinder
                         mode: file
-
+            image:
+                name: Image
+                description: An Image
+                icon: icon-file-image
+                fields:
+                    file:
+                        label: Image File
+                        type: mediafinder
+                        mode: file

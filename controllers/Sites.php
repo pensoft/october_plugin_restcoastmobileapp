@@ -3,8 +3,7 @@
 use Backend\Classes\Controller;
 use BackendMenu;
 
-class Sites extends Controller
-{
+class Sites extends Controller {
     public $implement = [
         'Backend\Behaviors\ListController',
         'Backend\Behaviors\FormController',
@@ -15,10 +14,8 @@ class Sites extends Controller
     public $formConfig = 'config_form.yaml';
     public $relationConfig = 'config_relation.yaml';
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-        BackendMenu::setContext('Pensoft.Restcoast', 'sites', 'sites');
+        BackendMenu::setContext( 'Pensoft.Restcoast', 'sites', 'sites' );
     }
-
 }

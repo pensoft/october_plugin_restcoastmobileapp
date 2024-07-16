@@ -1,3 +1,3 @@
 <?php
-use Pensoft\Restcoast\Models\Site;
-use Pensoft\Restcoast\Services\JsonUploader;
+
+use Pensoft\Restcoast\Controllers\Sites;

@@ -1,17 +1,17 @@
 <?php namespace Pensoft\Restcoast\Models;
 
+use Illuminate\Support\Facades\App;
 use Model;
-use Pensoft\Restcoast\Services\JsonUploader;
+use Pensoft\Restcoast\Extensions\JsonableModel;
 
-class Threat extends Model
-{
+class Threat extends Model {
     use \October\Rain\Database\Traits\Validation;
 
     public $table = 'pensoft_restcoast_threats';
 
 
     public $rules = [
-        'name'      => 'required',
+        'name'        => 'required',
         'description' => 'required',
     ];
 
@@ -22,9 +22,12 @@ class Threat extends Model
         'content_blocks',
     ];
 
-    public $jsonable = ['content_blocks'];
+    public $jsonable = [ 'content_blocks' ];
 
-    public $implement = ['@RainLab.Translate.Behaviors.TranslatableModel'];
+    public $implement = [
+        '@RainLab.Translate.Behaviors.TranslatableModel',
+        JsonableModel::class
+    ];
 
     protected $fillable = [
         'name',
@@ -41,14 +44,14 @@ class Threat extends Model
         ]
     ];
 
-    protected static function boot()
-    {
+    protected static function boot() {
         parent::boot();
 
-        static::updating(function($model) {
-            $sitesJson = Site::query()->with('threats')->get()->toJson();
-            $uploader = new JsonUploader();
-            $uploader->uploadJson($sitesJson, 'sites.json');
-        });
+        static::updating( function ( $model ) {
+            $uploader = App::make( "JsonUploader" );
+
+            $sitesJson = Site::query()->with( 'threats' )->get()->toJson();
+            $uploader->uploadJson( $sitesJson, 'sites.json' );
+        } );
     }
 }
