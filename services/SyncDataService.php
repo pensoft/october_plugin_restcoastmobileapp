@@ -1,6 +1,7 @@
 <?php namespace Pensoft\RestcoastMobileApp\Services;
 
 use Illuminate\Support\Facades\Storage;
+use Pensoft\RestcoastMobileApp\Models\Site;
 use Pensoft\RestcoastMobileApp\Models\ThreatDefinition;
 use RainLab\Translate\Models\Locale;
 
@@ -82,7 +83,69 @@ class SyncDataService
 
     public function syncSites()
     {
+        $allSites = Site::query()
+            ->select('id', 'content_blocks')
+            ->get();
+        foreach ($allSites as $site) {
+            $contentBlocks = $this->convertContentBlocksData($site['content_blocks']);
+            $contentBlocks = json_encode($contentBlocks);
+        }
+
         // TODO: Sync all Sites data
+    }
+
+    /**
+     * @param $contentBlocks
+     * @return array
+     */
+    public function convertContentBlocksData($contentBlocks): array
+    {
+        $blocksData = [];
+        foreach ($contentBlocks as $block) {
+            $newBlock = [
+                'type' => $block['_group']
+            ];
+            switch ($block['_group']) {
+                case 'heading': {
+                    $newBlock['text'] = $block['heading'];
+                    break;
+                }
+
+                case 'youtube': {
+                    $newBlock['videoId'] = $block['videoId'];
+                    break;
+                }
+
+                case 'richText': {
+                    $newBlock['content'] = $block['text'];
+                    break;
+                }
+
+                case 'image': {
+                    $newBlock['path'] = $block['image'];
+                    break;
+                }
+
+                case 'video': {
+                    $newBlock['path'] = $block['video'];
+                    break;
+                }
+
+                case 'audio': {
+                    $newBlock['path'] = $block['audio'];
+                    break;
+                }
+
+                case 'map': {
+                    $newBlock['path'] = $block['kml_file'];
+                    $newBlock['styling'] = $block['styling'];
+                    break;
+                }
+            }
+            $blocksData[] = $newBlock;
+        }
+
+        return $blocksData;
     }
 
     // TODO: Implements the rest of the endpoints
