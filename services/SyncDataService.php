@@ -141,6 +141,10 @@ class SyncDataService
                     $newBlock['styling'] = $block['styling'];
                     break;
                 }
+
+                case 'separator': {
+                    break;
+                }
             }
             $blocksData[] = $newBlock;
         }
