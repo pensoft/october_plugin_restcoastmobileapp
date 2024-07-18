@@ -9,7 +9,8 @@ use System\Behaviors\SettingsModel;
 /**
  * HomeSettings Model
  */
-class AppSettings extends Model {
+class AppSettings extends Model
+{
     use Validation;
 
     public $implement = [
@@ -29,7 +30,7 @@ class AppSettings extends Model {
     /**
      * @var array guarded attributes aren't mass assignable
      */
-    protected $guarded = [ '*' ];
+    protected $guarded = ['*'];
 
     /**
      * @var array fillable attributes are mass assignable
@@ -82,10 +83,11 @@ class AppSettings extends Model {
     public $attachOne = [];
     public $attachMany = [];
 
-    public $translatable = [ 'privacy_policy', 'about', 'eu_disclaimer' ];
+    public $translatable = ['privacy_policy', 'about', 'eu_disclaimer'];
 
-    public function __construct( array $attributes = [] ) {
-        parent::__construct( $attributes );
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
         $this->table = 'rcm_settings';
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Pensoft\Restcoast\Models;
 
 use Model;

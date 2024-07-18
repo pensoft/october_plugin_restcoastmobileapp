@@ -13,8 +13,9 @@ use Pensoft\Restcoast\Models\AppSettings as SettingsModel;
 /**
  * Settings Controller Backend Controller
  */
-class AppSettings extends Controller {
-    public $implement = [ FormController::class ];
+class AppSettings extends Controller
+{
+    public $implement = [FormController::class];
 
     public $settingsItemCode = 'pensoft_restcoast_settings';
     public $formConfig = 'config_form.yaml';
@@ -24,35 +25,38 @@ class AppSettings extends Controller {
     /**
      * __construct the controller
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->model = SettingsModel::instance();
 
-        BackendMenu::setContext( 'Pensoft.Restcoast', 'plugin', 'settings' );
+        BackendMenu::setContext('Pensoft.Restcoast', 'plugin', 'settings');
     }
 
-    public function index() {
+    public function index()
+    {
         $this->pageTitle = 'App Settings';
-        $this->initForm( $this->model );
+        $this->initForm($this->model);
     }
 
-    public function onSave() {
-        $uploader      = App::make( "JsonUploader" );
-        $jsonGenerator = App::make( "JsonGenerator" );
-        $translator    = App::make( "TranslationService" );
+    public function onSave()
+    {
+        $uploader      = App::make("JsonUploader");
+        $jsonGenerator = App::make("JsonGenerator");
+        $translator    = App::make("TranslationService");
 
         $entries = $this->model::all();
         $entry   = $entries->first();
 
-        if ( $entry == null ) {
-            $this->create_onSave( FormController::CONTEXT_CREATE );
+        if ($entry == null) {
+            $this->create_onSave(FormController::CONTEXT_CREATE);
         } else {
-            $this->update_onSave( $entry->id, FormController::CONTEXT_UPDATE );
+            $this->update_onSave($entry->id, FormController::CONTEXT_UPDATE);
         }
 
-        $translations = $translator->getOneWithTranslations( $entry );
-        foreach ( $translations as $locale => $translation ) {
-            $uploader->uploadJson( $jsonGenerator->generateJson( $translation ), "l/" . $locale . "/home.json" );
+        $translations = $translator->getOneWithTranslations($entry);
+        foreach ($translations as $locale => $translation) {
+            $uploader->uploadJson($jsonGenerator->generateJson($translation), "l/".$locale."/home.json");
         }
 
     }

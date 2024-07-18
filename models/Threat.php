@@ -1,10 +1,12 @@
-<?php namespace Pensoft\Restcoast\Models;
+<?php
+namespace Pensoft\Restcoast\Models;
 
 use Illuminate\Support\Facades\App;
 use Model;
 use Pensoft\Restcoast\Extensions\JsonableModel;
 
-class Threat extends Model {
+class Threat extends Model
+{
     use \October\Rain\Database\Traits\Validation;
 
     public $table = 'pensoft_restcoast_threats';
@@ -22,7 +24,7 @@ class Threat extends Model {
         'content_blocks',
     ];
 
-    public $jsonable = [ 'content_blocks' ];
+    public $jsonable = ['content_blocks'];
 
     public $implement = [
         '@RainLab.Translate.Behaviors.TranslatableModel',
@@ -44,14 +46,15 @@ class Threat extends Model {
         ]
     ];
 
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
-        static::updating( function ( $model ) {
-            $uploader = App::make( "JsonUploader" );
+        static::updating(function ($model) {
+            $uploader = App::make("JsonUploader");
 
-            $sitesJson = Site::query()->with( 'threats' )->get()->toJson();
-            $uploader->uploadJson( $sitesJson, 'sites.json' );
-        } );
+            $sitesJson = Site::query()->with('threats')->get()->toJson();
+            $uploader->uploadJson($sitesJson, 'sites.json');
+        });
     }
 }
