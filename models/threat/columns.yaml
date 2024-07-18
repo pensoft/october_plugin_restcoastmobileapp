@@ -1,21 +1,21 @@
 columns:
     id:
-        label: id
+        label: ID
         type: number
         searchable: false
     name:
-        label: name
+        label: Name
         type: text
         searchable: true
         sortable: true
     description:
-        label: description
+        label: Description
         type: text
         searchable: true
         sortable: false
     created_at:
-        label: created_at
+        label: Created at
         type: datetime
     updated_at:
-        label: updated_at
+        label: Updated at
         type: datetime

@@ -20,5 +20,4 @@ class Sites extends Controller
         parent::__construct();
         BackendMenu::setContext('Pensoft.Restcoast', 'sites', 'sites');
     }
-
 }

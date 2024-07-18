@@ -1,12 +1,13 @@
 <?php
-
 namespace Pensoft\Restcoast\Models;
 
 use Model;
+use October\Rain\Database\Traits\Validation;
+use Pensoft\Restcoast\Extensions\JsonableModel;
 
 class Site extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use Validation;
 
     public $table = 'pensoft_restcoast_sites';
 
@@ -19,6 +20,7 @@ class Site extends Model
 
     public $implement = [
         '@RainLab.Translate.Behaviors.TranslatableModel',
+        JsonableModel::class
     ];
 
     public $translatable = [

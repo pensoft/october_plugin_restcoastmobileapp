@@ -3,3 +3,6 @@
     - create_sites_table.php
     - create_threats_table.php
     - create_site_threat_table.php
+1.2.0:
+    - "Creates settings table."
+    - create_settings_table.php
