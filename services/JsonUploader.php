@@ -1,4 +1,4 @@
-<?php namespace Pensoft\Restcoast\Services;
+<?php namespace Pensoft\RestcoastMobileApp\Services;
 
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\Storage\StorageClient;

@@ -1,0 +1,46 @@
+fields:
+    name:
+        label: Name
+        span: full
+        type: text
+    short_description:
+        label: Description
+        span: full
+        type: richeditor
+    site:
+        label: Site
+        type: relation
+    threat_definition:
+        label: Threat Definition
+        type: relation
+    measure_impact_entries:
+        label: Measure Impact Entries
+        type: relation
+        readOnly: true
+    outcomes:
+        type: repeater
+        label: Outcomes
+        prompt: Add Outcome
+        form:
+            fields:
+                content:
+                    label: Content
+                    type: richeditor
+                measures:
+                    label: Measures
+                    type: checkboxlist
+                    options: 'listRelatedMeasureImpactEntries'
+                economic_score:
+                    label: Economic Score
+                    type: number
+                    span: left
+                environmental_score:
+                    label: Environmental Score
+                    type: number
+                    span: right
+    content_blocks:
+        type: repeater
+        label: Content Blocks
+        prompt: Add Block
+        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
+

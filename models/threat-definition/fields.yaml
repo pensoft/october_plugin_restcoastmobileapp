@@ -1,0 +1,24 @@
+fields:
+    name:
+        label: Name
+        span: auto
+        type: text
+        translatable: true
+    code:
+        label: Code
+        span: auto
+        type: text
+    image:
+        label: Image
+        type: mediafinder
+        mode: file
+    short_description:
+        label: Short Description
+        span: full
+        type: textarea
+        translatable: true
+    base_outcome:
+        type: repeater
+        label: Outcome
+        prompt: Add Block
+        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml

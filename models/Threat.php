@@ -1,9 +1,9 @@
 <?php
-namespace Pensoft\Restcoast\Models;
+namespace Pensoft\RestcoastMobileApp\Models;
 
 use Illuminate\Support\Facades\App;
 use Model;
-use Pensoft\Restcoast\Extensions\JsonableModel;
+use Pensoft\RestcoastMobileApp\Extensions\JsonableModel;
 
 class Threat extends Model
 {

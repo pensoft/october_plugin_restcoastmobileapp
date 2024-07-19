@@ -1,0 +1,13 @@
+fields:
+    name:
+        label: Name
+        span: auto
+        type: text
+    code:
+        label: Code
+        span: auto
+        type: text
+    short_description:
+        label: Short Description
+        span: full
+        type: textarea

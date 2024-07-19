@@ -1,0 +1,11 @@
+name: Threat Measure Impact Entry
+modelClass: Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry
+form: $/pensoft/restcoastmobileapp/models/threat-measure-impact-entry/fields.yaml
+defaultRedirect: pensoft/restcoastmobileapp/threatmeasureimpactentries
+create:
+    redirect: 'pensoft/restcoastmobileapp/threatmeasureimpactentries/update/:id'
+    redirectClose: pensoft/restcoastmobileapp/threatmeasureimpactentries
+update:
+    redirect: pensoft/restcoastmobileapp/threatmeasureimpactentries
+    redirectClose: pensoft/restcoastmobileapp/threatmeasureimpactentries
+preview: {  }

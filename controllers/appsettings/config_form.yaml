@@ -1,3 +1,3 @@
 name: 'Settings Form'
-modelClass: Pensoft\Restcoast\Models\AppSettings
-form: $/pensoft/restcoast/models/appsettings/fields.yaml
+modelClass: Pensoft\RestcoastMobileApp\Models\AppSettings
+form: $/pensoft/restcoastmobileapp/models/appsettings/fields.yaml

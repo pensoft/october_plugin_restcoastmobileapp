@@ -1,0 +1,12 @@
+title: Threat Definition
+modelClass: Pensoft\RestcoastMobileApp\Models\ThreatDefinition
+list: $/pensoft/restcoastmobileapp/models/threat-definition/columns.yaml
+recordUrl: 'pensoft/restcoastmobileapp/threatdefinitions/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'

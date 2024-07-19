@@ -1,6 +1,6 @@
 <?php
 
-namespace Pensoft\Restcoast\Services;
+namespace Pensoft\RestcoastMobileApp\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use RainLab\Translate\Models\Locale;

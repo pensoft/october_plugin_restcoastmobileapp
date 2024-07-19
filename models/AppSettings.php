@@ -1,9 +1,8 @@
-<?php namespace
-Pensoft\Restcoast\Models;
+<?php namespace Pensoft\RestcoastMobileApp\Models;
 
 use Model;
 use October\Rain\Database\Traits\Validation;
-use Pensoft\Restcoast\Extensions\JsonableModel;
+use Pensoft\RestcoastMobileApp\Extensions\JsonableModel;
 use System\Behaviors\SettingsModel;
 
 /**

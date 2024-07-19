@@ -1,8 +1,12 @@
-1.1.0:
-    - 'Create sites and threats tables'
+1.5.0:
+    - 'Creates site tables'
     - create_sites_table.php
-    - create_threats_table.php
-    - create_site_threat_table.php
-1.2.0:
+1.5.1:
     - "Creates settings table."
     - create_settings_table.php
+1.5.2:
+    - 'Create the rest of the tables'
+    - create_threat_definitions_table.php
+    - create_site_threat_impact_entries_table.php
+    - create_measure_definitions_table.php
+    - create_threat_measure_impact_entries_table.php

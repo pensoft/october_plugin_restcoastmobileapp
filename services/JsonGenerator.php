@@ -1,8 +1,8 @@
 <?php
 
-namespace Pensoft\Restcoast\Services;
+namespace Pensoft\RestcoastMobileApp\Services;
 use October\Rain\Database\Model;
-use Pensoft\Restcoast\Extensions\JsonableModel;
+use Pensoft\RestcoastMobileApp\Extensions\JsonableModel;
 
 class JsonGenerator {
     public function generateJson( Model $entry ) {

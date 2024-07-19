@@ -1,14 +1,12 @@
 <?php
-
-namespace Pensoft\Restcoast\Controllers;
+namespace Pensoft\RestcoastMobileApp\Controllers;
 
 use Backend\Behaviors\FormController;
 use Backend\Classes\Controller;
-use Backend\Classes\SettingsController;
 use BackendMenu;
 
 use Illuminate\Support\Facades\App;
-use Pensoft\Restcoast\Models\AppSettings as SettingsModel;
+use Pensoft\RestcoastMobileApp\Models\AppSettings as SettingsModel;
 
 /**
  * Settings Controller Backend Controller

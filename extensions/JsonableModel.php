@@ -1,6 +1,6 @@
 <?php
 
-namespace Pensoft\Restcoast\Extensions;
+namespace Pensoft\RestcoastMobileApp\Extensions;
 
 use October\Rain\Extension\ExtensionBase;
 
