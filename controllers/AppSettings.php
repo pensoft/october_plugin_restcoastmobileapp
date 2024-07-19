@@ -28,7 +28,11 @@ class AppSettings extends Controller
         parent::__construct();
         $this->model = SettingsModel::instance();
 
-        BackendMenu::setContext('Pensoft.Restcoast', 'plugin', 'settings');
+        BackendMenu::setContext(
+            'Pensoft.RestcoastMobileApp',
+            'restcoast',
+            'app_settings'
+        );
     }
 
     public function index()

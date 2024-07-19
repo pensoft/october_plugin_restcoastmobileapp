@@ -50,42 +50,42 @@ class Plugin extends PluginBase
             'restcoast' => [
                 'label' => 'Restcoast Content',
                 'url' => \Backend::url('pensoft/restcoastmobileapp'),
-                'icon' => 'icon-mountain',
+                'icon' => 'icon-picture-o',
                 'permissions' => ['pensoft.restcoast.*'],
                 'order' => 500,
 
                 'sideMenu' => [
                     'sites' => [
                         'label' => 'Sites',
-                        'icon' => 'icon-mountain',
+                        'icon' => 'icon-map-marker',
                         'url' => \Backend::url('pensoft/restcoastmobileapp/sites'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'site_threat_impact_entries' => [
                         'label' => 'Site Threat Impact Entries',
-                        'icon' => 'icon-mountain',
+                        'icon' => 'icon-crosshairs',
                         'url' => \Backend::url('pensoft/restcoastmobileapp/sitethreatimpactentries'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'threat_definitions' => [
                         'label' => 'Threats Definitions',
-                        'icon' => 'triangle-exclamation',
+                        'icon' => 'icon-crosshairs',
                         'url' => \Backend::url('pensoft/restcoastmobileapp/threatdefinitions'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'measure_definitions' => [
                         'label' => 'Measures Definitions',
-                        'icon' => 'triangle-exclamation',
+                        'icon' => 'icon-crosshairs',
                         'url' => \Backend::url('pensoft/restcoastmobileapp/measuredefinitions'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'threat_measure_impact_entries' => [
                         'label' => 'Threat Measure Impact Entries',
-                        'icon' => 'triangle-exclamation',
+                        'icon' => 'icon-crosshairs',
                         'url' => \Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
-                    'settings' => [
+                    'app_settings' => [
                         'label'       => 'App Settings',
                         'url'         => \Backend::url( 'pensoft/restcoastmobileapp/appsettings' ),
                         'icon'        => 'icon-cog',
