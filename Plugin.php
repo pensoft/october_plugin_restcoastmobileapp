@@ -10,6 +10,7 @@ use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Services\JsonGenerator;
 use Pensoft\RestcoastMobileApp\Services\JsonUploader;
+use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use Pensoft\RestcoastMobileApp\Services\TranslationService;
 use System\Classes\PluginBase;
 
@@ -30,6 +31,7 @@ class Plugin extends PluginBase
         App::bind("TranslationService", TranslationService::class);
         App::bind("JsonUploader", JsonUploader::class);
         App::bind("JsonGenerator", JsonGenerator::class);
+        App::bind("SyncDataService", SyncDataService::class);
 
         // Handle Site update
         Event::listen(
@@ -41,6 +43,35 @@ class Plugin extends PluginBase
             ThreatDefinitionUpdated::class,
             HandleThreatDefinitionUpdated::class
         );
+
+        // Handle the uploading of media files
+        Event::listen(
+            'media.file.upload',
+            function ($widget, $filePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'upload'
+                    );
+                }
+            }
+        );
+
+        // Handle the deletion of media files
+        Event::listen(
+            'media.file.delete',
+            function ($widget, $filePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'delete'
+                    );
+                }
+            }
+        );
+
     }
 
     public function registerNavigation()
@@ -86,11 +117,11 @@ class Plugin extends PluginBase
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'app_settings' => [
-                        'label'       => 'App Settings',
-                        'url'         => \Backend::url( 'pensoft/restcoastmobileapp/appsettings' ),
-                        'icon'        => 'icon-cog',
-                        'permissions' => [ 'pensoft.restcoast.access_settings' ],
-                        'order'       => 500,
+                        'label' => 'App Settings',
+                        'url' => \Backend::url('pensoft/restcoastmobileapp/appsettings'),
+                        'icon' => 'icon-cog',
+                        'permissions' => ['pensoft.restcoast.access_settings'],
+                        'order' => 500,
                     ]
 
                 ]

@@ -1,6 +1,14 @@
 <?php namespace Pensoft\RestcoastMobileApp\Services;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
+use October\Rain\Support\Facades\Config;
+use Pensoft\RestcoastMobileApp\Controllers\AppSettings;
+use Pensoft\RestcoastMobileApp\Controllers\MeasureDefinitions;
+use Pensoft\RestcoastMobileApp\Controllers\Sites;
+use Pensoft\RestcoastMobileApp\Controllers\SiteThreatImpactEntries;
+use Pensoft\RestcoastMobileApp\Controllers\ThreatDefinitions;
+use Pensoft\RestcoastMobileApp\Controllers\ThreatMeasureImpactEntries;
 use Pensoft\RestcoastMobileApp\Models\Site;
 use Pensoft\RestcoastMobileApp\Models\ThreatDefinition;
 use RainLab\Translate\Models\Locale;
@@ -9,9 +17,12 @@ class SyncDataService
 {
     protected $disk;
 
+    private $assetsPathPrefix;
+
     public function __construct()
     {
         $this->disk = Storage::disk('gcs');
+        $this->assetsPathPrefix = '/u/assets';
     }
 
     public function checkIfConfigured(): bool
@@ -106,43 +117,51 @@ class SyncDataService
                 'type' => $block['_group']
             ];
             switch ($block['_group']) {
-                case 'heading': {
+                case 'heading':
+                {
                     $newBlock['text'] = $block['heading'];
                     break;
                 }
 
-                case 'youtube': {
+                case 'youtube':
+                {
                     $newBlock['videoId'] = $block['videoId'];
                     break;
                 }
 
-                case 'richText': {
+                case 'richText':
+                {
                     $newBlock['content'] = $block['text'];
                     break;
                 }
 
-                case 'image': {
+                case 'image':
+                {
                     $newBlock['path'] = $block['image'];
                     break;
                 }
 
-                case 'video': {
+                case 'video':
+                {
                     $newBlock['path'] = $block['video'];
                     break;
                 }
 
-                case 'audio': {
+                case 'audio':
+                {
                     $newBlock['path'] = $block['audio'];
                     break;
                 }
 
-                case 'map': {
+                case 'map':
+                {
                     $newBlock['path'] = $block['kml_file'];
                     $newBlock['styling'] = $block['styling'];
                     break;
                 }
 
-                case 'separator': {
+                case 'separator':
+                {
                     break;
                 }
             }
@@ -152,6 +171,61 @@ class SyncDataService
         return $blocksData;
     }
 
-    // TODO: Implements the rest of the endpoints
+    /**
+     * @param $filePath
+     * @param string $action
+     * @return void
+     * @throws FileNotFoundException
+     */
+    public function syncMediaFile($filePath, $action = 'upload')
+    {
+        $filePath = ltrim($filePath, '/');
+        // Get the relative media folder path dynamically
+        $mediaFolder = Config::get(
+            'system.storage.media.folder',
+            'media'
+        ); // Default media folder
+        $relativeFilePath = $mediaFolder . '/' . $filePath;
+        $file = null;
+        if ($action === 'upload') {
+            $file = Storage::disk('local')->readStream($relativeFilePath);
+        }
+        $storagePath = '/storage/app/' . $relativeFilePath;
+        // Construct the desired path format
+        $bucketFilePath = $this->assetsPathPrefix . $storagePath;
+
+        switch ($action) {
+            case 'upload':
+            {
+                $this->disk->put($bucketFilePath, $file);
+                break;
+            }
+            case 'delete':
+            {
+                if ($this->disk->exists($bucketFilePath)) {
+                    $this->disk->delete($bucketFilePath);
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param $widget
+     * @return bool
+     */
+    public function shouldSyncWithBucket($widget): bool
+    {
+        $controller = $widget->getController();
+        $controllersToSync = [
+            Sites::class,
+            MeasureDefinitions::class,
+            ThreatDefinitions::class,
+            SiteThreatImpactEntries::class,
+            ThreatMeasureImpactEntries::class,
+            AppSettings::class
+        ];
+        return in_array(get_class($controller), $controllersToSync);
+    }
 
 }
