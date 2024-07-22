@@ -72,6 +72,20 @@ class Plugin extends PluginBase
             }
         );
 
+        Event::listen(
+            'media.file.rename',
+            function ($widget, $filePath, $newFilePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'rename',
+                        $newFilePath
+                    );
+                }
+            }
+        );
+
     }
 
     public function registerNavigation()

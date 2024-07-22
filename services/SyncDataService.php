@@ -174,11 +174,15 @@ class SyncDataService
     /**
      * @param $filePath
      * @param string $action
+     * @param null $newFilePath
      * @return void
      * @throws FileNotFoundException
      */
-    public function syncMediaFile($filePath, $action = 'upload')
-    {
+    public function syncMediaFile(
+        $filePath,
+        string $action = 'upload',
+        $newFilePath = null
+    ) {
         $filePath = ltrim($filePath, '/');
         // Get the relative media folder path dynamically
         $mediaFolder = Config::get(
@@ -204,6 +208,21 @@ class SyncDataService
             {
                 if ($this->disk->exists($bucketFilePath)) {
                     $this->disk->delete($bucketFilePath);
+                }
+                break;
+            }
+            case 'rename':
+            {
+                if ($this->disk->exists($bucketFilePath)) {
+                    $newFilePath = ltrim($newFilePath, '/');
+                    // Find the file in the bucket, replace its name
+                    // and move the file to the new location.
+                    $newBucketFilePath = str_replace(
+                        $filePath,
+                        $newFilePath,
+                        $bucketFilePath
+                    );
+                    $this->disk->move($bucketFilePath, $newBucketFilePath);
                 }
                 break;
             }
