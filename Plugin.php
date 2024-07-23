@@ -4,10 +4,13 @@ namespace Pensoft\RestcoastMobileApp;
 
 use Event;
 use Illuminate\Support\Facades\App;
+use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\listeners\HandleSiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry;
 use Pensoft\RestcoastMobileApp\Services\JsonGenerator;
 use Pensoft\RestcoastMobileApp\Services\JsonUploader;
 use Pensoft\RestcoastMobileApp\Services\TranslationService;
@@ -40,6 +43,12 @@ class Plugin extends PluginBase
         Event::listen(
             ThreatDefinitionUpdated::class,
             HandleThreatDefinitionUpdated::class
+        );
+
+        // Handle Site Threat Impact Entry update
+        Event::listen(
+            SiteThreatImpactEntryUpdated::class,
+            HandleSiteThreatImpactEntryUpdated::class
         );
     }
 

@@ -1,7 +1,9 @@
 <?php
 namespace Pensoft\RestcoastMobileApp\Models;
 
+use Event;
 use Model;
+use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 
 class SiteThreatImpactEntry extends Model
 {
@@ -68,6 +70,16 @@ class SiteThreatImpactEntry extends Model
     public function listRelatedMeasureImpactEntries() {
         return $this->measure_impact_entries->pluck('name', 'id')
             ->toArray();
+    }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            Event::fire(new SiteThreatImpactEntryUpdated($model));
+        });
     }
 
 }

@@ -17,15 +17,22 @@ fields:
         label: Measure Impact Entries
         type: relation
         readOnly: true
+    content_blocks:
+        type: repeater
+        label: Content Blocks
+        prompt: Add Block
+        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
     outcomes:
         type: repeater
         label: Outcomes
         prompt: Add Outcome
         form:
             fields:
-                content:
-                    label: Content
-                    type: richeditor
+                content_blocks:
+                    type: repeater
+                    label: Content Blocks
+                    prompt: Add Block
+                    groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
                 measures:
                     label: Measures
                     type: checkboxlist
@@ -38,9 +45,4 @@ fields:
                     label: Environmental Score
                     type: number
                     span: right
-    content_blocks:
-        type: repeater
-        label: Content Blocks
-        prompt: Add Block
-        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
 

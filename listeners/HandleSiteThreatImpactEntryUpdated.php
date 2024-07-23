@@ -2,10 +2,10 @@
 
 namespace Pensoft\RestcoastMobileApp\listeners;
 
-use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 
-class HandleThreatDefinitionUpdated
+class HandleSiteThreatImpactEntryUpdated
 {
     protected $syncService;
 
@@ -14,9 +14,8 @@ class HandleThreatDefinitionUpdated
         $this->syncService = $syncService;
     }
 
-    public function handle(ThreatDefinitionUpdated $event)
+    public function handle(SiteThreatImpactEntryUpdated $event)
     {
         $this->syncService->syncThreatImpactEntries();
-        $this->syncService->syncThreatsDefinitions();
     }
 }
