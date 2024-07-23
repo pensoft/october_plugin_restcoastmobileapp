@@ -1,5 +1,6 @@
 <?php namespace Pensoft\RestcoastMobileApp\Models;
 
+use Illuminate\Support\Facades\App;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Extensions\JsonableModel;
@@ -88,5 +89,41 @@ class AppSettings extends Model
     {
         parent::__construct($attributes);
         $this->table = 'rcm_settings';
+    }
+
+    public function generateJson()
+    {
+        $translationService = App::make("TranslationService");
+        $sites              = $translationService->getAllWithTranslations(Site::class);
+        $threats            = $translationService->getAllWithTranslations(Threat::class);
+
+        return [
+            'data' => [
+                'countriesLayer' => $this->home_map_kml_layer,
+                'mapStyle'       => $this->home_map_style,
+                'sites'          => array_map(function ($site) {
+                    return [
+                        'id'           => $site->id,
+                        'name'         => $site->name,
+                        'coordinates'  => [
+                            'lat'  => $site->coordinates_lat,
+                            'long' => $site->coordinates_lon,
+                        ],
+                        'location'     => $site->location,
+                        'scale'        => $site->scale,
+                        'imageGallery' => array_values($site->image_gallery),
+                    ];
+                }, $sites[$this->translateContext()]),
+                'threats'        => array_map(function ($threat) {
+                    return [
+                        'code'       => $threat->code,
+                        'name'       => $threat->name,
+                        'thumbnail'  => $threat->thumbnail,
+                        'definition' => $threat->definition,
+                    ];
+                },
+                    $threats[$this->translateContext()]),
+            ]
+        ];
     }
 }

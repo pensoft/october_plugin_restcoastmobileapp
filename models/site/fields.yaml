@@ -36,6 +36,80 @@ fields:
         type: repeater
         label: Content Blocks
         prompt: Add Block
+        groups:
+            text:
+                name: Textarea
+                description: Basic text field
+                icon: icon-file-text-o
+                fields:
+                    text:
+                        label: Text Content
+                        type: textarea
+                        size: large
+            rich_text:
+                name: Rich Text
+                description: Rich text field
+                icon: icon-file-text-o
+                fields:
+                    text:
+                        label: Text Content
+                        type: richeditor
+                        size: large
+            audio:
+                name: Audio
+                description: Audio file
+                icon: icon-file-audio
+                fields:
+                    file:
+                        label: Audio File
+                        type: mediafinder
+                        mode: file
+            video:
+                name: Video
+                description: Video file
+                icon: icon-file-video
+                fields:
+                    file:
+                        label: Video File
+                        type: mediafinder
+                        mode: file
+            image:
+                name: Image
+                description: An Image
+                icon: icon-file-image
+                fields:
+                    file:
+                        label: Image File
+                        type: mediafinder
+                        mode: file
+    coordinates_lat:
+        label: Latitude
+        type: text
+    coordinates_lon:
+        label: Longidude
+        type: text
+    location:
+        label: Location
+        type: text
+    country_codes:
+        label: Country Codes
+        type: repeater
+        form:
+            fields:
+                countryCode:
+                    label: Country Code
+                    type: text
+    scale:
+        label: Scale
+        type: text
+    image_gallery:
+        label: Image Gallery
+        type: repeater
+        form:
+            fields:
+                image:
+                    name: Image
+                    type: mediafinder
         groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
     threat_impact_entries:
         label: Threat Impact Entries

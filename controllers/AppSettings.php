@@ -4,7 +4,6 @@ namespace Pensoft\RestcoastMobileApp\Controllers;
 use Backend\Behaviors\FormController;
 use Backend\Classes\Controller;
 use BackendMenu;
-
 use Illuminate\Support\Facades\App;
 use Pensoft\RestcoastMobileApp\Models\AppSettings as SettingsModel;
 

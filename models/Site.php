@@ -24,7 +24,7 @@ class Site extends Model
         'content_blocks.youtube.videoId' => 'required|size:10'
     ];
 
-    public $jsonable = ['content_blocks'];
+    public $jsonable = ['content_blocks', 'country_codes', 'image_gallery'];
 
     public $implement = [
         '@RainLab.Translate.Behaviors.TranslatableModel',
@@ -37,6 +37,7 @@ class Site extends Model
         'long',
         'lat',
         'content_blocks',
+        'content_blocks'
     ];
 
     // Add all translatable fields here

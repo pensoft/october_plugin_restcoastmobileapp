@@ -10,3 +10,7 @@
     - create_site_threat_impact_entries_table.php
     - create_measure_definitions_table.php
     - create_threat_measure_impact_entries_table.php
+1.5.3:
+    - "Adds threats and sites home data"
+    - add_sites_home_data.php
+    - add_threats_home_data.php

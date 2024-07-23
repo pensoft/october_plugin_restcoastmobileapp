@@ -1,7 +1,7 @@
 <?php namespace Pensoft\RestcoastMobileApp\Updates;
 
-use Schema;
 use October\Rain\Database\Updates\Migration;
+use Schema;
 
 class CreateSitesTable extends Migration
 {

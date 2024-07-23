@@ -22,6 +22,7 @@ class Threat extends Model
         'description',
         'short_description',
         'content_blocks',
+        'definition'
     ];
 
     public $jsonable = ['content_blocks'];

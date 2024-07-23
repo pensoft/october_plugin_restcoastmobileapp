@@ -5,25 +5,30 @@ namespace Pensoft\RestcoastMobileApp\Services;
 use Illuminate\Database\Eloquent\Model;
 use RainLab\Translate\Models\Locale;
 
-class TranslationService {
-    public function getAllWithTranslations( Model $model ): array {
-        $locales = Locale::all();
+class TranslationService
+{
+    public function getAllWithTranslations($model): array
+    {
+        $locales = Locale::listEnabled();
 
-        $returnedArray = [ $model::all() ];
-        foreach ( $locales as $locale ) {
-            $returnedArray[ $locale->code ] = $model::transWhere( 'locale', $locale->code );
+        $records = $model::all();
+        foreach ($locales as $localeCode => $locale) {
+            foreach ($records as $record) {
+                $record->translateContext($localeCode);
+                $returnedArray[$localeCode][] = $record;
+            }
         }
 
         return $returnedArray;
     }
 
-    public function getOneWithTranslations( Model $model ): array {
-        $locales = Locale::all();
+    public function getOneWithTranslations(Model $model): array
+    {
+        $locales = Locale::listEnabled();
 
-        $returnedArray = [ $model ];
-        foreach ( $locales as $locale ) {
-            $model->translateContext( $locale->code );
-            $returnedArray[ $locale->code ] = $model;
+        foreach ($locales as $localeCode => $locale) {
+            $model->translateContext($localeCode);
+            $returnedArray[$localeCode] = $model;
         }
 
         return $returnedArray;
