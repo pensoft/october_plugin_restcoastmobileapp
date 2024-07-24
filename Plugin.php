@@ -3,17 +3,15 @@
 namespace Pensoft\RestcoastMobileApp;
 
 use Event;
-use Illuminate\Support\Facades\App;
+use Pensoft\RestcoastMobileApp\Events\AppSettingsUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\listeners\HandleAppSettingsUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
-use Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry;
-use Pensoft\RestcoastMobileApp\Services\JsonGenerator;
-use Pensoft\RestcoastMobileApp\Services\JsonUploader;
-use Pensoft\RestcoastMobileApp\Services\TranslationService;
+use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use System\Classes\PluginBase;
 
 class Plugin extends PluginBase
@@ -30,9 +28,53 @@ class Plugin extends PluginBase
 
     public function boot()
     {
-        App::bind("TranslationService", TranslationService::class);
-        App::bind("JsonUploader", JsonUploader::class);
-        App::bind("JsonGenerator", JsonGenerator::class);
+        // Handle the uploading of media files
+        Event::listen(
+            'media.file.upload',
+            function ($widget, $filePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'upload'
+                    );
+                }
+            }
+        );
+
+        // Handle the deletion of media files
+        Event::listen(
+            'media.file.delete',
+            function ($widget, $filePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'delete'
+                    );
+                }
+            }
+        );
+
+        Event::listen(
+            'media.file.rename',
+            function ($widget, $filePath, $newFilePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'rename',
+                        $newFilePath
+                    );
+                }
+            }
+        );
+
+        // Handle App Settings update
+        Event::listen(
+            AppSettingsUpdated::class,
+            HandleAppSettingsUpdated::class
+        );
 
         // Handle Site update
         Event::listen(

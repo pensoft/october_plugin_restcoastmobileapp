@@ -4,7 +4,6 @@ namespace Pensoft\RestcoastMobileApp\Models;
 use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
-use Pensoft\RestcoastMobileApp\Extensions\JsonableModel;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 use ValidationException;
@@ -21,14 +20,18 @@ class Site extends Model
         'lat' => 'required',
         'long' => 'required',
         'country' => 'required',
-        'content_blocks.youtube.videoId' => 'required|size:10'
+        'content_blocks.youtube.videoId' => 'required|size:11'
     ];
 
-    public $jsonable = ['content_blocks'];
+    public $jsonable = [
+        'content_blocks',
+        'country_codes',
+        'image_gallery',
+        'stakeholders'
+    ];
 
     public $implement = [
         '@RainLab.Translate.Behaviors.TranslatableModel',
-        JsonableModel::class
     ];
 
     protected $fillable = [
@@ -37,6 +40,8 @@ class Site extends Model
         'long',
         'lat',
         'content_blocks',
+        'stakeholders',
+        'country',
     ];
 
     // Add all translatable fields here
@@ -45,6 +50,7 @@ class Site extends Model
         'country',
         'short_description',
         'content_blocks',
+        'stakeholders'
     ];
 
     public $hasMany = [
@@ -72,23 +78,23 @@ class Site extends Model
     /**
      * @throws ValidationException
      */
-    public function beforeValidate()
-    {
-        // Initialize rules for the content_blocks repeater field
-        $rules = [];
-        $contentBlocks = $this->content_blocks;
-
-        if (is_array($contentBlocks)) {
-            foreach ($contentBlocks as $index => $block) {
-                // Only validate if the block type is 'youtube'
-                if (isset($block['_group']) && $block['_group'] == 'youtube') {
-                    $rules["content_blocks.$index.videoId"] = 'required|string|size:10';
-                }
-            }
-        }
-
-        $this->rules = $rules;
-        $this->validateDataService->validateContentBlocks($this->content_blocks);
-    }
+//    public function beforeValidate()
+//    {
+//        // Initialize rules for the content_blocks repeater field
+//        $rules = [];
+//        $contentBlocks = $this->content_blocks;
+//
+//        if (is_array($contentBlocks)) {
+//            foreach ($contentBlocks as $index => $block) {
+//                // Only validate if the block type is 'youtube'
+//                if (isset($block['_group']) && $block['_group'] == 'youtube') {
+//                    $rules["content_blocks.$index.videoId"] = 'required|string|size:11';
+//                }
+//            }
+//        }
+//
+//        $this->rules = $rules;
+//        $this->validateDataService->validateContentBlocks($this->content_blocks);
+//    }
 
 }

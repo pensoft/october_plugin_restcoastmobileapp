@@ -2,45 +2,50 @@
 #  Form Field Definitions
 # ===================================
 
-fields:
-    home_map_style:
-        label: 'Home map Style (JSON File)'
-        type: mediafinder
-        mode: file
-    home_map_kml_layer:
-        label: 'Home map KML Layer (KML File)'
-        type: mediafinder
-        mode: file
-    facebook_url:
-        label: 'Facebook URL'
-        type: text
-    instagram_url:
-        label: 'Instagram URL'
-        type: text
-    twitter_url:
-        label: 'Twitter URL'
-        type: text
-    linkedin_url:
-        label: 'LinkedIn URL'
-        type: text
-    youtube_url:
-        label: 'Youtube URL'
-        type: text
-    privacy_policy:
-        label: 'Privacy Policy'
-        type: richeditor
-        size: large
-    about:
-        label: 'About'
-        type: richeditor
-        size: large
-    eu_disclaimer:
-        label: 'EU Disclaimer'
-        type: textarea
-        size: large
-buttons:
-    submit:
-        type: submit
-        label: Save
+tabs:
+
+    fields:
+        home_map_style:
+            tab: 'Home map'
+            label: 'Home map Style (JSON File)'
+            type: mediafinder
+            mode: file
+        home_map_kml_layer:
+            tab: 'Home map'
+            label: 'Home map KML Layer (KML File)'
+            type: mediafinder
+            mode: file
+        facebook_url:
+            tab: 'Social Networks'
+            label: 'Facebook URL'
+            type: text
+        instagram_url:
+            tab: 'Social Networks'
+            label: 'Instagram URL'
+            type: text
+        twitter_url:
+            tab: 'Social Networks'
+            label: 'Twitter URL'
+            type: text
+        linkedin_url:
+            tab: 'Social Networks'
+            label: 'LinkedIn URL'
+            type: text
+        youtube_url:
+            tab: 'Social Networks'
+            label: 'Youtube URL'
+            type: text
+        privacy_policy:
+            label: 'Privacy Policy'
+            type: richeditor
+            size: large
+        about:
+            label: 'About'
+            type: richeditor
+            size: large
+        eu_disclaimer:
+            label: 'EU Disclaimer'
+            type: textarea
+            size: large
 
 

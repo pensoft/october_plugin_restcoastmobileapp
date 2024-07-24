@@ -5,7 +5,6 @@ use Backend\Behaviors\FormController;
 use Backend\Classes\Controller;
 use BackendMenu;
 
-use Illuminate\Support\Facades\App;
 use Pensoft\RestcoastMobileApp\Models\AppSettings as SettingsModel;
 
 /**
@@ -43,10 +42,6 @@ class AppSettings extends Controller
 
     public function onSave()
     {
-        $uploader      = App::make("JsonUploader");
-        $jsonGenerator = App::make("JsonGenerator");
-        $translator    = App::make("TranslationService");
-
         $entries = $this->model::all();
         $entry   = $entries->first();
 
@@ -55,11 +50,5 @@ class AppSettings extends Controller
         } else {
             $this->update_onSave($entry->id, FormController::CONTEXT_UPDATE);
         }
-
-        $translations = $translator->getOneWithTranslations($entry);
-        foreach ($translations as $locale => $translation) {
-            $uploader->uploadJson($jsonGenerator->generateJson($translation), "l/".$locale."/home.json");
-        }
-
     }
 }

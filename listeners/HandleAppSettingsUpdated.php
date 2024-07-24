@@ -2,10 +2,10 @@
 
 namespace Pensoft\RestcoastMobileApp\listeners;
 
-use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
+use Pensoft\RestcoastMobileApp\Events\AppSettingsUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 
-class HandleSiteUpdated
+class HandleAppSettingsUpdated
 {
     protected $syncService;
 
@@ -14,8 +14,8 @@ class HandleSiteUpdated
         $this->syncService = $syncService;
     }
 
-    public function handle(SiteUpdated $event)
+    public function handle(AppSettingsUpdated $event)
     {
-        $this->syncService->syncSites();
+        $this->syncService->syncAppSettings($event);
     }
 }

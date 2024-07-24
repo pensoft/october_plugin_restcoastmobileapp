@@ -1,6 +1,16 @@
 <?php namespace Pensoft\RestcoastMobileApp\Services;
 
+use Config;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
+use Pensoft\RestcoastMobileApp\Controllers\AppSettings;
+use Pensoft\RestcoastMobileApp\Models\AppSettings as AppSettingsModel;
+use Pensoft\RestcoastMobileApp\Controllers\MeasureDefinitions;
+use Pensoft\RestcoastMobileApp\Controllers\Sites;
+use Pensoft\RestcoastMobileApp\Controllers\SiteThreatImpactEntries;
+use Pensoft\RestcoastMobileApp\Controllers\ThreatDefinitions;
+use Pensoft\RestcoastMobileApp\Controllers\ThreatMeasureImpactEntries;
+use Pensoft\RestcoastMobileApp\Models\Site;
 use Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry;
 use Pensoft\RestcoastMobileApp\Models\ThreatDefinition;
 use RainLab\Translate\Models\Locale;
@@ -8,6 +18,7 @@ use RainLab\Translate\Models\Locale;
 class SyncDataService
 {
     protected $disk;
+    private const ASSETS_PATH = '/u/assets';
 
     public function __construct()
     {
@@ -27,7 +38,7 @@ class SyncDataService
     /**
      * @param array $content
      * @param $fileName
-     * @return void
+     * @return void|bool
      */
     public function uploadJson(array $content, $fileName)
     {
@@ -45,6 +56,95 @@ class SyncDataService
     }
 
     /**
+     * @param $asset
+     * @return string
+     */
+    private function assetPath($asset): string
+    {
+        if (empty($asset)) {
+            return '';
+        }
+        return self::ASSETS_PATH . $asset;
+    }
+
+    /**
+     * @return void
+     */
+    public function syncAppSettings()
+    {
+        $sites = Site::query()
+            ->select(
+                'id',
+                'name',
+                'lat',
+                'long',
+                'country',
+                'scale',
+                'image_gallery'
+            )
+            ->get();
+        $threats = ThreatDefinition::query()
+            ->select('name', 'code', 'image', 'short_description')
+            ->with('translations')
+            ->get();
+
+        $languages = Locale::listAvailable();
+
+        foreach ($languages as $lang => $label) {
+            $sitesArray = [];
+            $threatsArray = [];
+            foreach ($sites as $site) {
+                $site->translateContext($lang);
+                $imageGallery = [];
+                if (!empty($site->image_gallery)) {
+                    $imageGallery = array_map(function ($item) {
+                        return $this->assetPath($item['image']);
+                    }, $site->image_gallery);
+                }
+                $sitesArray[] = [
+                    'id' => $site->id,
+                    'name' => $site->name,
+                    'coordinates' => [
+                        'lat' => $site->lat,
+                        'long' => $site->long,
+                    ],
+                    'location' => $site->country,
+                    'scale' => $site->scale,
+                    'imageGallery' => $imageGallery
+                ];
+            }
+            foreach ($threats as $threat) {
+                $threat->translateContext($lang);
+                $threatsArray[] = [
+                    'name' => $threat->name,
+                    'code' => $threat->code,
+                    'thumbnail' => $this->assetPath($threat->image),
+                    'definition' => $threat->short_description,
+                ];
+            }
+            $homeData = [
+                'data' => [
+                    'countriesLayer' => $this->assetPath(
+                        AppSettingsModel::get('home_map_kml_layer')
+                    ),
+                    'mapStyle' => $this->assetPath(
+                        AppSettingsModel::get('home_map_style')
+                    ),
+                    'sites' => $sitesArray,
+                    'threats' => $threatsArray
+                ]
+            ];
+
+            // fileName is the endpoint in the CDN
+            $fileName = "l/" . $lang . "/home.json";
+            $this->uploadJson(
+                $homeData,
+                $fileName
+            );
+        }
+    }
+
+    /**
      * Uploads .json files (for each language) containing information
      * ('id', 'image', 'name', 'short_description') about all Threat Definitions.
      *
@@ -55,20 +155,16 @@ class SyncDataService
         $allThreatDefinitions = ThreatDefinition::query()
             ->select('id', 'image', 'name', 'short_description')
             ->get();
-        // TODO: make sure Locale exists
         $languages = Locale::listAvailable();
 
         foreach ($languages as $lang => $label) {
             $threatsArray = [];
             foreach ($allThreatDefinitions as $threat) {
-
-                // TODO: How to handle untranslated (empty) values in other languages.
-                // TODO: Currently, the english values are used.
                 $threat->translateContext($lang);
                 $threatsArray[] = [
                     'id' => $threat->id,
                     'name' => $threat->name,
-                    'image' => $threat->image,
+                    'image' => $this->assetPath($threat->image),
                     'short_description' => $threat->short_description,
                 ];
             }
@@ -81,7 +177,100 @@ class SyncDataService
         }
     }
 
+    /**
+     * @return void
+     */
+    public function syncSites()
+    {
+        $sites = Site::query()
+            ->select(
+                'id',
+                'name',
+                'country',
+                'content_blocks',
+                'stakeholders',
+                'country_codes',
+                'image_gallery',
+                'scale'
+            )
+            ->with('threat_impact_entries')
+            ->get();
+        $languages = Locale::listAvailable();
+        foreach ($languages as $lang => $label) {
+            foreach ($sites as $site) {
+                $site->translateContext($lang);
+                $threats = [];
+                if (!empty($site->threat_impact_entries)) {
+                    foreach ($site->threat_impact_entries as $threatEntry) {
+                        $threat = ThreatDefinition::find(
+                            $threatEntry->threat_definition_id
+                        );
+                        $threat->translateContext($lang);
+                        if (!empty($threat)) {
+                            $threats[] = [
+                                'id' => $threatEntry->id,
+                                'code' => $threat->code,
+                                'name' => $threat->name,
+                                'thumbnail' => $this->assetPath($threat->image),
+                                'definition' => $threat->short_description,
+                            ];
+                        }
+                    }
+                }
 
+                $imageGallery = [];
+                if (!empty($site->image_gallery)) {
+                    $imageGallery = array_map(function ($item) {
+                        return $this->assetPath($item['image']);
+                    }, $site->image_gallery);
+                }
+
+                $countryCodes = [];
+                if (!empty($site->country_codes)) {
+                    $countryCodes = array_map(function ($item) {
+                        return $item['code'];
+                    }, $site->country_codes);
+                }
+
+                $stakeholders = [];
+                if (!empty($site->stakeholders)) {
+                    $stakeholders = array_map(function ($stakeholder) {
+                        $stakeholder['image'] = $this->assetPath(
+                            $stakeholder['image']
+                        );
+                        return $stakeholder;
+                    }, $site->stakeholders);
+                }
+
+                $siteData = [
+                    'id' => $site->id,
+                    'name' => $site->name,
+                    'location' => $site->country,
+                    'countryCodes' => $countryCodes,
+                    'scale' => $site->scale,
+                    'imageGallery' => $imageGallery,
+                    'stakeholders' => $stakeholders,
+                    'contentBlocks' => !empty($site->content_blocks) ?
+                        $this->convertContentBlocksData(
+                            $site->content_blocks
+                        ) : [],
+                    'threats' => $threats
+                ];
+
+                // fileName is the endpoint in the CDN
+                $fileName = "l/" . $lang . "/site/" . $site->id . ".json";
+                $this->uploadJson(
+                    $siteData,
+                    $fileName
+                );
+            }
+        }
+    }
+
+
+    /**
+     * @return void
+     */
     public function syncThreatImpactEntries()
     {
         $allThreatImpactEntries = SiteThreatImpactEntry::query()
@@ -102,6 +291,8 @@ class SyncDataService
                 $threatImpactEntry->translateContext($lang);
 
                 $threatDefinition = $threatImpactEntry->threat_definition;
+                $threatDefinition->translateContext($lang);
+
                 $measureImpactEntries = $threatImpactEntry->measure_impact_entries;
                 $measuresData = [];
                 $measureCombinationsData = [];
@@ -124,9 +315,10 @@ class SyncDataService
                             'measures' => array_values($outcome['measures']),
                             'economicScore' => $outcome['economic_score'],
                             'environmentalScore' => $outcome['environmental_score'],
-                            'contentBlocks' => $this->convertContentBlocksData(
-                                $outcome['content_blocks']
-                            )
+                            'contentBlocks' => !empty($outcome['content_blocks']) ?
+                                $this->convertContentBlocksData(
+                                    $outcome['content_blocks']
+                                ) : [],
                         ];
                     }
                 }
@@ -135,14 +327,14 @@ class SyncDataService
                     'data' => [
                         'code' => $threatDefinition->code,
                         'name' => $threatDefinition->name,
-                        'image' => $threatDefinition->image,
-                        'contentBlocks' => $this->convertContentBlocksData(
-                            $threatImpactEntry->content_blocks
-                        ),
+                        'image' => $this->assetPath($threatDefinition->image),
+                        'contentBlocks' => !empty($threatImpactEntry->content_blocks) ?
+                            $this->convertContentBlocksData(
+                                $threatImpactEntry->content_blocks
+                            ) : [],
+                        'measures' => $measuresData,
+                        'measureCombinations' => $measureCombinationsData
                     ],
-                    'measures' => $measuresData,
-                    'measureCombinations' => $measureCombinationsData
-
                 ];
 
                 // fileName is the endpoint in the CDN
@@ -188,26 +380,26 @@ class SyncDataService
 
                 case 'image':
                 {
-                    $newBlock['path'] = $block['image'];
+                    $newBlock['path'] = $this->assetPath($block['image']);
                     break;
                 }
 
                 case 'video':
                 {
-                    $newBlock['path'] = $block['video'];
+                    $newBlock['path'] = $this->assetPath($block['video']);
                     break;
                 }
 
                 case 'audio':
                 {
-                    $newBlock['path'] = $block['audio'];
+                    $newBlock['path'] = $this->assetPath($block['audio']);
                     break;
                 }
 
                 case 'map':
                 {
-                    $newBlock['path'] = $block['kml_file'];
-                    $newBlock['styling'] = $block['styling'];
+                    $newBlock['path'] = $this->assetPath($block['kml_file']);
+                    $newBlock['styling'] = $this->assetPath($block['styling']);
                     break;
                 }
 
@@ -222,6 +414,80 @@ class SyncDataService
         return $blocksData;
     }
 
-    // TODO: Implements the rest of the endpoints
+    /**
+     * @param $filePath
+     * @param string $action
+     * @param null $newFilePath
+     * @return void
+     * @throws FileNotFoundException
+     */
+    public function syncMediaFile(
+        $filePath,
+        string $action = 'upload',
+        $newFilePath = null
+    ) {
+        $filePath = ltrim($filePath, '/');
+        // Get the relative media folder path dynamically
+        $mediaFolder = Config::get(
+            'system.storage.media.folder',
+            'media'
+        ); // Default media folder
+        $relativeFilePath = $mediaFolder . '/' . $filePath;
+        $file = null;
+        if ($action === 'upload') {
+            $file = Storage::disk('local')->readStream($relativeFilePath);
+        }
+        // Construct the desired path format
+        $bucketFilePath = self::ASSETS_PATH . '/' . $filePath;
+
+        switch ($action) {
+            case 'upload':
+            {
+                $this->disk->put($bucketFilePath, $file);
+                break;
+            }
+            case 'delete':
+            {
+                if ($this->disk->exists($bucketFilePath)) {
+                    $this->disk->delete($bucketFilePath);
+                }
+                break;
+            }
+            case 'rename':
+            {
+                if ($this->disk->exists($bucketFilePath)) {
+                    $newFilePath = ltrim($newFilePath, '/');
+                    // Find the file in the bucket, replace its name
+                    // and move the file to the new location.
+                    $newBucketFilePath = str_replace(
+                        $filePath,
+                        $newFilePath,
+                        $bucketFilePath
+                    );
+                    $this->disk->move($bucketFilePath, $newBucketFilePath);
+                }
+                break;
+            }
+
+        }
+    }
+
+    /**
+     * @param $widget
+     * @return bool
+     */
+    public function shouldSyncWithBucket($widget): bool
+    {
+        $controller = $widget->getController();
+        $controllersToSync = [
+            Sites::class,
+            MeasureDefinitions::class,
+            ThreatDefinitions::class,
+            SiteThreatImpactEntries::class,
+            ThreatMeasureImpactEntries::class,
+            AppSettings::class
+        ];
+        return in_array(get_class($controller), $controllersToSync);
+    }
 
 }

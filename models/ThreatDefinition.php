@@ -2,13 +2,16 @@
 
 use Event;
 use Model;
+use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class ThreatDefinition extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use Validation;
 
     public $table = 'rcm_threat_definitions';
+    private $validateDataService;
 
     public $rules = [
         'name' => 'required',
@@ -44,6 +47,12 @@ class ThreatDefinition extends Model
         ]
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->validateDataService = new ValidateDataService();
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -51,40 +60,6 @@ class ThreatDefinition extends Model
         static::saved(function ($model) {
             Event::fire(new ThreatDefinitionUpdated($model));
         });
-
-//            $relatedThreatImpactEntriesIds = SiteThreatImpactEntry::query()
-//                ->select('id', 'site_id')
-//                ->distinct('site_id')
-//                ->where(
-//                    'threat_definition_id',
-//                    '=',
-//                    $model->id
-//                )
-//                ->get()
-//                ->map(function ($entry) {
-//                    return $entry['site_id'];
-//                })
-//                ->toArray();
-//
-//            $sites = Site::query()
-//                ->select('id', 'name', 'image')
-//                ->whereIn('id', $relatedThreatImpactEntriesIds)
-//                ->get()
-//                ->toArray();
-//
-//            $threatDefinition = [
-//                'threat_name' => $model->name,
-//                'threat_image' => $mediaFolder . '/' . $model->image,
-//                'threat_description' => $model->short_description,
-//                'sites' => $sites
-//            ];
-//
-//            $fileName = "l/en/threat-definition/{$model->id}.json";
-//            $uploader->uploadJson(
-//                $threatDefinition,
-//                $fileName
-//            );
-//        });
     }
 
 }
