@@ -57,12 +57,12 @@ class SyncDataService
 
     /**
      * @param $asset
-     * @return string
+     * @return string|null
      */
-    private function assetPath($asset): string
+    private function assetPath($asset): ?string
     {
         if (empty($asset)) {
-            return '';
+            return null;
         }
         return self::ASSETS_PATH . $asset;
     }
@@ -485,6 +485,9 @@ class SyncDataService
      */
     public function shouldSyncWithBucket($widget): bool
     {
+        if (!$this->checkIfConfigured()) {
+            return false;
+        }
         $controller = $widget->getController();
         $controllersToSync = [
             Sites::class,
