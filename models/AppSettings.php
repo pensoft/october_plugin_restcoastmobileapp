@@ -29,7 +29,10 @@ class AppSettings extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'home_map_style' => ['mimes:json'],
+        'home_map_kml_layer' => ['mimes:kml']
+    ];
 
     /**
      * @var array dates attributes that should be mutated to dates
