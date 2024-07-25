@@ -3,15 +3,22 @@ namespace Pensoft\RestcoastMobileApp\Models;
 
 use Event;
 use Model;
+use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
+use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class SiteThreatImpactEntry extends Model
 {
+
+    use Validation;
+
     // Enable timestamps if needed
     public $timestamps = true;
 
     // The database table used by the model
     public $table = 'rcm_site_threat_impact_entries';
+
+    private $validateDataService;
 
     public $rules = [
         'name' => 'required',
@@ -80,6 +87,17 @@ class SiteThreatImpactEntry extends Model
         static::saved(function ($model) {
             Event::fire(new SiteThreatImpactEntryUpdated($model));
         });
+    }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->validateDataService = new ValidateDataService();
+    }
+
+    public function beforeValidate()
+    {
+        $this->validateDataService->validateContentBlocks($this->content_blocks);
     }
 
 }

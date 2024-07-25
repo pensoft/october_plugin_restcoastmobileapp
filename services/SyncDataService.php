@@ -4,12 +4,12 @@ use Config;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Pensoft\RestcoastMobileApp\Controllers\AppSettings;
-use Pensoft\RestcoastMobileApp\Models\AppSettings as AppSettingsModel;
 use Pensoft\RestcoastMobileApp\Controllers\MeasureDefinitions;
 use Pensoft\RestcoastMobileApp\Controllers\Sites;
 use Pensoft\RestcoastMobileApp\Controllers\SiteThreatImpactEntries;
 use Pensoft\RestcoastMobileApp\Controllers\ThreatDefinitions;
 use Pensoft\RestcoastMobileApp\Controllers\ThreatMeasureImpactEntries;
+use Pensoft\RestcoastMobileApp\Models\AppSettings as AppSettingsModel;
 use Pensoft\RestcoastMobileApp\Models\Site;
 use Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry;
 use Pensoft\RestcoastMobileApp\Models\ThreatDefinition;
@@ -250,18 +250,19 @@ class SyncDataService
                 }
 
                 $siteData = [
-                    'id' => $site->id,
-                    'name' => $site->name,
-                    'location' => $site->country,
-                    'countryCodes' => $countryCodes,
-                    'scale' => $site->scale,
-                    'imageGallery' => $imageGallery,
-                    'stakeholders' => $stakeholders,
-                    'contentBlocks' => !empty($site->content_blocks) ?
-                        $this->convertContentBlocksData(
-                            $site->content_blocks
-                        ) : [],
-                    'threats' => $threats
+                    'data' => [
+                        'id' => $site->id,
+                        'name' => $site->name,
+                        'countries' => $site->country,
+                        'countryCodes' => $countryCodes,
+                        'imageGallery' => $imageGallery,
+                        'stakeholders' => $stakeholders,
+                        'contentBlocks' => !empty($site->content_blocks) ?
+                            $this->convertContentBlocksData(
+                                $site->content_blocks
+                            ) : [],
+                        'threats' => $threats
+                    ]
                 ];
 
                 // fileName is the endpoint in the CDN

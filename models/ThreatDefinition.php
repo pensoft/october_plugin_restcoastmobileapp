@@ -11,6 +11,7 @@ class ThreatDefinition extends Model
     use Validation;
 
     public $table = 'rcm_threat_definitions';
+
     private $validateDataService;
 
     public $rules = [

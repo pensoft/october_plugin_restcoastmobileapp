@@ -5,18 +5,23 @@ use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
+use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class Site extends Model
 {
     use Validation;
 
     public $table = 'rcm_sites';
+    private $validateDataService;
 
     public $rules = [
         'name' => 'required',
         'lat' => 'required',
         'long' => 'required',
         'country' => 'required',
+        'stakeholders.*.name' => 'required',
+        'stakeholders.*.image' => 'required',
+        'image_gallery.*.image' => 'required'
     ];
 
     public $jsonable = [
@@ -63,6 +68,17 @@ class Site extends Model
         static::saved(function ($model) {
             Event::fire(new SiteUpdated($model));
         });
+    }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->validateDataService = new ValidateDataService();
+    }
+
+    public function beforeValidate()
+    {
+        $this->validateDataService->validateContentBlocks($this->content_blocks);
     }
 
 }

@@ -34,7 +34,7 @@ youtube:
         videoId:
             label: Video ID
             type: text
-            comment: Enter only the id of the YouTube video. If you video URL is https://www.youtube.com/watch?v=ImR4ex2_luU, then you should enter "ImR4ex2_luU".
+            comment: Enter only the id of the YouTube video. If your video URL is https://www.youtube.com/watch?v=ImR4ex2_luU, then you should enter "ImR4ex2_luU".
 video:
     name: Video
     description: Upload a video file

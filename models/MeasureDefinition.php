@@ -3,10 +3,11 @@
 namespace Pensoft\RestcoastMobileApp\Models;
 
 use Model;
+use October\Rain\Database\Traits\Validation;
 
 class MeasureDefinition extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use Validation;
 
     public $table = 'rcm_measure_definitions';
 

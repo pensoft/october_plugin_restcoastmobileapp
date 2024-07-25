@@ -71,10 +71,12 @@ tabs:
                         label: Name
                         type: text
                         span: left
+                        required: true
                     image:
                         label: Image
                         type: mediafinder
                         span: right
+                        required: true
                     url:
                         label: URL
                         type: text

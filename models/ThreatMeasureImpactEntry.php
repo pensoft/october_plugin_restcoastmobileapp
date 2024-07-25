@@ -2,14 +2,21 @@
 namespace Pensoft\RestcoastMobileApp\Models;
 
 use Model;
+use October\Rain\Database\Traits\Validation;
+use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class ThreatMeasureImpactEntry extends Model
 {
+
+    use Validation;
+
     // Enable timestamps if needed
     public $timestamps = true;
 
     // The database table used by the model
     public $table = 'rcm_threat_measure_impact_entries';
+
+    private $validateDataService;
 
     public $rules = [
         'name' => 'required',
@@ -41,7 +48,7 @@ class ThreatMeasureImpactEntry extends Model
             'key' => 'measure_definition_id',
         ],
         'site_threat_impact' => [
-            'Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry',
+            SiteThreatImpactEntry::class,
             'key' => 'site_threat_impact_id',
         ]
     ];
@@ -56,5 +63,16 @@ class ThreatMeasureImpactEntry extends Model
             ->get()
             ->pluck('name', 'id')
             ->toArray();
+    }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->validateDataService = new ValidateDataService();
+    }
+
+    public function beforeValidate()
+    {
+        $this->validateDataService->validateContentBlocks($this->content_blocks);
     }
 }

@@ -8,6 +8,9 @@ use ValidationException;
 class ValidateDataService
 {
 
+    /**
+     * @throws ValidationException
+     */
     public function validateContentBlocks($contentBlocks)
     {
         $configPath = plugins_path(
@@ -25,6 +28,17 @@ class ValidateDataService
         // Iterate through each content block
         if (!empty($contentBlocks)) {
             foreach ($contentBlocks as $block) {
+                if ($block['_group'] === 'youtube') {
+                    if (strlen($block['videoId']) !== 11) {
+                        throw new ValidationException(
+                            [
+                                'youtube' => '"Content Blocks -> "YouTube"
+                                        - the length of the video ID should be exactly 11 symbols.'
+                            ]
+                        );
+                    }
+                }
+
                 foreach ($fieldsToValidate as $field => $group) {
                     if (isset($block[$field])) {
                         $allowedExtensions = $formConfig[$group]['fields'][$field]['allowedExtensions'] ?? [];
@@ -38,7 +52,7 @@ class ValidateDataService
                                 throw new ValidationException(
                                     [
                                         $field => '"Content Blocks -> "' . $formConfig[$group]['name'] . '"
-                                        - the uploaded file type is not allowed. Only ' . implode(', ',
+                                            - the uploaded file type is not allowed. Only ' . implode(', ',
                                                 $allowedExtensions) . ' files are allowed.'
                                     ]
                                 );
