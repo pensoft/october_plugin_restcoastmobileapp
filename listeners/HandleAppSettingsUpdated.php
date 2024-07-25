@@ -16,6 +16,6 @@ class HandleAppSettingsUpdated
 
     public function handle(AppSettingsUpdated $event)
     {
-        $this->syncService->syncAppSettings($event);
+        $this->syncService->syncAppSettings();
     }
 }

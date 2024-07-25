@@ -17,5 +17,6 @@ class HandleSiteUpdated
     public function handle(SiteUpdated $event)
     {
         $this->syncService->syncSites();
+        $this->syncService->syncAppSettings();
     }
 }

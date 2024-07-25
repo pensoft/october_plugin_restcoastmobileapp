@@ -18,5 +18,6 @@ class HandleThreatDefinitionUpdated
     {
         $this->syncService->syncThreatImpactEntries();
         $this->syncService->syncThreatsDefinitions();
+        $this->syncService->syncAppSettings();
     }
 }

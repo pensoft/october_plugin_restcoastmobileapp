@@ -10,3 +10,6 @@
     - create_site_threat_impact_entries_table.php
     - create_measure_definitions_table.php
     - create_threat_measure_impact_entries_table.php
+1.5.4:
+    - 'Updates sites table'
+    - update_sites_table.php

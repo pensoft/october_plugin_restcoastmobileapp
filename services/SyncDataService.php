@@ -79,13 +79,13 @@ class SyncDataService
                 'lat',
                 'long',
                 'country',
+                'country_codes',
                 'scale',
                 'image_gallery'
             )
             ->get();
         $threats = ThreatDefinition::query()
-            ->select('name', 'code', 'image', 'short_description')
-            ->with('translations')
+            ->select('id', 'name', 'code', 'image', 'short_description')
             ->get();
 
         $languages = Locale::listAvailable();
@@ -96,10 +96,16 @@ class SyncDataService
             foreach ($sites as $site) {
                 $site->translateContext($lang);
                 $imageGallery = [];
+                $countryCodes = [];
                 if (!empty($site->image_gallery)) {
                     $imageGallery = array_map(function ($item) {
                         return $this->assetPath($item['image']);
                     }, $site->image_gallery);
+                }
+                if (!empty($site->country_codes)) {
+                    $countryCodes = array_map(function ($item) {
+                        return $item['code'];
+                    }, $site->country_codes);
                 }
                 $sitesArray[] = [
                     'id' => $site->id,
@@ -109,6 +115,7 @@ class SyncDataService
                         'long' => $site->long,
                     ],
                     'location' => $site->country,
+                    'countryCodes' => $countryCodes,
                     'scale' => $site->scale,
                     'imageGallery' => $imageGallery
                 ];
@@ -208,7 +215,7 @@ class SyncDataService
                         $threat->translateContext($lang);
                         if (!empty($threat)) {
                             $threats[] = [
-                                'id' => $threatEntry->id,
+                                'threatImpactId' => $threatEntry->id,
                                 'code' => $threat->code,
                                 'name' => $threat->name,
                                 'thumbnail' => $this->assetPath($threat->image),

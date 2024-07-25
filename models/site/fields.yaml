@@ -1,17 +1,17 @@
 tabs:
     fields:
         name:
-            tab: 'Basic'
+            tab: 'Misc'
             label: Name
             span: auto
             type: text
         country:
-            tab: 'Basic'
+            tab: 'Misc'
             label: Location
             span: auto
             type: text
         country_codes:
-            tab: 'Basic'
+            tab: 'Misc'
             type: repeater
             label: Country Codes
             prompt: Add Code
@@ -22,7 +22,7 @@ tabs:
                         span: full
                         type: text
         short_description:
-            tab: 'Basic'
+            tab: 'Misc'
             label: Description
             span: full
             type: textarea

@@ -19,7 +19,6 @@ class HandleSiteThreatImpactEntryUpdated
         // Updates Sites data, because the Site Impact Entry's Site
         // may have been changed.
         $this->syncService->syncSites();
-
         $this->syncService->syncThreatImpactEntries();
     }
 }
