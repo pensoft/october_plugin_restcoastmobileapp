@@ -1,12 +1,12 @@
 tabs:
     fields:
         name:
-            tab: 'Basic'
+            tab: 'Misc'
             label: Name
             span: full
             type: text
         short_description:
-            tab: 'Basic'
+            tab: 'Misc'
             label: Description
             span: full
             type: richeditor
