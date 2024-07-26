@@ -1,4 +1,5 @@
 <?php
+
 namespace Pensoft\RestcoastMobileApp\Models;
 
 use Event;
@@ -74,7 +75,8 @@ class SiteThreatImpactEntry extends Model
      *
      * @return mixed
      */
-    public function listRelatedMeasureImpactEntries() {
+    public function listRelatedMeasureImpactEntries()
+    {
         return $this->measure_impact_entries->pluck('name', 'id')
             ->toArray();
     }
@@ -87,6 +89,12 @@ class SiteThreatImpactEntry extends Model
         static::saved(function ($model) {
             Event::fire(new SiteThreatImpactEntryUpdated($model));
         });
+
+        static::deleted(function ($model) {
+            Event::fire(
+                new SiteThreatImpactEntryUpdated($model, true)
+            );
+        });
     }
 
     public function __construct(array $attributes = [])
@@ -97,7 +105,9 @@ class SiteThreatImpactEntry extends Model
 
     public function beforeValidate()
     {
-        $this->validateDataService->validateContentBlocks($this->content_blocks);
+        $this->validateDataService->validateContentBlocks(
+            $this->content_blocks
+        );
     }
 
 }

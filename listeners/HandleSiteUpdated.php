@@ -16,7 +16,11 @@ class HandleSiteUpdated
 
     public function handle(SiteUpdated $event)
     {
-        $this->syncService->syncSites();
+        if ($event->deleted) {
+            $this->syncService->deleteSite($event->site->id);
+        } else {
+            $this->syncService->syncSites();
+        }
         $this->syncService->syncAppSettings();
     }
 }

@@ -1,12 +1,12 @@
 tabs:
     fields:
         name:
-            tab: 'Misc'
+            tab: 'General'
             label: Name
             span: full
             type: text
         short_description:
-            tab: 'Misc'
+            tab: 'General'
             label: Description
             span: full
             type: richeditor
@@ -25,22 +25,17 @@ tabs:
             prompt: Add Block
             groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
         measure_impact_entries:
-            tab: 'Outcomes'
+            tab: 'Outcome'
             label: Measure Impact Entries
             type: relation
             readOnly: true
         outcomes:
-            tab: 'Outcomes'
+            tab: 'Outcome'
             type: repeater
-            label: Outcomes
+            label: Outcome
             prompt: Add Outcome
             form:
                 fields:
-                    content_blocks:
-                        type: repeater
-                        label: Content Blocks
-                        prompt: Add Block
-                        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
                     measures:
                         label: Measures
                         type: checkboxlist
@@ -53,4 +48,8 @@ tabs:
                         label: Environmental Score
                         type: number
                         span: right
-
+                    content_blocks:
+                        type: repeater
+                        label: Content Blocks
+                        prompt: Add Block
+                        groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml

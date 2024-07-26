@@ -16,6 +16,11 @@ class HandleSiteThreatImpactEntryUpdated
 
     public function handle(SiteThreatImpactEntryUpdated $event)
     {
+        if ($event->deleted) {
+            $this->syncService->deleteSiteThreatImpactEntry(
+                $event->siteThreatImpactEntry
+            );
+        }
         // Updates Sites data, because the Site Impact Entry's Site
         // may have been changed.
         $this->syncService->syncSites();

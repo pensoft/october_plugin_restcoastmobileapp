@@ -49,6 +49,7 @@ class Site extends Model
     public $translatable = [
         'name',
         'country',
+        'scale',
         'short_description',
         'content_blocks',
         'stakeholders'
@@ -67,6 +68,26 @@ class Site extends Model
 
         static::saved(function ($model) {
             Event::fire(new SiteUpdated($model));
+        });
+
+        static::deleting(function ($model) {
+            if (count($model->threat_impact_entries)) {
+                $threatImpactEntriesNames = $model->threat_impact_entries
+                    ->pluck('name')->toArray();
+                $message = sprintf(
+                    "%s cannot be deleted because it has the following
+                    Site Threat Impact Entries assigned to it: %s",
+                    $model->name,
+                    implode(', ', $threatImpactEntriesNames)
+                );
+                throw new \ValidationException([
+                    'site' => $message
+                ]);
+            }
+        });
+
+        static::deleted(function($model) {
+            Event::fire(new SiteUpdated($model,true));
         });
     }
 

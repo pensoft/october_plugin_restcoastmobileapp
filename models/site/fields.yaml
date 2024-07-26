@@ -1,17 +1,17 @@
 tabs:
     fields:
         name:
-            tab: 'Misc'
+            tab: 'General'
             label: Name
             span: auto
             type: text
         country:
-            tab: 'Misc'
+            tab: 'General'
             label: Location
             span: auto
             type: text
         country_codes:
-            tab: 'Misc'
+            tab: 'General'
             type: repeater
             label: Country Codes
             prompt: Add Code
@@ -22,8 +22,8 @@ tabs:
                         span: full
                         type: text
         short_description:
-            tab: 'Misc'
-            label: Description
+            tab: 'General'
+            label: Description (to be removed)
             span: full
             type: textarea
         lat:

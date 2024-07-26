@@ -1,8 +1,10 @@
 <?php namespace Pensoft\RestcoastMobileApp\Models;
 
 use Event;
+use Exception;
 use Model;
 use October\Rain\Database\Traits\Validation;
+use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
@@ -60,6 +62,26 @@ class ThreatDefinition extends Model
 
         static::saved(function ($model) {
             Event::fire(new ThreatDefinitionUpdated($model));
+        });
+
+        static::deleted(function ($model) {
+            Event::fire(new ThreatDefinitionUpdated($model, true));
+        });
+
+        static::deleting(function ($model) {
+            if (count($model->threat_impact_entries)) {
+                $threatImpactEntriesNames = $model->threat_impact_entries
+                    ->pluck('name')->toArray();
+                $message = sprintf(
+                    "%s cannot be deleted because it has the following
+                    Site Threat Impact Entries assigned to it: %s",
+                    $model->name,
+                    implode(', ', $threatImpactEntriesNames)
+                );
+                throw new \ValidationException([
+                    'threat_definition' => $message
+                ]);
+            }
         });
     }
 

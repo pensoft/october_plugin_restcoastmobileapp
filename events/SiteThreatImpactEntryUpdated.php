@@ -10,9 +10,13 @@ class SiteThreatImpactEntryUpdated
     use SerializesModels;
 
     public $siteThreatImpactEntry;
+    public $deleted = false;
 
-    public function __construct(SiteThreatImpactEntry $siteThreatImpactEntry)
-    {
+    public function __construct(
+        SiteThreatImpactEntry $siteThreatImpactEntry,
+        bool $deleted = false
+    ) {
         $this->siteThreatImpactEntry = $siteThreatImpactEntry;
+        $this->deleted = $deleted;
     }
 }

@@ -56,6 +56,20 @@ class SyncDataService
     }
 
     /**
+     * @param $fileName
+     * @return false|void
+     */
+    public function deleteJson($fileName)
+    {
+        if (!$this->checkIfConfigured()) {
+            return false;
+        }
+        if ($this->disk->exists($fileName)) {
+            $this->disk->delete($fileName);
+        }
+    }
+
+    /**
      * @param $asset
      * @return string|null
      */
@@ -275,6 +289,32 @@ class SyncDataService
         }
     }
 
+    /**
+     * @param int $siteId
+     * @return void
+     */
+    public function deleteSite(int $siteId)
+    {
+        $languages = Locale::listAvailable();
+        foreach ($languages as $lang => $label) {
+            // fileName is the endpoint in the CDN
+            $fileName = "l/" . $lang . "/site/" . $siteId . ".json";
+            $this->deleteJson($fileName);
+        }
+    }
+
+    /**
+     * @param SiteThreatImpactEntry $entry
+     * @return void
+     */
+    public function deleteSiteThreatImpactEntry(SiteThreatImpactEntry $entry)
+    {
+        $languages = Locale::listAvailable();
+        foreach ($languages as $lang => $label) {
+            $fileName = "l/" . $lang . "/site/" . $entry->site_id . "/threat/" . $entry->id . ".json";
+            $this->deleteJson($fileName);
+        }
+    }
 
     /**
      * @return void
@@ -296,6 +336,11 @@ class SyncDataService
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
             foreach ($allThreatImpactEntries as $threatImpactEntry) {
+
+                // If there is no Site assigned to this entry, skip it
+                if (empty($threatImpactEntry->site)) {
+                    continue;
+                }
                 $threatImpactEntry->translateContext($lang);
 
                 $threatDefinition = $threatImpactEntry->threat_definition;
@@ -346,7 +391,7 @@ class SyncDataService
                 ];
 
                 // fileName is the endpoint in the CDN
-                $fileName = "l/" . $lang . "/site/" . $threatImpactEntry->site->id . "/threat/" . $threatDefinition->code . ".json";
+                $fileName = "l/" . $lang . "/site/" . $threatImpactEntry->site->id . "/threat/" . $threatImpactEntry->id . ".json";
                 $this->uploadJson(
                     $entryData,
                     $fileName

@@ -10,9 +10,11 @@ class SiteUpdated
     use SerializesModels;
 
     public $site;
+    public $deleted = false;
 
-    public function __construct(Site $site)
+    public function __construct(Site $site, bool $deleted = false)
     {
+        $this->deleted = $deleted;
         $this->site = $site;
     }
 }

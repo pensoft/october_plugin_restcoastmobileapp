@@ -28,70 +28,8 @@ class Plugin extends PluginBase
 
     public function boot()
     {
-        // Handle the uploading of media files
-        Event::listen(
-            'media.file.upload',
-            function ($widget, $filePath) {
-                $syncDataService = new SyncDataService();
-                if ($syncDataService->shouldSyncWithBucket($widget)) {
-                    $syncDataService->syncMediaFile(
-                        $filePath,
-                        'upload'
-                    );
-                }
-            }
-        );
-
-        // Handle the deletion of media files
-        Event::listen(
-            'media.file.delete',
-            function ($widget, $filePath) {
-                $syncDataService = new SyncDataService();
-                if ($syncDataService->shouldSyncWithBucket($widget)) {
-                    $syncDataService->syncMediaFile(
-                        $filePath,
-                        'delete'
-                    );
-                }
-            }
-        );
-
-        Event::listen(
-            'media.file.rename',
-            function ($widget, $filePath, $newFilePath) {
-                $syncDataService = new SyncDataService();
-                if ($syncDataService->shouldSyncWithBucket($widget)) {
-                    $syncDataService->syncMediaFile(
-                        $filePath,
-                        'rename',
-                        $newFilePath
-                    );
-                }
-            }
-        );
-
-        // Handle App Settings update
-        Event::listen(
-            AppSettingsUpdated::class,
-            HandleAppSettingsUpdated::class
-        );
-
-        // Handle Site update
-        Event::listen(
-            SiteUpdated::class,
-            HandleSiteUpdated::class
-        );
-        // Handle Threat definition update
-        Event::listen(
-            ThreatDefinitionUpdated::class,
-            HandleThreatDefinitionUpdated::class
-        );
-
-        // Handle Site Threat Impact Entry update
-        Event::listen(
-            SiteThreatImpactEntryUpdated::class,
-            HandleSiteThreatImpactEntryUpdated::class
-        );
+        $this->mediaFilesEvents();
+        $this->syncDataEvents();
     }
 
     public function registerNavigation()
@@ -178,5 +116,76 @@ class Plugin extends PluginBase
                 'tab' => 'Settings',
             ],
         ];
+    }
+
+    public function mediaFilesEvents()
+    {
+        // Handle the uploading of media files
+        Event::listen(
+            'media.file.upload',
+            function ($widget, $filePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'upload'
+                    );
+                }
+            }
+        );
+
+        // Handle the deletion of media files
+        Event::listen(
+            'media.file.delete',
+            function ($widget, $filePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'delete'
+                    );
+                }
+            }
+        );
+
+        Event::listen(
+            'media.file.rename',
+            function ($widget, $filePath, $newFilePath) {
+                $syncDataService = new SyncDataService();
+                if ($syncDataService->shouldSyncWithBucket($widget)) {
+                    $syncDataService->syncMediaFile(
+                        $filePath,
+                        'rename',
+                        $newFilePath
+                    );
+                }
+            }
+        );
+    }
+
+    public function syncDataEvents()
+    {
+        // Handle App Settings update
+        Event::listen(
+            AppSettingsUpdated::class,
+            HandleAppSettingsUpdated::class
+        );
+
+        // Handle Site update
+        Event::listen(
+            SiteUpdated::class,
+            HandleSiteUpdated::class
+        );
+        // Handle Threat definition update
+        Event::listen(
+            ThreatDefinitionUpdated::class,
+            HandleThreatDefinitionUpdated::class
+        );
+
+        // Handle Site Threat Impact Entry update
+        Event::listen(
+            SiteThreatImpactEntryUpdated::class,
+            HandleSiteThreatImpactEntryUpdated::class
+        );
     }
 }

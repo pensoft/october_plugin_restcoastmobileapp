@@ -16,7 +16,12 @@ class HandleThreatDefinitionUpdated
 
     public function handle(ThreatDefinitionUpdated $event)
     {
-        $this->syncService->syncThreatImpactEntries();
+        // If a Threat Definition is updated,
+        // we only need to update the Home screen settings nad Threat Definitions
+        if (!$event->deleted) {
+            $this->syncService->syncSites();
+            $this->syncService->syncThreatImpactEntries();
+        }
         $this->syncService->syncThreatsDefinitions();
         $this->syncService->syncAppSettings();
     }
