@@ -13,6 +13,7 @@ use Pensoft\RestcoastMobileApp\Models\AppSettings as AppSettingsModel;
 use Pensoft\RestcoastMobileApp\Models\Site;
 use Pensoft\RestcoastMobileApp\Models\SiteThreatImpactEntry;
 use Pensoft\RestcoastMobileApp\Models\ThreatDefinition;
+use Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry;
 use RainLab\Translate\Models\Locale;
 
 class SyncDataService
@@ -363,16 +364,46 @@ class SyncDataService
                 }
                 $outcomes = $threatImpactEntry->outcomes;
                 if (!empty($outcomes)) {
-                    foreach ($outcomes as $outcome) {
-                        $measureCombinationsData[] = [
-                            'measures' => array_values($outcome['measures']),
-                            'economicScore' => $outcome['economic_score'],
-                            'environmentalScore' => $outcome['environmental_score'],
-                            'contentBlocks' => !empty($outcome['content_blocks']) ?
-                                $this->convertContentBlocksData(
-                                    $outcome['content_blocks']
-                                ) : [],
+                    foreach ($outcomes as $outcomeIndex => $outcome) {
+                        $selectedMeasuresIds = array_map(function ($measure) {
+                            return $measure;
+                        }, $outcome['measures']);
+
+                        $selectedMeasuresObject = array_map(function ($measureId) {
+                            $measureObject = ThreatMeasureImpactEntry::query()
+                                ->where('id', '=', $measureId)
+                                ->select('name')
+                                ->first();
+                            return [
+                                'id' => $measureId,
+                                'name' => $measureObject->name
+                            ];
+                        }, $outcome['measures']);
+
+                        $measureCombinationsData[] = $selectedMeasuresIds;
+                        $outcomeData = [
+                            'data' => [
+                                'measures' => $selectedMeasuresObject,
+                                'name' => $outcome['name'] ?? '',
+                                'economicScore' => $outcome['economic_score'],
+                                'environmentalScore' => $outcome['environmental_score'],
+                                'contentBlocks' => !empty($outcome['content_blocks']) ?
+                                    $this->convertContentBlocksData(
+                                        $outcome['content_blocks']
+                                    ) : [],
+                            ]
                         ];
+                        $outcomeFileName = sprintf(
+                            'l/%s/site/%d/threat/%d/outcome/%d.json',
+                            $lang,
+                            $threatImpactEntry->site->id,
+                            $threatImpactEntry->id,
+                            $outcomeIndex
+                        );
+                        $this->uploadJson(
+                            $outcomeData,
+                            $outcomeFileName
+                        );
                     }
                 }
 

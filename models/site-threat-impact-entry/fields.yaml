@@ -48,6 +48,9 @@ tabs:
                         label: Environmental Score
                         type: number
                         span: right
+                    name:
+                        label: Name
+                        type: text
                     content_blocks:
                         type: repeater
                         label: Content Blocks
