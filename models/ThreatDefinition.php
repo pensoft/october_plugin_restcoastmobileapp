@@ -1,10 +1,8 @@
 <?php namespace Pensoft\RestcoastMobileApp\Models;
 
 use Event;
-use Exception;
 use Model;
 use October\Rain\Database\Traits\Validation;
-use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 

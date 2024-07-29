@@ -7,10 +7,13 @@ use Pensoft\RestcoastMobileApp\Events\AppSettingsUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleAppSettingsUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\listeners\HandleThreatMeasureImpactEntryUpdated;
+use Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use System\Classes\PluginBase;
 
@@ -186,6 +189,12 @@ class Plugin extends PluginBase
         Event::listen(
             SiteThreatImpactEntryUpdated::class,
             HandleSiteThreatImpactEntryUpdated::class
+        );
+
+        // Handle Threat Measure Impact Entry update
+        Event::listen(
+            ThreatMeasureImpactEntryUpdated::class,
+            HandleThreatMeasureImpactEntryUpdated::class
         );
     }
 }

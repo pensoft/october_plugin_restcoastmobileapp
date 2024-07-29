@@ -1,8 +1,10 @@
 <?php
 namespace Pensoft\RestcoastMobileApp\Models;
 
+use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
+use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class ThreatMeasureImpactEntry extends Model
@@ -69,6 +71,48 @@ class ThreatMeasureImpactEntry extends Model
     {
         parent::__construct($attributes);
         $this->validateDataService = new ValidateDataService();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            Event::fire(new ThreatMeasureImpactEntryUpdated($model));
+        });
+
+        // Before deleting it, check if this entry is used somewhere
+        // in the Outcomes of the assigned Site Threat Impact Entry
+        static::deleting(function ($model) {
+            $outcomes = $model->site_threat_impact->outcomes;
+            $usedInOutcomes = false;
+            if (!empty($outcomes)) {
+                foreach ($outcomes as $outcome) {
+                    if (in_array($model->id, $outcome['measures'])) {
+                        $usedInOutcomes = true;
+                        break;
+                    }
+                }
+            }
+            if ($usedInOutcomes) {
+                $message = sprintf(
+                    "%s cannot be deleted because it is being used in
+                    Outcomes field of %s",
+                    $model->name,
+                    $model->site_threat_impact->name
+                );
+                throw new \ValidationException([
+                    'used_in_outcomes' => $message
+                ]);
+            }
+        });
+
+        static::deleted(function ($model) {
+            Event::fire(new ThreatMeasureImpactEntryUpdated(
+                $model,
+                true
+            ));
+        });
     }
 
     public function beforeValidate()

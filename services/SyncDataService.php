@@ -318,6 +318,26 @@ class SyncDataService
     }
 
     /**
+     * @param ThreatMeasureImpactEntry $entry
+     * @return void
+     */
+    public function deleteThreatMeasureImpactEntry(
+        ThreatMeasureImpactEntry $entry
+    ) {
+        $languages = Locale::listAvailable();
+        foreach ($languages as $lang => $label) {
+            $fileName = sprintf(
+                'l/%s/site/%d/threat/%d/measure/%d.json',
+                $lang,
+                $entry->site_threat_impact->site->id,
+                $entry->site_threat_impact->id,
+                $entry->id
+            );
+            $this->deleteJson($fileName);
+        }
+    }
+
+    /**
      * @return void
      */
     public function syncThreatImpactEntries()
@@ -429,6 +449,50 @@ class SyncDataService
                 );
 
             }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function syncMeasureImpactEntries()
+    {
+        $measureImpactEntries = ThreatMeasureImpactEntry::query()
+            ->select(
+                'id',
+                'name',
+                'content_blocks',
+                'site_threat_impact_id',
+                'measure_definition_id'
+            )
+            ->with('site_threat_impact', 'measure_definition')
+            ->get();
+
+        $languages = Locale::listAvailable();
+        foreach ($languages as $lang => $label) {
+            foreach ($measureImpactEntries as $measureImpactEntry) {
+                $measureImpactEntry->translateContext($lang);
+                $measureData = [
+                    'id' => $measureImpactEntry->id,
+                    'name' => $measureImpactEntry->name,
+                    'contentBlocks' => !empty($measureImpactEntry->content_blocks) ?
+                        $this->convertContentBlocksData(
+                            $measureImpactEntry->content_blocks
+                        ) : [],
+                ];
+                $fileName = sprintf(
+                    'l/%s/site/%d/threat/%d/measure/%d.json',
+                    $lang,
+                    $measureImpactEntry->site_threat_impact->site->id,
+                    $measureImpactEntry->site_threat_impact->id,
+                    $measureImpactEntry->id
+                );
+                $this->uploadJson(
+                    $measureData,
+                    $fileName
+                );
+            }
+
         }
     }
 
