@@ -2,8 +2,10 @@
 
 namespace Pensoft\RestcoastMobileApp\Models;
 
+use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
+use Pensoft\RestcoastMobileApp\Events\MeasureDefinitionUpdated;
 
 class MeasureDefinition extends Model
 {
@@ -16,8 +18,6 @@ class MeasureDefinition extends Model
         'code' => 'required|unique:rcm_measure_definitions,code|max:16',
         'short_description' => 'required',
     ];
-
-    public $jsonable = ['content_blocks'];
 
     // Translate the model
     public $implement = [
@@ -38,8 +38,37 @@ class MeasureDefinition extends Model
     public $hasMany = [
         'measure_impact_entries' => [
             ThreatMeasureImpactEntry::class,
-            'key' => 'measure_definition'
+            'key' => 'measure_definition_id'
         ]
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            Event::fire(new MeasureDefinitionUpdated($model));
+        });
+
+        static::deleted(function ($model) {
+            Event::fire(new MeasureDefinitionUpdated($model, true));
+        });
+
+        static::deleting(function ($model) {
+            if (count($model->measure_impact_entries)) {
+                $measureImpactEntriesNames = $model->measure_impact_entries
+                    ->pluck('name')->toArray();
+                $message = sprintf(
+                    "%s cannot be deleted because it has the following
+                    Measure Threat Impact Entries assigned to it: %s",
+                    $model->name,
+                    implode(', ', $measureImpactEntriesNames)
+                );
+                throw new \ValidationException([
+                    'measure_definition' => $message
+                ]);
+            }
+        });
+    }
 
 }

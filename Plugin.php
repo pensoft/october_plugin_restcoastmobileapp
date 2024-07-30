@@ -5,11 +5,13 @@ namespace Pensoft\RestcoastMobileApp;
 use Config;
 use Event;
 use Pensoft\RestcoastMobileApp\Events\AppSettingsUpdated;
+use Pensoft\RestcoastMobileApp\Events\MeasureDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleAppSettingsUpdated;
+use Pensoft\RestcoastMobileApp\listeners\HandleMeasureDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
@@ -33,7 +35,8 @@ class Plugin extends PluginBase
     {
         $this->mediaFilesEvents();
         $this->syncDataEvents();
-        $this->mergeConfig();
+        $this->mergeConfig('cms');
+        $this->mergeConfig('filesystems');
     }
 
     public function registerNavigation()
@@ -180,6 +183,7 @@ class Plugin extends PluginBase
             SiteUpdated::class,
             HandleSiteUpdated::class
         );
+
         // Handle Threat definition update
         Event::listen(
             ThreatDefinitionUpdated::class,
@@ -192,6 +196,12 @@ class Plugin extends PluginBase
             HandleSiteThreatImpactEntryUpdated::class
         );
 
+        // Handle Measure definition update
+        Event::listen(
+            MeasureDefinitionUpdated::class,
+            HandleMeasureDefinitionUpdated::class
+        );
+
         // Handle Threat Measure Impact Entry update
         Event::listen(
             ThreatMeasureImpactEntryUpdated::class,
@@ -200,16 +210,24 @@ class Plugin extends PluginBase
     }
 
     /**
+     * @param $configKey
      * @return void
      */
-    public function mergeConfig()
+    private function mergeConfig($configKey)
     {
-        $pluginConfig = plugins_path('pensoft/restcoastmobileapp/config/cms.php');
+        $pluginConfigFile = 'pensoft/restcoastmobileapp/config/' . $configKey . '.php';
+        $pluginConfig = plugins_path($pluginConfigFile);
+        // Merge CMS config
         if (file_exists($pluginConfig)) {
-            $pluginUploadsConfig = require $pluginConfig;
-            $existingConfig = Config::get('cms');
-            $mergedConfig = array_merge_recursive($existingConfig, $pluginUploadsConfig);
-            Config::set('cms', $mergedConfig);
+            $extraConfig = require $pluginConfig;
+            $existingConfig = Config::get($configKey);
+            if (($configKey === 'filesystems' && !array_key_exists('gcs', $existingConfig['disks']))
+                || $configKey === 'cms') {
+                $mergedConfig = array_merge_recursive($existingConfig, $extraConfig);
+            } else {
+                $mergedConfig = $existingConfig;
+            }
+            Config::set($configKey, $mergedConfig);
         }
     }
 }

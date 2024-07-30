@@ -40,17 +40,24 @@ tabs:
                         label: Measures
                         type: checkboxlist
                         options: 'listRelatedMeasureImpactEntries'
-                    economic_score:
-                        label: Economic Score
-                        type: number
-                        span: left
-                    environmental_score:
-                        label: Environmental Score
-                        type: number
-                        span: right
-                    name:
-                        label: Name
-                        type: text
+                    scores:
+                        type: repeater
+                        label: Scores
+                        prompt: Add Score
+                        form:
+                            fields:
+                                name:
+                                    label: Name
+                                    type: text
+                                    span: left
+                                score:
+                                    label: Score
+                                    type: number
+                                    span: right
+                                hint:
+                                    label: Hint
+                                    type: text
+                                    span: full
                     content_blocks:
                         type: repeater
                         label: Content Blocks

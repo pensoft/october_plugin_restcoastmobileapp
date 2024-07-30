@@ -404,9 +404,7 @@ class SyncDataService
                         $outcomeData = [
                             'data' => [
                                 'measures' => $selectedMeasuresObject,
-                                'name' => $outcome['name'] ?? '',
-                                'economicScore' => $outcome['economic_score'],
-                                'environmentalScore' => $outcome['environmental_score'],
+                                'scores' => $outcome['scores'] ?? [],
                                 'contentBlocks' => !empty($outcome['content_blocks']) ?
                                     $this->convertContentBlocksData(
                                         $outcome['content_blocks']

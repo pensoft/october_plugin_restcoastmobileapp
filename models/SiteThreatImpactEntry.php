@@ -23,9 +23,8 @@ class SiteThreatImpactEntry extends Model
 
     public $rules = [
         'name' => 'required',
-        'outcomes.*.name' => 'required',
-        'outcomes.*.economic_score' => 'numeric|min:1|max:10',
-        'outcomes.*.environmental_score' => 'numeric|min:1|max:10'
+        'outcomes.*.scores.*.name' => 'required',
+        'outcomes.*.scores.*.score' => 'required|numeric|min:1|max:10',
     ];
 
     public $jsonable = [
@@ -83,7 +82,6 @@ class SiteThreatImpactEntry extends Model
         return $this->measure_impact_entries->pluck('name', 'id')
             ->toArray();
     }
-
 
     protected static function boot()
     {

@@ -55,18 +55,6 @@ class ThreatMeasureImpactEntry extends Model
         ]
     ];
 
-    public function listRelatedMeasureImpactEntries() {
-        return ThreatMeasureImpactEntry::query()
-            ->where(
-                'measure_definition_id',
-                '=',
-                $this->measure_definition->id
-            )
-            ->get()
-            ->pluck('name', 'id')
-            ->toArray();
-    }
-
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
