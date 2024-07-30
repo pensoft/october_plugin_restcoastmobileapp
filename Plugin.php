@@ -2,6 +2,7 @@
 
 namespace Pensoft\RestcoastMobileApp;
 
+use Config;
 use Event;
 use Pensoft\RestcoastMobileApp\Events\AppSettingsUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
@@ -13,7 +14,6 @@ use Pensoft\RestcoastMobileApp\listeners\HandleSiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatMeasureImpactEntryUpdated;
-use Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use System\Classes\PluginBase;
 
@@ -33,6 +33,7 @@ class Plugin extends PluginBase
     {
         $this->mediaFilesEvents();
         $this->syncDataEvents();
+        $this->mergeConfig();
     }
 
     public function registerNavigation()
@@ -78,11 +79,11 @@ class Plugin extends PluginBase
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'app_settings' => [
-                        'label'       => 'App Settings',
-                        'url'         => \Backend::url( 'pensoft/restcoastmobileapp/appsettings' ),
-                        'icon'        => 'icon-cog',
-                        'permissions' => [ 'pensoft.restcoast.access_settings' ],
-                        'order'       => 500,
+                        'label' => 'App Settings',
+                        'url' => \Backend::url('pensoft/restcoastmobileapp/appsettings'),
+                        'icon' => 'icon-cog',
+                        'permissions' => ['pensoft.restcoast.access_settings'],
+                        'order' => 500,
                     ]
 
                 ]
@@ -196,5 +197,19 @@ class Plugin extends PluginBase
             ThreatMeasureImpactEntryUpdated::class,
             HandleThreatMeasureImpactEntryUpdated::class
         );
+    }
+
+    /**
+     * @return void
+     */
+    public function mergeConfig()
+    {
+        $pluginConfig = plugins_path('pensoft/restcoastmobileapp/config/cms.php');
+        if (file_exists($pluginConfig)) {
+            $pluginUploadsConfig = require $pluginConfig;
+            $existingConfig = Config::get('cms');
+            $mergedConfig = array_merge_recursive($existingConfig, $pluginUploadsConfig);
+            Config::set('cms', $mergedConfig);
+        }
     }
 }
