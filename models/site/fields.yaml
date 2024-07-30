@@ -1,71 +1,99 @@
-fields:
-    name:
-        label: Name
-        span: auto
-        type: text
-    short_description:
-        label: Description
-        span: auto
-        type: textarea
-    gmap_objects_file:
-        label: Google Map Objects file
-        type: mediafinder
-        mode: file
-    gmap_style_file:
-        label: Google Map Style file
-        type: mediafinder
-        mode: file
-    threats:
-        label: Threats
-        type: partial
-        path: ~/plugins/pensoft/restcoast/controllers/sites/_field_threats.htm
-    content_blocks:
-        type: repeater
-        label: Blocks
-        prompt: Add Block
-        groups:
-            text:
-                name: Textarea
-                description: Basic text field
-                icon: icon-file-text-o
+tabs:
+    fields:
+        name:
+            tab: 'General'
+            label: Name
+            span: auto
+            type: text
+        country:
+            tab: 'General'
+            label: Location
+            span: auto
+            type: text
+        country_codes:
+            tab: 'General'
+            type: repeater
+            label: Country Codes
+            prompt: Add Code
+            form:
                 fields:
-                    text:
-                        label: Text Content
-                        type: textarea
-                        size: large
-            rich_text:
-                name: Rich Text
-                description: Rich text field
-                icon: icon-file-text-o
+                    code:
+                        label: Code
+                        span: full
+                        type: text
+        short_description:
+            tab: 'General'
+            label: Description (to be removed)
+            span: full
+            type: textarea
+        lat:
+            tab: 'Home'
+            label: Latitude
+            span: auto
+            type: number
+        long:
+            tab: 'Home'
+            label: Longitude
+            span: auto
+            type: number
+        gmap_objects_file:
+            tab: 'Home'
+            label: Google Map Objects file
+            type: mediafinder
+            mode: file
+        gmap_style_file:
+            tab: 'Home'
+            label: Google Map Style file
+            type: mediafinder
+            mode: file
+        scale:
+            tab: 'Home'
+            label: Scale
+            type: text
+        image_gallery:
+            tab: 'Gallery'
+            label: Image Gallery
+            type: repeater
+            prompt: Add Image
+            form:
                 fields:
-                    text:
-                        label: Text Content
+                    image:
+                        label: Image
+                        type: mediafinder
+        stakeholders:
+            tab: 'Stakeholders'
+            label: Stakeholders
+            type: repeater
+            prompt: Add Stakeholder
+            form:
+                fields:
+                    name:
+                        label: Name
+                        type: text
+                        span: left
+                        required: true
+                    image:
+                        label: Image
+                        type: mediafinder
+                        span: right
+                        required: true
+                    url:
+                        label: URL
+                        type: text
+                    description:
+                        label: Description
                         type: richeditor
-                        size: large
-            audio:
-                name: Audio
-                description: Audio file
-                icon: icon-file-audio
-                fields:
-                    file:
-                        label: Audio File
-                        type: mediafinder
-                        mode: file
-            video:
-                name: Video
-                description: Video file
-                icon: icon-file-video
-                fields:
-                    file:
-                        label: Video File
-                        type: mediafinder
-                        mode: file
-            image:
-                name: Image
-                description: An Image
-                icon: icon-file-image
-                fields:
-                    file:
-                        label: Image File
-                        type: mediafinder
-                        mode: file
+                        toolbarButtons: bold,italic,underline,insertLink,html
+        content_blocks:
+            tab: 'Content Blocks'
+            type: repeater
+            label: Content Blocks
+            prompt: Add Block
+            groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
+        threat_impact_entries:
+            tab: 'Threats'
+            label: Threat Impact Entries
+            type: relation
+            readOnly: true
+            comment: Every of these entries has this Site assigned to them. You can't edit them here.
+

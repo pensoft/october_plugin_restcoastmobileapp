@@ -1,0 +1,28 @@
+tabs:
+    fields:
+        name:
+            tab: 'General'
+            label: Name
+            span: auto
+            type: text
+        code:
+            tab: 'General'
+            label: Code
+            span: auto
+            type: text
+        image:
+            tab: 'General'
+            label: Image
+            type: mediafinder
+            mode: file
+        short_description:
+            tab: 'General'
+            label: Short Description
+            span: full
+            type: textarea
+        base_outcome:
+            tab: 'Outcome'
+            type: repeater
+            label: Outcome
+            prompt: Add Block
+            groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml

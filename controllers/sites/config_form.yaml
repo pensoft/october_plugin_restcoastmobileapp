@@ -1,11 +1,11 @@
-name: Sites
-modelClass: Pensoft\Restcoast\Models\Site
-form: $/pensoft/restcoast/models/site/fields.yaml
-defaultRedirect: pensoft/restcoast/sites
+name: Site
+modelClass: Pensoft\RestcoastMobileApp\Models\Site
+form: $/pensoft/restcoastmobileapp/models/site/fields.yaml
+defaultRedirect: pensoft/restcoastmobileapp/sites
 create:
-    redirect: 'pensoft/restcoast/sites/update/:id'
-    redirectClose: pensoft/restcoast/sites
+    redirect: 'pensoft/restcoastmobileapp/sites/update/:id'
+    redirectClose: pensoft/restcoastmobileapp/sites
 update:
-    redirect: pensoft/restcoast/sites
-    redirectClose: pensoft/restcoast/sites
+    redirect: pensoft/restcoastmobileapp/sites
+    redirectClose: pensoft/restcoastmobileapp/sites
 preview: {  }

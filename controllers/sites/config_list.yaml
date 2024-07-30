@@ -1,7 +1,7 @@
 title: Sites
-modelClass: Pensoft\Restcoast\Models\Site
-list: $/pensoft/restcoast/models/site/columns.yaml
-recordUrl: 'pensoft/restcoast/sites/update/:id'
+modelClass: Pensoft\RestcoastMobileApp\Models\Site
+list: $/pensoft/restcoastmobileapp/models/site/columns.yaml
+recordUrl: 'pensoft/restcoastmobileapp/sites/update/:id'
 noRecordsMessage: 'backend::lang.list.no_records'
 recordsPerPage: 20
 showSetup: true

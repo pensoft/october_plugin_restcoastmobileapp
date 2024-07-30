@@ -1,0 +1,21 @@
+columns:
+    id:
+        label: Id
+        type: number
+        searchable: false
+    name:
+        label: Name
+        type: text
+        searchable: true
+        sortable: true
+    site_name:
+        label: Site
+        relation: site
+        select: name
+        type: text
+    created_at:
+        label: Created at
+        type: datetime
+    updated_at:
+        label: Updated at
+        type: datetime

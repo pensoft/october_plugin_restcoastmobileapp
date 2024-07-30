@@ -1,0 +1,86 @@
+heading:
+    name: Heading
+    description: Basic heading field
+    icon: icon-file-text-o
+    fields:
+        heading:
+            label: Text
+            type: text
+richText:
+    name: Rich Text
+    description: Rich text field
+    icon: icon-file-text-o
+    fields:
+        text:
+            label: Text Content
+            type: richeditor
+            size: large
+            toolbarButtons: bold, italic, underline, insertLink, html
+image:
+    name: Image
+    description: Upload an image
+    icon: icon-file-image-o
+    fields:
+        image:
+            label: Image
+            type: mediafinder
+            mode: image
+            allowedExtensions: ['png', 'jpeg', 'jpg', 'gif']
+            comment: Allowed file extensions are .png, .jpeg, .jpg, .gif.
+youtube:
+    name: YouTube Video
+    description: YouTube video
+    icon: icon-youtube
+    fields:
+        videoId:
+            label: Video ID
+            type: text
+            comment: Enter only the id of the YouTube video. If your video URL is https://www.youtube.com/watch?v=ImR4ex2_luU, then you should enter "ImR4ex2_luU".
+video:
+    name: Video
+    description: Upload a video file
+    icon: icon-file-video-o
+    fields:
+        video:
+            label: Video
+            type: mediafinder
+            mode: file
+            comment: Video file format should be wav, webm, etc.
+            allowedExtensions: ['wav', 'webm']
+map:
+    name: Map
+    description: Upload Google Map files
+    icon: icon-map-o
+    fields:
+        kml_file:
+            label: KML file
+            type: mediafinder
+            mode: file
+            comment: Only .kml files are allowed.
+            allowedExtensions: ['kml']
+        styling:
+            label: Styling file
+            type: mediafinder
+            mode: file
+            comment: Only .json files are allowed
+            allowedExtensions: ['json']
+audio:
+    name: Audio
+    description: Upload an audio file
+    icon: icon-file-audio-o
+    fields:
+        audio:
+            label: 'Audio File'
+            type: mediafinder
+            mode: file
+            comment: 'Upload an audio file'
+            allowedExtensions: ['mp3', 'mpeg']
+separator:
+    name: Separator
+    description: Indicates a new content block
+    icon: icon-minus
+    fields:
+        separator:
+            label: Separator
+            type: text
+            hidden: true

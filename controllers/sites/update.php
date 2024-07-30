@@ -1,6 +1,6 @@
 <?php Block::put('breadcrumb') ?>
 <ul>
-    <li><a href="<?= Backend::url('pensoft/restcoast/sites') ?>">Sites</a></li>
+    <li><a href="<?= Backend::url('pensoft/restcoastmobileapp/sites') ?>">Sites</a></li>
     <li><?= e($this->pageTitle) ?></li>
 </ul>
 <?php Block::endPut() ?>
@@ -42,7 +42,7 @@
             </button>
 
             <span class="btn-text">
-                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('pensoft/restcoast/sites') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
+                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('pensoft/restcoastmobileapp/sites') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
         </div>
     </div>
@@ -50,5 +50,5 @@
 
 <?php else: ?>
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
-    <p><a href="<?= Backend::url('pensoft/restcoast/sites') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
+    <p><a href="<?= Backend::url('pensoft/restcoastmobileapp/sites') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
 <?php endif;

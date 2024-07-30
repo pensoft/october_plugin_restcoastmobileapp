@@ -1,10 +1,15 @@
 columns:
     id:
-        label: ID
+        label: Id
         type: number
         searchable: false
     name:
         label: Name
+        type: text
+        searchable: true
+        sortable: true
+    short_description:
+        label: Short Description
         type: text
         searchable: true
         sortable: true
@@ -14,3 +19,4 @@ columns:
     updated_at:
         label: Updated at
         type: datetime
+

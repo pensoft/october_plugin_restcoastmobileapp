@@ -1,0 +1,17 @@
+tabs:
+    fields:
+        name:
+            tab: 'General'
+            label: Name
+            span: auto
+            type: text
+        code:
+            tab: 'General'
+            label: Code
+            span: auto
+            type: text
+        short_description:
+            tab: 'General'
+            label: Short Description
+            span: full
+            type: textarea

@@ -1,0 +1,22 @@
+tabs:
+    fields:
+        name:
+            tab: 'General'
+            label: Name
+            span: full
+            type: text
+        measure_definition:
+            tab: 'General'
+            label: Measure Definition
+            type: relation
+        site_threat_impact:
+            tab: 'General'
+            label: Site Threat Impact
+            type: relation
+        content_blocks:
+            tab: 'Content Blocks'
+            type: repeater
+            label: Content Blocks
+            prompt: Add Block
+            groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
+
