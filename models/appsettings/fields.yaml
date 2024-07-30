@@ -39,10 +39,12 @@ tabs:
             label: 'Privacy Policy'
             type: richeditor
             size: large
+            toolbarButtons: bold,italic,underline,insertLink,html
         about:
             label: 'About'
             type: richeditor
             size: large
+            toolbarButtons: bold,italic,underline,insertLink,html
         eu_disclaimer:
             label: 'EU Disclaimer'
             type: textarea

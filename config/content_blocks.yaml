@@ -15,6 +15,7 @@ richText:
             label: Text Content
             type: richeditor
             size: large
+            toolbarButtons: bold, italic, underline, insertLink, html
 image:
     name: Image
     description: Upload an image

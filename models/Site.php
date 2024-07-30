@@ -20,8 +20,13 @@ class Site extends Model
         'long' => 'required',
         'country' => 'required',
         'stakeholders.*.name' => 'required',
-        'stakeholders.*.image' => 'required',
-        'image_gallery.*.image' => 'required'
+        'stakeholders.*.image' => 'required|media_image',
+        'image_gallery.*.image' => 'required|media_image'
+    ];
+
+    public $customMessages = [
+        'image_gallery.*.image.media_image' => 'The :attribute must be a valid image (jpeg, bmp, png, gif).',
+        'stakeholders.*.image.media_image' => 'The :attribute must be a valid image (jpeg, bmp, png, gif).'
     ];
 
     public $jsonable = [

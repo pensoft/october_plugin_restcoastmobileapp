@@ -17,5 +17,6 @@ class HandleMeasureDefinitionUpdated
     public function handle(MeasureDefinitionUpdated $event)
     {
         $this->syncService->syncThreatImpactEntries();
+        $this->syncService->syncMeasureImpactEntries();
     }
 }

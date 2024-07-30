@@ -10,6 +10,7 @@ tabs:
             label: Description
             span: full
             type: richeditor
+            toolbarButtons: bold,italic,underline,insertLink,html
         site:
             tab: 'Site and Threat'
             label: Site

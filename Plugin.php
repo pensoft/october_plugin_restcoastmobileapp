@@ -18,6 +18,7 @@ use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\listeners\HandleThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use System\Classes\PluginBase;
+use Validator;
 
 class Plugin extends PluginBase
 {
@@ -37,11 +38,29 @@ class Plugin extends PluginBase
         $this->syncDataEvents();
         $this->mergeConfig('cms');
         $this->mergeConfig('filesystems');
+
+        // Add a new validation rule, so we can validate `mediafinder` fields
+        Validator::extend('media_image', function ($attribute, $value, $parameters, $validator) {
+            $allowedMimeTypes = [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/bmp',
+                'image/webp'
+            ];
+            $filePath = storage_path('app/media' . $value);
+
+            if (!file_exists($filePath)) {
+                return false;
+            }
+
+            $mimeType = mime_content_type($filePath);
+            return in_array($mimeType, $allowedMimeTypes);
+        });
     }
 
     public function registerNavigation()
     {
-
         return [
             'restcoast' => [
                 'label' => 'Restcoast Content',
@@ -57,16 +76,16 @@ class Plugin extends PluginBase
                         'url' => \Backend::url('pensoft/restcoastmobileapp/sites'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
-                    'site_threat_impact_entries' => [
-                        'label' => 'Site Threat Impact Entries',
-                        'icon' => 'icon-crosshairs',
-                        'url' => \Backend::url('pensoft/restcoastmobileapp/sitethreatimpactentries'),
-                        'permissions' => ['pensoft.restcoast.*'],
-                    ],
                     'threat_definitions' => [
                         'label' => 'Threats Definitions',
                         'icon' => 'icon-crosshairs',
                         'url' => \Backend::url('pensoft/restcoastmobileapp/threatdefinitions'),
+                        'permissions' => ['pensoft.restcoast.*'],
+                    ],
+                    'site_threat_impact_entries' => [
+                        'label' => 'Site Threat Impact Entries',
+                        'icon' => 'icon-crosshairs',
+                        'url' => \Backend::url('pensoft/restcoastmobileapp/sitethreatimpactentries'),
                         'permissions' => ['pensoft.restcoast.*'],
                     ],
                     'measure_definitions' => [

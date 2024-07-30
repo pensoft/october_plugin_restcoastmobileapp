@@ -79,6 +79,7 @@ class SyncDataService
         if (empty($asset)) {
             return null;
         }
+
         return self::ASSETS_PATH . $asset;
     }
 
@@ -392,11 +393,12 @@ class SyncDataService
                         $selectedMeasuresObject = array_map(function ($measureId) {
                             $measureObject = ThreatMeasureImpactEntry::query()
                                 ->where('id', '=', $measureId)
-                                ->select('name')
+                                ->select('name', 'measure_definition_id')
+                                ->with('measure_definition')
                                 ->first();
                             return [
                                 'id' => $measureId,
-                                'name' => $measureObject->name
+                                'name' => $measureObject->measure_definition->name
                             ];
                         }, $outcome['measures']);
 
@@ -438,14 +440,16 @@ class SyncDataService
                         'measureCombinations' => $measureCombinationsData
                     ],
                 ];
-
-                // fileName is the endpoint in the CDN
-                $fileName = "l/" . $lang . "/site/" . $threatImpactEntry->site->id . "/threat/" . $threatImpactEntry->id . ".json";
+                $fileName = sprintf(
+                    'l/%s/site/%d/threat/%d.json',
+                    $lang,
+                    $threatImpactEntry->site->id,
+                    $threatImpactEntry->id
+                );
                 $this->uploadJson(
                     $entryData,
                     $fileName
                 );
-
             }
         }
     }
@@ -471,12 +475,14 @@ class SyncDataService
             foreach ($measureImpactEntries as $measureImpactEntry) {
                 $measureImpactEntry->translateContext($lang);
                 $measureData = [
-                    'id' => $measureImpactEntry->id,
-                    'name' => $measureImpactEntry->name,
-                    'contentBlocks' => !empty($measureImpactEntry->content_blocks) ?
-                        $this->convertContentBlocksData(
-                            $measureImpactEntry->content_blocks
-                        ) : [],
+                    'data' => [
+                        'id' => $measureImpactEntry->id,
+                        'name' => $measureImpactEntry->measure_definition->name,
+                        'contentBlocks' => !empty($measureImpactEntry->content_blocks) ?
+                            $this->convertContentBlocksData(
+                                $measureImpactEntry->content_blocks
+                            ) : [],
+                    ]
                 ];
                 $fileName = sprintf(
                     'l/%s/site/%d/threat/%d/measure/%d.json',
@@ -636,6 +642,7 @@ class SyncDataService
             ThreatMeasureImpactEntries::class,
             AppSettings::class
         ];
+
         return in_array(get_class($controller), $controllersToSync);
     }
 

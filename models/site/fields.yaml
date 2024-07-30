@@ -83,6 +83,7 @@ tabs:
                     description:
                         label: Description
                         type: richeditor
+                        toolbarButtons: bold,italic,underline,insertLink,html
         content_blocks:
             tab: 'Content Blocks'
             type: repeater
