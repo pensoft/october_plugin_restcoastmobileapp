@@ -1,15 +1,15 @@
-1.5.0:
+1.6.0:
     - 'Creates site tables'
     - create_sites_table.php
-1.5.1:
+1.6.1:
     - "Creates settings table."
     - create_settings_table.php
-1.5.2:
+1.6.2:
     - 'Create the rest of the tables'
     - create_threat_definitions_table.php
     - create_site_threat_impact_entries_table.php
     - create_measure_definitions_table.php
     - create_threat_measure_impact_entries_table.php
-1.5.4:
+1.6.4:
     - 'Updates sites table'
     - update_sites_table.php
