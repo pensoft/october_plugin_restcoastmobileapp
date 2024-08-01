@@ -21,6 +21,7 @@ class HandleSiteUpdated
         } else {
             $this->syncService->syncSites();
         }
+        $this->syncService->syncThreatDefinitions();
         $this->syncService->syncAppSettings();
     }
 }
