@@ -178,6 +178,22 @@ class SyncDataService
                 ],
                 'l/' . $lang . '/privacy-policy.json'
             );
+
+            $this->uploadJson(
+                [
+                    'data' => [
+                        'socials' => [
+                            'facebook'  => $appSettings->facebook_url,
+                            'youtube'   => $appSettings->youtube_url,
+                            'linkedin'  => $appSettings->linkedin_url,
+                            'instagram' => $appSettings->instagram_url,
+                            'x'         => $appSettings->x_url,
+                        ],
+                        'website' => $appSettings->website_url,
+                    ]
+                ],
+                'u/find-us.json'
+            );
         }
     }
 
