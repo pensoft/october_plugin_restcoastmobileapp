@@ -21,6 +21,11 @@ tabs:
                         label: Code
                         span: full
                         type: text
+        image:
+            tab: 'General'
+            label: Thumbnail
+            type: mediafinder
+            comment: This image will be used on the global Threat screen - in the section "Sites affected by.."
         short_description:
             tab: 'General'
             label: Description (to be removed)

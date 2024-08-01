@@ -20,9 +20,23 @@ tabs:
             label: Short Description
             span: full
             type: textarea
+        content_blocks:
+            tab: 'Content Blocks'
+            type: repeater
+            label: Content Blocks
+            prompt: Add Block
+            groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
+        outcome_name:
+            tab: 'Outcome'
+            label: Outcome Name
+            type: text
+        outcome_image:
+            tab: 'Outcome'
+            label: Outcome Image
+            type: mediafinder
         base_outcome:
             tab: 'Outcome'
             type: repeater
-            label: Outcome
+            label: Outcome Content Blocks
             prompt: Add Block
             groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
