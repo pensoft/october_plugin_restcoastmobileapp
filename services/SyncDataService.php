@@ -110,9 +110,6 @@ class SyncDataService
         $languages = Locale::listAvailable();
         $appSettings = AppSettingsModel::first();
         foreach ($languages as $lang => $label) {
-            $appSettings->translateContext($lang);
-            $privacyPolicy = $appSettings->privacy_policy;
-
             $sitesArray = [];
             $threatsArray = [];
             foreach ($sites as $site) {
@@ -153,48 +150,50 @@ class SyncDataService
             }
             $homeData = [
                 'data' => [
-                    'countriesLayer' => $this->assetPath(
-                        $appSettings->home_map_kml_layer
-                    ),
-                    'mapStyle' => $this->assetPath(
-                        $appSettings->home_map_style
-                    ),
                     'sites' => $sitesArray,
                     'threats' => $threatsArray,
+                    'countriesLayer' => !empty($appSettings) ?
+                        $this->assetPath($appSettings->home_map_kml_layer) : null,
+                    'mapStyle' => !empty($appSettings) ?
+                        $this->assetPath($appSettings->home_map_style) : null
                 ]
             ];
 
-            // fileName is the endpoint in the CDN
-            $fileName = "l/" . $lang . "/home.json";
-            $this->uploadJson(
-                $homeData,
-                $fileName
-            );
+            if (!empty($appSettings)) {
+                $appSettings->translateContext($lang);
+            }
+
             $this->uploadJson(
                 [
                     'data' => [
-                        'privacyPolicy' => $privacyPolicy
+                        'privacyPolicy' => !empty($appSettings) ? $appSettings->privacy_policy : null
                     ]
                 ],
                 'l/' . $lang . '/privacy-policy.json'
             );
-
             $this->uploadJson(
-                [
-                    'data' => [
-                        'socials' => [
-                            'facebook'  => $appSettings->facebook_url,
-                            'youtube'   => $appSettings->youtube_url,
-                            'linkedin'  => $appSettings->linkedin_url,
-                            'instagram' => $appSettings->instagram_url,
-                            'x'         => $appSettings->x_url,
-                        ],
-                        'website' => $appSettings->website_url,
-                    ]
-                ],
-                'u/find-us.json'
+                $homeData,
+                "l/" . $lang . "/home.json"
             );
         }
+
+        // The social links don't have translations,
+        // so upload them after looping the languages
+        $this->uploadJson(
+            [
+                'data' => [
+                    'socials' => [
+                        'facebook' => !empty($appSettings) ? $appSettings->facebook_url : null,
+                        'youtube' => !empty($appSettings) ? $appSettings->youtube_url : null,
+                        'linkedin' => !empty($appSettings) ? $appSettings->linkedin_url : null,
+                        'instagram' => !empty($appSettings) ? $appSettings->instagram_url : null,
+                        'x' => !empty($appSettings) ? $appSettings->x_url : null
+                    ],
+                    'website' => !empty($appSettings) ? $appSettings->website_url : null
+                ]
+            ],
+            'u/find-us.json'
+        );
     }
 
     /**
