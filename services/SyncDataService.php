@@ -185,11 +185,11 @@ class SyncDataService
                     'socials' => [
                         'facebook' => !empty($appSettings) ? $appSettings->facebook_url : null,
                         'youtube' => !empty($appSettings) ? $appSettings->youtube_url : null,
-                        'linkedin' => !empty($appSettings) ? $appSettings->linkedin_url : null,
                         'instagram' => !empty($appSettings) ? $appSettings->instagram_url : null,
-                        'x' => !empty($appSettings) ? $appSettings->x_url : null
+                        'x' => !empty($appSettings) ? $appSettings->x_url : null,
+                        'linkedin' => !empty($appSettings) ? $appSettings->linkedin_url : null,
+                        'website' => !empty($appSettings) ? $appSettings->website_url : null
                     ],
-                    'website' => !empty($appSettings) ? $appSettings->website_url : null
                 ]
             ],
             'u/find-us.json'
