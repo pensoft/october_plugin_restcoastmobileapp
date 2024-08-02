@@ -30,6 +30,7 @@ class SyncDataService
     {
         try {
             $files = $this->disk->files();
+
             return true;
         } catch (\Exception $e) {
             return false;
@@ -39,6 +40,7 @@ class SyncDataService
     /**
      * @param array $content
      * @param $fileName
+     *
      * @return void|bool
      */
     public function uploadJson(array $content, $fileName)
@@ -58,6 +60,7 @@ class SyncDataService
 
     /**
      * @param $fileName
+     *
      * @return false|void
      */
     public function deleteJson($fileName)
@@ -72,6 +75,7 @@ class SyncDataService
 
     /**
      * @param $asset
+     *
      * @return string|null
      */
     private function assetPath($asset): ?string
@@ -103,9 +107,8 @@ class SyncDataService
         $threats = ThreatDefinition::query()
             ->select('id', 'name', 'code', 'image', 'short_description')
             ->get();
-
         $languages = Locale::listAvailable();
-
+        $appSettings = AppSettingsModel::first();
         foreach ($languages as $lang => $label) {
             $sitesArray = [];
             $threatsArray = [];
@@ -147,24 +150,50 @@ class SyncDataService
             }
             $homeData = [
                 'data' => [
-                    'countriesLayer' => $this->assetPath(
-                        AppSettingsModel::get('home_map_kml_layer')
-                    ),
-                    'mapStyle' => $this->assetPath(
-                        AppSettingsModel::get('home_map_style')
-                    ),
                     'sites' => $sitesArray,
-                    'threats' => $threatsArray
+                    'threats' => $threatsArray,
+                    'countriesLayer' => !empty($appSettings) ?
+                        $this->assetPath($appSettings->home_map_kml_layer) : null,
+                    'mapStyle' => !empty($appSettings) ?
+                        $this->assetPath($appSettings->home_map_style) : null
                 ]
             ];
 
-            // fileName is the endpoint in the CDN
-            $fileName = "l/" . $lang . "/home.json";
+            if (!empty($appSettings)) {
+                $appSettings->translateContext($lang);
+            }
+
+            $this->uploadJson(
+                [
+                    'data' => [
+                        'privacyPolicy' => !empty($appSettings) ? $appSettings->privacy_policy : null
+                    ]
+                ],
+                'l/' . $lang . '/privacy-policy.json'
+            );
             $this->uploadJson(
                 $homeData,
-                $fileName
+                "l/" . $lang . "/home.json"
             );
         }
+
+        // The social links don't have translations,
+        // so upload them after looping the languages
+        $this->uploadJson(
+            [
+                'data' => [
+                    'socials' => [
+                        'facebook' => !empty($appSettings) ? $appSettings->facebook_url : null,
+                        'youtube' => !empty($appSettings) ? $appSettings->youtube_url : null,
+                        'instagram' => !empty($appSettings) ? $appSettings->instagram_url : null,
+                        'x' => !empty($appSettings) ? $appSettings->x_url : null,
+                        'linkedin' => !empty($appSettings) ? $appSettings->linkedin_url : null,
+                        'website' => !empty($appSettings) ? $appSettings->website_url : null
+                    ],
+                ]
+            ],
+            'u/find-us.json'
+        );
     }
 
     /**
@@ -332,6 +361,7 @@ class SyncDataService
                         $stakeholder['image'] = $this->assetPath(
                             $stakeholder['image']
                         );
+
                         return $stakeholder;
                     }, $site->stakeholders);
                 }
@@ -364,6 +394,7 @@ class SyncDataService
 
     /**
      * @param int $siteId
+     *
      * @return void
      */
     public function deleteSite(int $siteId)
@@ -378,6 +409,7 @@ class SyncDataService
 
     /**
      * @param SiteThreatImpactEntry $entry
+     *
      * @return void
      */
     public function deleteSiteThreatImpactEntry(SiteThreatImpactEntry $entry)
@@ -391,6 +423,7 @@ class SyncDataService
 
     /**
      * @param ThreatMeasureImpactEntry $entry
+     *
      * @return void
      */
     public function deleteThreatMeasureImpactEntry(
@@ -467,6 +500,7 @@ class SyncDataService
                                 ->select('name', 'measure_definition_id')
                                 ->with('measure_definition')
                                 ->first();
+
                             return [
                                 'id' => $measureId,
                                 'name' => $measureObject->measure_definition->name
@@ -573,6 +607,7 @@ class SyncDataService
 
     /**
      * @param $contentBlocks
+     *
      * @return array
      */
     public function convertContentBlocksData($contentBlocks): array
@@ -641,6 +676,7 @@ class SyncDataService
      * @param $filePath
      * @param string $action
      * @param null $newFilePath
+     *
      * @return void
      * @throws FileNotFoundException
      */
@@ -697,6 +733,7 @@ class SyncDataService
 
     /**
      * @param $widget
+     *
      * @return bool
      */
     public function shouldSyncWithBucket($widget): bool

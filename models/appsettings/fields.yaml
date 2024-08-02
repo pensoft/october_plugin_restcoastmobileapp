@@ -23,9 +23,9 @@ tabs:
             tab: 'Social Networks'
             label: 'Instagram URL'
             type: text
-        twitter_url:
+        x_url:
             tab: 'Social Networks'
-            label: 'Twitter URL'
+            label: 'X URL'
             type: text
         linkedin_url:
             tab: 'Social Networks'
@@ -35,16 +35,20 @@ tabs:
             tab: 'Social Networks'
             label: 'Youtube URL'
             type: text
+        website_url:
+            tab: 'Social Networks'
+            label: 'Website URL'
+            type: text
         privacy_policy:
             label: 'Privacy Policy'
             type: richeditor
             size: large
-            toolbarButtons: bold,italic,underline,insertLink,html
+            toolbarButtons: bold,italic,underline,insertLink,html,paragraphFormat
         about:
             label: 'About'
             type: richeditor
             size: large
-            toolbarButtons: bold,italic,underline,insertLink,html
+            toolbarButtons: bold,italic,underline,insertLink,html,paragraphFormat
         eu_disclaimer:
             label: 'EU Disclaimer'
             type: textarea
