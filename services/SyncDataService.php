@@ -190,27 +190,98 @@ class SyncDataService
     public function syncThreatDefinitions()
     {
         $allThreatDefinitions = ThreatDefinition::query()
-            ->select('id', 'image', 'name', 'short_description')
+            ->select(
+                'id',
+                'image',
+                'name',
+                'code',
+                'short_description',
+                'content_blocks',
+                'outcome_name',
+                'outcome_image',
+                'base_outcome'
+            )
             ->get();
         $languages = Locale::listAvailable();
 
         foreach ($languages as $lang => $label) {
-            $threatsArray = [];
-            foreach ($allThreatDefinitions as $threat) {
-                $threat->translateContext($lang);
-                $threatsArray[] = [
-                    'id' => $threat->id,
-                    'name' => $threat->name,
-                    'image' => $this->assetPath($threat->image),
-                    'short_description' => $threat->short_description,
+            foreach ($allThreatDefinitions as $threatDefinition) {
+                $sites = [];
+                $threatDefinitionSites = Site::query()
+                    ->select(
+                        'rcm_sites.id',
+                        'rcm_sites.name',
+                        'rcm_sites.image'
+                    )
+                    ->join(
+                        'rcm_site_threat_impact_entries as threat_impact_entries',
+                        'rcm_sites.id',
+                        '=',
+                        'threat_impact_entries.site_id'
+                    )
+                    ->join(
+                        'rcm_threat_definitions as threat_definitions',
+                        'threat_impact_entries.threat_definition_id',
+                        '=',
+                        'threat_definitions.id'
+                    )
+                    ->where(
+                        'threat_definitions.id',
+                        '=',
+                        $threatDefinition->id
+                    )
+                    ->groupBy('rcm_sites.id')
+                    ->get()
+                    ->map(function ($site) use ($lang, &$sites) {
+                        $site->translateContext($lang);
+                        $sites[] = [
+                            'id' => $site->id,
+                            'image' => $this->assetPath($site->image),
+                            'name' => $site->name,
+                        ];
+                        return $site;
+                    });
+
+                $threatDefinition->translateContext($lang);
+                $threatDefinitionsArray = [
+                    'data' => [
+                        'id' => $threatDefinition->id,
+                        'code' => $threatDefinition->code,
+                        'name' => $threatDefinition->name,
+                        'image' => $this->assetPath($threatDefinition->image),
+                        'contentBlocks' => !empty($threatDefinition->content_blocks) ?
+                            $this->convertContentBlocksData(
+                                $threatDefinition->content_blocks
+                            ) : [],
+                        'sites' => $sites
+                    ]
                 ];
+                $fileName = "l/" . $lang . "/threat-definition/" . $threatDefinition->id . ".json";
+                $this->uploadJson(
+                    $threatDefinitionsArray,
+                    $fileName
+                );
+
+                // Outcome file
+                $outcomeData = [
+                    'data' => [
+                        'name' => $threatDefinition->outcome_name,
+                        'image' => $this->assetPath(
+                            $threatDefinition->outcome_image
+                        ),
+                        'contentBlocks' => !empty($threatDefinition->base_outcome) ?
+                            $this->convertContentBlocksData(
+                                $threatDefinition->base_outcome
+                            ) : [],
+
+                    ]
+                ];
+                $outcomeFileName = "l/" . $lang . "/threat-definition/" . $threatDefinition->id . "/base_outcome.json";
+                $this->uploadJson(
+                    $outcomeData,
+                    $outcomeFileName
+                );
             }
-            // fileName is the endpoint in the CDN
-            $fileName = "l/" . $lang . "/threats.json";
-            $this->uploadJson(
-                $threatsArray,
-                $fileName
-            );
         }
     }
 
@@ -342,8 +413,7 @@ class SyncDataService
      */
     public function deleteThreatMeasureImpactEntry(
         ThreatMeasureImpactEntry $entry
-    )
-    {
+    ) {
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
             $fileName = sprintf(
@@ -599,8 +669,7 @@ class SyncDataService
         $filePath,
         string $action = 'upload',
         $newFilePath = null
-    )
-    {
+    ) {
         $filePath = ltrim($filePath, '/');
         // Get the relative media folder path dynamically
         $mediaFolder = Config::get(
