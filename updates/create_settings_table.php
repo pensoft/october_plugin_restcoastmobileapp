@@ -1,4 +1,4 @@
-<?php namespace Pensoft\Restcoast\Updates;
+<?php namespace Pensoft\RestcoastMobileApp\Updates;
 
 use October\Rain\Database\Schema\Blueprint;
 use October\Rain\Database\Updates\Migration;
