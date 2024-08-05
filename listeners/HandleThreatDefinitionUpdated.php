@@ -20,7 +20,9 @@ class HandleThreatDefinitionUpdated
             $this->syncService->syncSites();
             $this->syncService->syncThreatImpactEntries();
         }
-        $this->syncService->syncThreatDefinitions();
+        $this->syncService->syncThreatDefinitions(
+            $event->threatDefinition->id
+        );
         $this->syncService->syncAppSettings();
     }
 }

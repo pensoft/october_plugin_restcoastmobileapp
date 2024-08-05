@@ -16,12 +16,14 @@ class HandleThreatMeasureImpactEntryUpdated
 
     public function handle(ThreatMeasureImpactEntryUpdated $event)
     {
-        // we only need to update the Home screen settings nad Threat Definitions
         if ($event->deleted) {
             $this->syncService->deleteThreatMeasureImpactEntry(
                 $event->threatMeasureImpactEntry
             );
         }
+        $this->syncService->syncThreatImpactEntries(
+            $event->threatMeasureImpactEntry->site_threat_impact->id
+        );
         $this->syncService->syncMeasureImpactEntries();
     }
 }

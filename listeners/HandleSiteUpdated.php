@@ -19,7 +19,7 @@ class HandleSiteUpdated
         if ($event->deleted) {
             $this->syncService->deleteSite($event->site->id);
         } else {
-            $this->syncService->syncSites();
+            $this->syncService->syncSites($event->site->id);
         }
         $this->syncService->syncThreatDefinitions();
         $this->syncService->syncAppSettings();
