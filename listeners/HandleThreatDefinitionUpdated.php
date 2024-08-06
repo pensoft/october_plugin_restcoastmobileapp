@@ -1,6 +1,6 @@
 <?php
 
-namespace Pensoft\RestcoastMobileApp\listeners;
+namespace Pensoft\RestcoastMobileApp\Listeners;
 
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
@@ -21,7 +21,7 @@ class HandleThreatDefinitionUpdated
             $this->syncService->syncThreatImpactEntries();
         }
         $this->syncService->syncThreatDefinitions(
-            $event->threatDefinition->id
+            $event->threatDefinitionId
         );
         $this->syncService->syncAppSettings();
     }

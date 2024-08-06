@@ -9,14 +9,16 @@ class SiteThreatImpactEntryUpdated
 {
     use SerializesModels;
 
-    public $siteThreatImpactEntry;
+    public $siteThreatImpactEntryId;
+    public $siteId;
     public $deleted = false;
 
     public function __construct(
-        SiteThreatImpactEntry $siteThreatImpactEntry,
+        array $data,
         bool $deleted = false
     ) {
-        $this->siteThreatImpactEntry = $siteThreatImpactEntry;
+        $this->siteThreatImpactEntryId = $data['site_threat_impact_entry_id'];
+        $this->siteId = $data['site_id'];
         $this->deleted = $deleted;
     }
 }

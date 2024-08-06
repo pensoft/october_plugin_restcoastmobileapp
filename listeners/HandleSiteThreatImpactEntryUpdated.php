@@ -1,6 +1,6 @@
 <?php
 
-namespace Pensoft\RestcoastMobileApp\listeners;
+namespace Pensoft\RestcoastMobileApp\Listeners;
 
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
@@ -18,13 +18,16 @@ class HandleSiteThreatImpactEntryUpdated
     {
         if ($event->deleted) {
             $this->syncService->deleteSiteThreatImpactEntry(
-                $event->siteThreatImpactEntry
+                $event->siteThreatImpactEntryId,
+                $event->siteId
             );
         }
         // Updates Sites data, because the Site Impact Entry's Site
         // may have been changed.
         $this->syncService->syncSites();
         $this->syncService->syncThreatDefinitions();
-        $this->syncService->syncThreatImpactEntries();
+        $this->syncService->syncThreatImpactEntries(
+            $event->siteThreatImpactEntryId
+        );
     }
 }

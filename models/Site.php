@@ -1,10 +1,11 @@
 <?php
+
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
+use Pensoft\RestcoastMobileApp\Jobs\SyncWithCdnJob;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class Site extends Model
@@ -72,7 +73,11 @@ class Site extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            Event::fire(new SiteUpdated($model));
+            SyncWithCdnJob::dispatch(
+                SiteUpdated::class,
+                ['site_id' => $model->id],
+                false
+            );
         });
 
         static::deleting(function ($model) {
@@ -91,8 +96,12 @@ class Site extends Model
             }
         });
 
-        static::deleted(function($model) {
-            Event::fire(new SiteUpdated($model,true));
+        static::deleted(function (Site $model) {
+            SyncWithCdnJob::dispatch(
+                SiteUpdated::class,
+                ['site_id' => $model->id],
+                true
+            );
         });
     }
 

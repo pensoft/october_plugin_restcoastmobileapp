@@ -422,36 +422,42 @@ class SyncDataService
         }
     }
 
+
     /**
-     * @param SiteThreatImpactEntry $entry
-     *
+     * @param int $siteThreatImpactEntryId
+     * @param int $siteId
      * @return void
      */
-    public function deleteSiteThreatImpactEntry(SiteThreatImpactEntry $entry)
-    {
+    public function deleteSiteThreatImpactEntry(
+        int $siteThreatImpactEntryId,
+        int $siteId
+    ) {
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
-            $fileName = "l/" . $lang . "/site/" . $entry->site_id . "/threat/" . $entry->id . ".json";
+            $fileName = "l/" . $lang . "/site/" . $siteId . "/threat/" . $siteThreatImpactEntryId . ".json";
             $this->deleteJson($fileName);
         }
     }
 
     /**
-     * @param ThreatMeasureImpactEntry $entry
-     *
+     * @param int $threatMeasureImpactEntryId
+     * @param int $siteThreatImpactEntryId
+     * @param int $siteId
      * @return void
      */
     public function deleteThreatMeasureImpactEntry(
-        ThreatMeasureImpactEntry $entry
+        int $threatMeasureImpactEntryId,
+        int $siteThreatImpactEntryId,
+        int $siteId
     ) {
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
             $fileName = sprintf(
                 'l/%s/site/%d/threat/%d/measure/%d.json',
                 $lang,
-                $entry->site_threat_impact->site->id,
-                $entry->site_threat_impact->id,
-                $entry->id
+                $siteId,
+                $siteThreatImpactEntryId,
+                $threatMeasureImpactEntryId,
             );
             $this->deleteJson($fileName);
         }

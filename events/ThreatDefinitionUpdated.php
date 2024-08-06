@@ -9,14 +9,14 @@ class ThreatDefinitionUpdated
 {
     use SerializesModels;
 
-    public $threatDefinition;
+    public $threatDefinitionId;
     public $deleted = false;
 
     public function __construct(
-        ThreatDefinition $threatDefinition,
+        array $data,
         bool $deleted = false
     ) {
-        $this->threatDefinition = $threatDefinition;
+        $this->threatDefinitionId = $data['threat_definition_id'];
         $this->deleted = $deleted;
     }
 }

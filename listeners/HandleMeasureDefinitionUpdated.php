@@ -1,6 +1,6 @@
 <?php
 
-namespace Pensoft\RestcoastMobileApp\listeners;
+namespace Pensoft\RestcoastMobileApp\Listeners;
 
 use Pensoft\RestcoastMobileApp\Events\MeasureDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
