@@ -2,19 +2,21 @@
 
 namespace Pensoft\RestcoastMobileApp\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pensoft\RestcoastMobileApp\Models\Site;
 
 class SiteUpdated
 {
-    use SerializesModels;
+    use Dispatchable, Queueable, InteractsWithQueue, SerializesModels;
 
-    public $site;
+    public $siteId;
     public $deleted = false;
 
-    public function __construct(Site $site, bool $deleted = false)
+    public function __construct(int $siteId, bool $deleted = false)
     {
         $this->deleted = $deleted;
-        $this->site = $site;
+        $this->siteId = $siteId;
     }
 }

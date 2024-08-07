@@ -1,12 +1,17 @@
 <?php
 
-namespace Pensoft\RestcoastMobileApp\listeners;
+namespace Pensoft\RestcoastMobileApp\Listeners;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 
-class HandleThreatMeasureImpactEntryUpdated
+class HandleThreatMeasureImpactEntryUpdated implements ShouldQueue
 {
+    use InteractsWithQueue, Queueable, UseSyncQueue;
+
     protected $syncService;
 
     public function __construct(SyncDataService $syncService)
@@ -16,12 +21,16 @@ class HandleThreatMeasureImpactEntryUpdated
 
     public function handle(ThreatMeasureImpactEntryUpdated $event)
     {
-        // we only need to update the Home screen settings nad Threat Definitions
         if ($event->deleted) {
             $this->syncService->deleteThreatMeasureImpactEntry(
-                $event->threatMeasureImpactEntry
+                $event->threatMeasureImpactEntryId,
+                $event->siteThreatImpactEntryId,
+                $event->siteId
             );
         }
+        $this->syncService->syncThreatImpactEntries(
+            $event->siteThreatImpactEntryId
+        );
         $this->syncService->syncMeasureImpactEntries();
     }
 }

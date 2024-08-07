@@ -2,7 +2,6 @@
 
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\MeasureDefinitionUpdated;
@@ -47,11 +46,11 @@ class MeasureDefinition extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            Event::fire(new MeasureDefinitionUpdated($model));
+            MeasureDefinitionUpdated::dispatch();
         });
 
         static::deleted(function ($model) {
-            Event::fire(new MeasureDefinitionUpdated($model, true));
+            MeasureDefinitionUpdated::dispatch();
         });
 
         static::deleting(function ($model) {

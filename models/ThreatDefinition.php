@@ -1,6 +1,5 @@
 <?php namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
@@ -68,11 +67,11 @@ class ThreatDefinition extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            Event::fire(new ThreatDefinitionUpdated($model));
+            ThreatDefinitionUpdated::dispatch($model->id, false);
         });
 
         static::deleted(function ($model) {
-            Event::fire(new ThreatDefinitionUpdated($model, true));
+            ThreatDefinitionUpdated::dispatch($model->id, true);
         });
 
         static::deleting(function ($model) {

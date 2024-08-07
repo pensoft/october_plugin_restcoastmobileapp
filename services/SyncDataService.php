@@ -142,6 +142,7 @@ class SyncDataService
             foreach ($threats as $threat) {
                 $threat->translateContext($lang);
                 $threatsArray[] = [
+                    'id' => $threat->id,
                     'name' => $threat->name,
                     'code' => $threat->code,
                     'thumbnail' => $this->assetPath($threat->image),
@@ -172,6 +173,22 @@ class SyncDataService
                 'l/' . $lang . '/privacy-policy.json'
             );
             $this->uploadJson(
+                [
+                    'data' => [
+                        'aboutUs' => !empty($appSettings) ? $appSettings->about : null
+                    ]
+                ],
+                'l/' . $lang . '/about-us.json'
+            );
+            $this->uploadJson(
+                [
+                    'data' => [
+                        'euDisclaimer' => !empty($appSettings) ? $appSettings->eu_disclaimer : null
+                    ]
+                ],
+                'l/' . $lang . '/eu-disclaimer.json'
+            );
+            $this->uploadJson(
                 $homeData,
                 "l/" . $lang . "/home.json"
             );
@@ -197,14 +214,12 @@ class SyncDataService
     }
 
     /**
-     * Uploads .json files (for each language) containing information
-     * ('id', 'image', 'name', 'short_description') about all Threat Definitions.
-     *
+     * @param int|null $threatDefinitionId
      * @return void
      */
-    public function syncThreatDefinitions()
+    public function syncThreatDefinitions(int $threatDefinitionId = null)
     {
-        $allThreatDefinitions = ThreatDefinition::query()
+        $threatDefinitions = ThreatDefinition::query()
             ->select(
                 'id',
                 'image',
@@ -215,12 +230,19 @@ class SyncDataService
                 'outcome_name',
                 'outcome_image',
                 'base_outcome'
-            )
-            ->get();
+            );
+        if (!empty($threatDefinitionId)) {
+            $threatDefinitions->where(
+                'id',
+                '=',
+                $threatDefinitionId
+            );
+        }
+        $threatDefinitions = $threatDefinitions->get();
         $languages = Locale::listAvailable();
 
         foreach ($languages as $lang => $label) {
-            foreach ($allThreatDefinitions as $threatDefinition) {
+            foreach ($threatDefinitions as $threatDefinition) {
                 $sites = [];
                 $threatDefinitionSites = Site::query()
                     ->select(
@@ -301,9 +323,10 @@ class SyncDataService
     }
 
     /**
+     * @param int|null $siteId
      * @return void
      */
-    public function syncSites()
+    public function syncSites(int $siteId = null)
     {
         $sites = Site::query()
             ->select(
@@ -316,8 +339,16 @@ class SyncDataService
                 'image_gallery',
                 'scale'
             )
-            ->with('threat_impact_entries')
-            ->get();
+            ->with('threat_impact_entries');
+        if (!empty($siteId)) {
+            $sites->where(
+                'id',
+                '=',
+                $siteId
+            );
+        }
+        $sites = $sites->get();
+
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
             foreach ($sites as $site) {
@@ -407,36 +438,42 @@ class SyncDataService
         }
     }
 
+
     /**
-     * @param SiteThreatImpactEntry $entry
-     *
+     * @param int $siteThreatImpactEntryId
+     * @param int $siteId
      * @return void
      */
-    public function deleteSiteThreatImpactEntry(SiteThreatImpactEntry $entry)
-    {
+    public function deleteSiteThreatImpactEntry(
+        int $siteThreatImpactEntryId,
+        int $siteId
+    ) {
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
-            $fileName = "l/" . $lang . "/site/" . $entry->site_id . "/threat/" . $entry->id . ".json";
+            $fileName = "l/" . $lang . "/site/" . $siteId . "/threat/" . $siteThreatImpactEntryId . ".json";
             $this->deleteJson($fileName);
         }
     }
 
     /**
-     * @param ThreatMeasureImpactEntry $entry
-     *
+     * @param int $threatMeasureImpactEntryId
+     * @param int $siteThreatImpactEntryId
+     * @param int $siteId
      * @return void
      */
     public function deleteThreatMeasureImpactEntry(
-        ThreatMeasureImpactEntry $entry
+        int $threatMeasureImpactEntryId,
+        int $siteThreatImpactEntryId,
+        int $siteId
     ) {
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
             $fileName = sprintf(
                 'l/%s/site/%d/threat/%d/measure/%d.json',
                 $lang,
-                $entry->site_threat_impact->site->id,
-                $entry->site_threat_impact->id,
-                $entry->id
+                $siteId,
+                $siteThreatImpactEntryId,
+                $threatMeasureImpactEntryId
             );
             $this->deleteJson($fileName);
         }
@@ -445,9 +482,10 @@ class SyncDataService
     /**
      * @return void
      */
-    public function syncThreatImpactEntries()
-    {
-        $allThreatImpactEntries = SiteThreatImpactEntry::query()
+    public function syncThreatImpactEntries(
+        int $siteThreatImpactEntryId = null
+    ) {
+        $siteThreatImpactEntries = SiteThreatImpactEntry::query()
             ->select(
                 'id',
                 'name',
@@ -456,12 +494,18 @@ class SyncDataService
                 'site_id',
                 'threat_definition_id'
             )
-            ->with('threat_definition', 'site')
-            ->get();
-
+            ->with('threat_definition', 'site');
+        if (!empty($siteThreatImpactEntry)) {
+            $siteThreatImpactEntries->where(
+                'id',
+                '=',
+                $siteThreatImpactEntryId
+            );
+        }
+        $siteThreatImpactEntries = $siteThreatImpactEntries->get();
         $languages = Locale::listAvailable();
         foreach ($languages as $lang => $label) {
-            foreach ($allThreatImpactEntries as $threatImpactEntry) {
+            foreach ($siteThreatImpactEntries as $threatImpactEntry) {
 
                 // If there is no Site assigned to this entry, skip it
                 if (empty($threatImpactEntry->site)) {

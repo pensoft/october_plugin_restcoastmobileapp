@@ -10,12 +10,14 @@ use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
-use Pensoft\RestcoastMobileApp\listeners\HandleAppSettingsUpdated;
-use Pensoft\RestcoastMobileApp\listeners\HandleMeasureDefinitionUpdated;
-use Pensoft\RestcoastMobileApp\listeners\HandleSiteThreatImpactEntryUpdated;
-use Pensoft\RestcoastMobileApp\listeners\HandleSiteUpdated;
-use Pensoft\RestcoastMobileApp\listeners\HandleThreatDefinitionUpdated;
-use Pensoft\RestcoastMobileApp\listeners\HandleThreatMeasureImpactEntryUpdated;
+use Pensoft\RestcoastMobileApp\Listeners\HandleAppSettingsUpdated;
+use Pensoft\RestcoastMobileApp\Listeners\HandleMeasureDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\Listeners\HandleSiteThreatImpactEntryUpdated;
+use Pensoft\RestcoastMobileApp\Listeners\HandleSiteUpdate;
+use Pensoft\RestcoastMobileApp\Listeners\HandleThreatDefinitionUpdated;
+use Pensoft\RestcoastMobileApp\Listeners\HandleThreatMeasureImpactEntryUpdated;
+use Pensoft\RestcoastMobileApp\Models\AppSettings;
+use Pensoft\RestcoastMobileApp\Models\CustomAppSettings;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use System\Classes\PluginBase;
 use Validator;
@@ -56,6 +58,14 @@ class Plugin extends PluginBase
 
             $mimeType = mime_content_type($filePath);
             return in_array($mimeType, $allowedMimeTypes);
+        });
+
+        AppSettings::extend(function ($model) {
+            $model->implement = array_diff(
+                $model->implement,
+                ['System.Behaviors.SettingsModel']
+            );
+            $model->extendClassWith(CustomAppSettings::class);
         });
     }
 
@@ -200,7 +210,7 @@ class Plugin extends PluginBase
         // Handle Site update
         Event::listen(
             SiteUpdated::class,
-            HandleSiteUpdated::class
+            HandleSiteUpdate::class
         );
 
         // Handle Threat definition update

@@ -1,7 +1,7 @@
 <?php
+
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
@@ -72,7 +72,7 @@ class Site extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            Event::fire(new SiteUpdated($model));
+            SiteUpdated::dispatch($model->id, false);
         });
 
         static::deleting(function ($model) {
@@ -91,8 +91,8 @@ class Site extends Model
             }
         });
 
-        static::deleted(function($model) {
-            Event::fire(new SiteUpdated($model,true));
+        static::deleted(function (Site $model) {
+            SiteUpdated::dispatch($model->id, true);
         });
     }
 

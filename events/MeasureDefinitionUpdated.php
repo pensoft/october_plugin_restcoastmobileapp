@@ -2,25 +2,14 @@
 
 namespace Pensoft\RestcoastMobileApp\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pensoft\RestcoastMobileApp\Models\MeasureDefinition;
 
 class MeasureDefinitionUpdated
 {
-    use SerializesModels;
+    use Dispatchable, Queueable, InteractsWithQueue, SerializesModels;
 
-    public $threatDefinition;
-    public $deleted = false;
-
-    /**
-     * @param MeasureDefinition $measureDefinition
-     * @param bool $deleted
-     */
-    public function __construct(
-        MeasureDefinition $measureDefinition,
-        bool $deleted = false
-    ) {
-        $this->threatDefinition = $measureDefinition;
-        $this->deleted = $deleted;
-    }
+    public function __construct() {}
 }

@@ -2,7 +2,6 @@
 
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
@@ -88,12 +87,18 @@ class SiteThreatImpactEntry extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            Event::fire(new SiteThreatImpactEntryUpdated($model));
+            SiteThreatImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_id,
+                false
+            );
         });
 
         static::deleted(function ($model) {
-            Event::fire(
-                new SiteThreatImpactEntryUpdated($model, true)
+            SiteThreatImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_id,
+                true
             );
         });
     }

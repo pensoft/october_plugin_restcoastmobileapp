@@ -1,7 +1,7 @@
 <?php
+
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
@@ -66,7 +66,12 @@ class ThreatMeasureImpactEntry extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            Event::fire(new ThreatMeasureImpactEntryUpdated($model));
+            ThreatMeasureImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_threat_impact->id,
+                $model->site_threat_impact->site_id,
+                false
+            );
         });
 
         // Before deleting it, check if this entry is used somewhere
@@ -96,10 +101,12 @@ class ThreatMeasureImpactEntry extends Model
         });
 
         static::deleted(function ($model) {
-            Event::fire(new ThreatMeasureImpactEntryUpdated(
-                $model,
+            ThreatMeasureImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_threat_impact->id,
+                $model->site_threat_impact->site_id,
                 true
-            ));
+            );
         });
     }
 
