@@ -2,12 +2,9 @@
 
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
-use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
-use Pensoft\RestcoastMobileApp\Jobs\SyncWithCdnJob;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class SiteThreatImpactEntry extends Model
@@ -90,23 +87,17 @@ class SiteThreatImpactEntry extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            SyncWithCdnJob::dispatch(
-                SiteThreatImpactEntryUpdated::class,
-                [
-                    'site_id' => $model->site_id,
-                    'site_threat_impact_entry_id' => $model->id
-                ],
+            SiteThreatImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_id,
                 false
             );
         });
 
         static::deleted(function ($model) {
-            SyncWithCdnJob::dispatch(
-                SiteThreatImpactEntryUpdated::class,
-                [
-                    'site_id' => $model->site_id,
-                    'site_threat_impact_entry_id' => $model->id
-                ],
+            SiteThreatImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_id,
                 true
             );
         });

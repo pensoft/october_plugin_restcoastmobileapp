@@ -2,21 +2,23 @@
 
 namespace Pensoft\RestcoastMobileApp\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pensoft\RestcoastMobileApp\Models\ThreatDefinition;
 
 class ThreatDefinitionUpdated
 {
-    use SerializesModels;
+    use Dispatchable, Queueable, InteractsWithQueue, SerializesModels;
 
     public $threatDefinitionId;
     public $deleted = false;
 
     public function __construct(
-        array $data,
+        int $threatDefinitionId,
         bool $deleted = false
     ) {
-        $this->threatDefinitionId = $data['threat_definition_id'];
+        $this->threatDefinitionId = $threatDefinitionId;
         $this->deleted = $deleted;
     }
 }

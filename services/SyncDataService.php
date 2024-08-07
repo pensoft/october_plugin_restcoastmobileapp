@@ -173,6 +173,22 @@ class SyncDataService
                 'l/' . $lang . '/privacy-policy.json'
             );
             $this->uploadJson(
+                [
+                    'data' => [
+                        'aboutUs' => !empty($appSettings) ? $appSettings->about : null
+                    ]
+                ],
+                'l/' . $lang . '/about-us.json'
+            );
+            $this->uploadJson(
+                [
+                    'data' => [
+                        'euDisclaimer' => !empty($appSettings) ? $appSettings->eu_disclaimer : null
+                    ]
+                ],
+                'l/' . $lang . '/eu-disclaimer.json'
+            );
+            $this->uploadJson(
                 $homeData,
                 "l/" . $lang . "/home.json"
             );
@@ -457,7 +473,7 @@ class SyncDataService
                 $lang,
                 $siteId,
                 $siteThreatImpactEntryId,
-                $threatMeasureImpactEntryId,
+                $threatMeasureImpactEntryId
             );
             $this->deleteJson($fileName);
         }

@@ -2,11 +2,16 @@
 
 namespace Pensoft\RestcoastMobileApp\Listeners;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 
-class HandleSiteThreatImpactEntryUpdated
+class HandleSiteThreatImpactEntryUpdated implements ShouldQueue
 {
+    use InteractsWithQueue, Queueable, UseSyncQueue;
+
     protected $syncService;
 
     public function __construct(SyncDataService $syncService)

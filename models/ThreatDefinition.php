@@ -1,11 +1,8 @@
 <?php namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
-use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
-use Pensoft\RestcoastMobileApp\Jobs\SyncWithCdnJob;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class ThreatDefinition extends Model
@@ -70,19 +67,11 @@ class ThreatDefinition extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            SyncWithCdnJob::dispatch(
-                ThreatDefinitionUpdated::class,
-                ['threat_definition_id' => $model->id],
-                false
-            );
+            ThreatDefinitionUpdated::dispatch($model->id, false);
         });
 
         static::deleted(function ($model) {
-            SyncWithCdnJob::dispatch(
-                ThreatDefinitionUpdated::class,
-                ['threat_definition_id' => $model->id],
-                true
-            );
+            ThreatDefinitionUpdated::dispatch($model->id, true);
         });
 
         static::deleting(function ($model) {

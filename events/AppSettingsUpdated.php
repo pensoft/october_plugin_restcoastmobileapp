@@ -2,17 +2,16 @@
 
 namespace Pensoft\RestcoastMobileApp\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pensoft\RestcoastMobileApp\Models\AppSettings;
 
 class AppSettingsUpdated
 {
-    use SerializesModels;
+    use Dispatchable, Queueable, InteractsWithQueue, SerializesModels;
 
     public $settings;
 
-    public function __construct(AppSettings $settings)
-    {
-        $this->settings = $settings;
-    }
+    public function __construct() {}
 }

@@ -1,12 +1,10 @@
 <?php
+
 namespace Pensoft\RestcoastMobileApp\Models;
 
-use Event;
 use Model;
 use October\Rain\Database\Traits\Validation;
-use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
-use Pensoft\RestcoastMobileApp\Jobs\SyncWithCdnJob;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class ThreatMeasureImpactEntry extends Model
@@ -68,14 +66,11 @@ class ThreatMeasureImpactEntry extends Model
         parent::boot();
 
         static::saved(function ($model) {
-            SyncWithCdnJob::dispatch(
-                ThreatMeasureImpactEntryUpdated::class,
-                [
-                    'threat_measure_impact_entry_id' => $model->id,
-                    'site_id' => $model->site_threat_impact->site_id,
-                    'site_threat_impact_entry_id' => $model->site_threat_impact->id
-                ],
-                true
+            ThreatMeasureImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_threat_impact->id,
+                $model->site_threat_impact->site_id,
+                false
             );
         });
 
@@ -106,13 +101,10 @@ class ThreatMeasureImpactEntry extends Model
         });
 
         static::deleted(function ($model) {
-            SyncWithCdnJob::dispatch(
-                ThreatMeasureImpactEntryUpdated::class,
-                [
-                    'threat_measure_impact_entry_id' => $model->id,
-                    'site_id' => $model->site_threat_impact->site_id,
-                    'site_threat_impact_entry_id' => $model->site_threat_impact->id
-                ],
+            ThreatMeasureImpactEntryUpdated::dispatch(
+                $model->id,
+                $model->site_threat_impact->id,
+                $model->site_threat_impact->site_id,
                 true
             );
         });

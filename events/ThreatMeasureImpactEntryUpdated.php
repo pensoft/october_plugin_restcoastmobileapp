@@ -2,12 +2,14 @@
 
 namespace Pensoft\RestcoastMobileApp\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pensoft\RestcoastMobileApp\Models\ThreatMeasureImpactEntry;
 
 class ThreatMeasureImpactEntryUpdated
 {
-    use SerializesModels;
+    use Dispatchable, Queueable, InteractsWithQueue, SerializesModels;
 
     public $threatMeasureImpactEntryId;
     public $siteThreatImpactEntryId;
@@ -15,12 +17,14 @@ class ThreatMeasureImpactEntryUpdated
     public $deleted = false;
 
     public function __construct(
-        array $data,
+        $threatMeasureImpactEntryId,
+        $siteThreatImpactEntryId,
+        $siteId,
         bool $deleted = false
     ) {
-        $this->threatMeasureImpactEntryId = $data['threat_measure_impact_entry_id'];
-        $this->siteThreatImpactEntryId = $data['site_threat_impact_entry_id'];
-        $this->siteId = $data['site_id'];
+        $this->threatMeasureImpactEntryId = $threatMeasureImpactEntryId;
+        $this->siteThreatImpactEntryId = $siteThreatImpactEntryId;
+        $this->siteId = $siteId;
         $this->deleted = $deleted;
     }
 }

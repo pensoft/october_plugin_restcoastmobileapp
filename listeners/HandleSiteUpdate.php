@@ -1,19 +1,28 @@
 <?php
 
-namespace Pensoft\RestcoastMobileApp\listeners;
+namespace Pensoft\RestcoastMobileApp\Listeners;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 
-class HandleSiteUpdated
+class HandleSiteUpdate implements ShouldQueue
 {
+    use InteractsWithQueue, Queueable, UseSyncQueue;
+
     protected $syncService;
 
-    public function __construct(SyncDataService $syncService)
+    public function __construct(SyncDataService $service)
     {
-        $this->syncService = $syncService;
+        $this->syncService = $service;
     }
 
+    /**
+     * @param SiteUpdated $event
+     * @return void
+     */
     public function handle(SiteUpdated $event)
     {
         if ($event->deleted) {
