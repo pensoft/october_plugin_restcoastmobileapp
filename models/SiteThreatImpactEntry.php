@@ -10,7 +10,7 @@ use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 class SiteThreatImpactEntry extends Model
 {
 
-    use Validation;
+    use Validation, JsonableFieldsHandler;
 
     // Enable timestamps if needed
     public $timestamps = true;

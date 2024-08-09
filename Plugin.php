@@ -19,6 +19,7 @@ use Pensoft\RestcoastMobileApp\Listeners\HandleThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Models\AppSettings;
 use Pensoft\RestcoastMobileApp\Models\CustomAppSettings;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
+use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 use System\Classes\PluginBase;
 use Validator;
 
@@ -36,6 +37,15 @@ class Plugin extends PluginBase
 
     public function boot()
     {
+        // Include vendor files
+        $autoloadPath = __DIR__ . '/vendor/autoload.php';
+        if (file_exists($autoloadPath)) {
+            require $autoloadPath;
+        }
+
+        // Register 'gsc' disk
+        \App::register(GoogleCloudStorageServiceProvider::class);
+
         $this->mediaFilesEvents();
         $this->syncDataEvents();
         $this->mergeConfig('cms');

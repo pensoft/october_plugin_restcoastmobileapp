@@ -2,9 +2,21 @@
     "name": "pensoft/restcoastmobileapp-plugin",
     "type": "october-plugin",
     "description": "No description provided yet...",
+    "require": {
+        "superbalist/laravel-google-cloud-storage": "2.2.2"
+    },
+    "conflict": {
+        "illuminate/support": ">=7.0",
+        "illuminate/filesystem": ">=7.0"
+    },
     "config": {
         "allow-plugins": {
             "composer/installers": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Pensoft\\RestcoastMobileApp\\": ""
         }
     }
 }

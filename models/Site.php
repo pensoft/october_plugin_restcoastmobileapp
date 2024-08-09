@@ -9,7 +9,7 @@ use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
 
 class Site extends Model
 {
-    use Validation;
+    use Validation, JsonableFieldsHandler;
 
     public $table = 'rcm_sites';
     private $validateDataService;
