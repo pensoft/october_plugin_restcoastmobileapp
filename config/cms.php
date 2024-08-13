@@ -9,12 +9,8 @@ return [
             'png',
             'gif',
             'svg',
-            'js',
             'map',
             'ico',
-            'css',
-            'less',
-            'scss',
             'pdf',
             'swf',
             'txt',
@@ -34,9 +30,9 @@ return [
             'mp4',
             'mpeg',
             'webm',
+            'webp',
             'mkv',
-            'rar',
-            'zip'
+            'kml'
         ]
     ]
 ];

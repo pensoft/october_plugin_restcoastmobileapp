@@ -16,14 +16,9 @@ class ThreatDefinition extends Model
     public $rules = [
         'name' => 'required',
         'code' => 'required|unique:rcm_threat_definitions,code|max:16',
-        'image' => 'media_image',
-        'outcome_image' => 'media_image',
+        'image' => 'media_file_extension:image',
+        'outcome_image' => 'media_file_extension:image',
         'short_description' => 'required',
-    ];
-
-    public $customMessages = [
-        'image.media_image' => 'The :attribute must be a valid image (jpeg, bmp, png, gif).',
-        'outcome_image.media_image' => 'The :attribute must be a valid image (jpeg, bmp, png, gif).',
     ];
 
     public $jsonable = ['base_outcome', 'content_blocks'];
