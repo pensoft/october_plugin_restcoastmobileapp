@@ -52,23 +52,34 @@ class Plugin extends PluginBase
         $this->mergeConfig('filesystems');
 
         // Add a new validation rule, so we can validate `mediafinder` fields
-        Validator::extend('media_image', function ($attribute, $value, $parameters, $validator) {
-            $allowedMimeTypes = [
-                'image/jpeg',
-                'image/png',
-                'image/gif',
-                'image/bmp',
-                'image/webp'
-            ];
+        Validator::extend('media_file_extension', function ($attribute, $value, $parameters, $validator) {
+            if ($parameters[0] === 'image') {
+                $parameters = ['jpg', 'png', 'gif', 'bmp', 'webp'];
+            }
+            // Convert parameters to lowercase to handle case-insensitivity
+            $allowedExtensions = array_map('strtolower', $parameters);
             $filePath = storage_path('app/media' . $value);
-
             if (!file_exists($filePath)) {
                 return false;
             }
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+            // Check if the file's extension is in the allowed list
+            return in_array($extension, $allowedExtensions);
+        }, 'The :attribute must be one of these file types: :values.');
 
-            $mimeType = mime_content_type($filePath);
-            return in_array($mimeType, $allowedMimeTypes);
-        });
+        Validator::replacer(
+            'media_file_extension',
+            function ($message, $attribute, $rule, $parameters) {
+                if ($parameters[0] === 'image') {
+                    $parameters = ['jpg', 'png', 'gif', 'bmp', 'webp'];
+                }
+                return str_replace(
+                    ':values',
+                    implode(', ', $parameters),
+                    $message
+                );
+            }
+        );
 
         AppSettings::extend(function ($model) {
             $model->implement = array_diff(

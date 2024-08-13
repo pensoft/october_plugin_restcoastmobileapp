@@ -25,8 +25,8 @@ image:
             label: Image
             type: mediafinder
             mode: image
-            allowedExtensions: ['png', 'jpeg', 'jpg', 'gif']
-            comment: Allowed file extensions are .png, .jpeg, .jpg, .gif.
+            allowedExtensions: ['png', 'jpeg', 'jpg', 'gif', 'webp']
+            comment: Allowed file extensions are .png, .jpeg, .jpg, .gif, .webp.
 youtube:
     name: YouTube Video
     description: YouTube video
@@ -45,8 +45,8 @@ video:
             label: Video
             type: mediafinder
             mode: file
-            comment: Video file format should be wav, webm, etc.
-            allowedExtensions: ['wav', 'webm']
+            comment: Video file format should be wav, mov, webm, mp4, etc.
+            allowedExtensions: ['wav', 'webm', 'mp4', 'mov']
 map:
     name: Map
     description: Upload Google Map files

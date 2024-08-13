@@ -22,13 +22,12 @@ class AppSettings extends Model
      */
     public $table = 'rcm_settings';
 
-
     /**
      * @var array rules for validation
      */
     public $rules = [
-        'home_map_style' => ['mimes:json'],
-        'home_map_kml_layer' => ['mimes:kml']
+        'home_map_style' => 'media_file_extension:json',
+        'home_map_kml_layer' => 'media_file_extension:kml'
     ];
 
     /**
