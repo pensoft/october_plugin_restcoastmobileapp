@@ -43,13 +43,13 @@ class AppSettings extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
+
         $this->table = 'rcm_settings';
     }
 
     protected static function boot()
     {
         parent::boot();
-
         static::saved(function ($model) {
             AppSettingsUpdated::dispatch();
         });

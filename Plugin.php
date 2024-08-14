@@ -2,6 +2,7 @@
 
 namespace Pensoft\RestcoastMobileApp;
 
+use Cache;
 use Config;
 use Event;
 use Pensoft\RestcoastMobileApp\Events\AppSettingsUpdated;
@@ -20,6 +21,7 @@ use Pensoft\RestcoastMobileApp\Models\AppSettings;
 use Pensoft\RestcoastMobileApp\Models\CustomAppSettings;
 use Pensoft\RestcoastMobileApp\Services\SyncDataService;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
+use System\Behaviors\SettingsModel;
 use System\Classes\PluginBase;
 use Validator;
 
