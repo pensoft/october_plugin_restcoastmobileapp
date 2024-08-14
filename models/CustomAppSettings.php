@@ -2,6 +2,7 @@
 namespace Pensoft\RestcoastMobileApp\Models;
 
 use System\Behaviors\SettingsModel;
+use Cache;
 
 /**
  * This class is required just to overwrite "afterModelSave" function of "SettingsModel".
@@ -9,8 +10,12 @@ use System\Behaviors\SettingsModel;
  */
 class CustomAppSettings extends SettingsModel
 {
+
     public function afterModelSave()
     {
+        Cache::forget($this->getCacheKey());
+
         return;
     }
+
 }
