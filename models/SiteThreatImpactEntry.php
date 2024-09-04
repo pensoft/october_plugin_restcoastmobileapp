@@ -21,8 +21,8 @@ class SiteThreatImpactEntry extends Model
     private $validateDataService;
 
     public $rules = [
-        'name' => 'required',
-        'outcomes.*.scores.*.name' => 'required',
+        'name'                      => 'required',
+        'outcomes.*.scores.*.name'  => 'required',
         'outcomes.*.scores.*.score' => 'required|numeric|min:1|max:10',
     ];
 
@@ -53,7 +53,7 @@ class SiteThreatImpactEntry extends Model
 
     // Define the relationship
     public $belongsTo = [
-        'site' => [
+        'site'              => [
             Site::class,
             'key' => 'site_id'
         ],
@@ -67,6 +67,10 @@ class SiteThreatImpactEntry extends Model
         'measure_impact_entries' => [
             ThreatMeasureImpactEntry::class,
             'key' => 'site_threat_impact_id'
+        ],
+        'threat'                 => [
+            ThreatDefinition::class,
+            'key' => 'threat_definition_id'
         ]
     ];
 
@@ -79,7 +83,7 @@ class SiteThreatImpactEntry extends Model
     public function listRelatedMeasureImpactEntries()
     {
         return $this->measure_impact_entries->pluck('name', 'id')
-            ->toArray();
+                                            ->toArray();
     }
 
     protected static function boot()

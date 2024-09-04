@@ -13,6 +13,11 @@ columns:
         relation: site
         select: name
         type: text
+    threat_name:
+        label: Threat
+        relation: threat_definition
+        select: name
+        type: text
     created_at:
         label: Created at
         type: datetime
