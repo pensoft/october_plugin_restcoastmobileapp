@@ -1,12 +1,23 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries') ?>">Threat Measure Impact Entries</a></li>
+        <li><a href="<?= Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries') ?>">Threat Measure Impact
+                Entries</a></li>
         <li><?= e($this->pageTitle) ?></li>
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (!$this->fatalError): ?>
-
+<?php if ( ! $this->fatalError): ?>
+    <div class="form-group  hint-field span-full    " data-field-name="_hint1"
+         id="Form-field-ThreatMeasureImpactEntry-_hint1-group">
+        <div class="callout fade in callout-info no-title ">
+            <div class="header">
+                <i class="icon-info"></i>
+                <p></p>
+                <p>Connect site threats and measures</p>
+                <p></p>
+            </div>
+        </div>
+    </div>
     <?= Form::open(['class' => 'layout']) ?>
 
     <div class="layout-row">
@@ -33,7 +44,8 @@
                 <?= e(trans('backend::lang.form.create_and_close')) ?>
             </button>
             <span class="btn-text">
-                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
+                    <?= e(trans('backend::lang.form.or')) ?> <a
+                    href="<?= Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
         </div>
     </div>
@@ -42,5 +54,6 @@
 
 <?php else: ?>
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
-    <p><a href="<?= Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
+    <p><a href="<?= Backend::url('pensoft/restcoastmobileapp/threatmeasureimpactentries') ?>"
+          class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
 <?php endif;

@@ -1,5 +1,9 @@
 tabs:
     fields:
+        _hint1:
+            type: hint
+            comment: 'Define measures. They are linked to a site and a threat in Threat Measure Impact.'
+            tab: 'General'
         name:
             tab: 'General'
             label: Name

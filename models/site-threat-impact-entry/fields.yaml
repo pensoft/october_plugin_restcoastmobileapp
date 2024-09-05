@@ -5,12 +5,6 @@ tabs:
             label: Name
             span: full
             type: text
-        short_description:
-            tab: 'General'
-            label: Description
-            span: full
-            type: richeditor
-            toolbarButtons: bold,italic,underline,insertLink,html
         site:
             tab: 'Site and Threat'
             label: Site
@@ -25,6 +19,11 @@ tabs:
             label: Content Blocks
             prompt: Add Block
             groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
+            comment: 'Threat screen related to a site'
+        _hint1:
+            type: hint
+            tab: 'Outcome'
+            comment: 'Create outcome pages for a combination of measures.'
         measure_impact_entries:
             tab: 'Outcome'
             label: Measure Impact Entries
@@ -35,6 +34,8 @@ tabs:
             type: repeater
             label: Outcome
             prompt: Add Outcome
+            comment: 'Create outcome pages for a combination of measures'
+            titleFrom: measures
             form:
                 fields:
                     measures:

@@ -26,7 +26,13 @@ image:
             type: mediafinder
             mode: image
             allowedExtensions: ['png', 'jpeg', 'jpg', 'gif', 'webp']
-            comment: Allowed file extensions are .png, .jpeg, .jpg, .gif, .webp.
+            comment: '<ul>
+            <li>aspect ratio: 4x3</li>
+            <li>recommended maximum size: 100kb</li>
+            <li>file type: jpg</li>
+            <li>example dimensions: 1024 x 768</li>
+            </ul>'
+            commentHtml: true
 youtube:
     name: YouTube Video
     description: YouTube video

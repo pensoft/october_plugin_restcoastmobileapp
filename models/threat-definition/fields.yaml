@@ -1,5 +1,9 @@
 tabs:
     fields:
+        _hint1:
+            type: hint
+            tab: 'General'
+            comment: 'Information about the threats shown in lists.'
         name:
             tab: 'General'
             label: Name
@@ -15,6 +19,13 @@ tabs:
             label: Image
             type: mediafinder
             mode: file
+            commentHtml: true
+            comment: '<ul>
+            <li>Aspect ratio - 1x1</li>
+            <li>Reccomended maximum size - 15kb</li>
+            <li>File type - jpg</li>
+            <li>Example dimensions - 128x128</li>
+            </ul>'
         short_description:
             tab: 'General'
             label: Short Description
@@ -26,6 +37,11 @@ tabs:
             label: Content Blocks
             prompt: Add Block
             groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
+            comment: 'Threat screen not related to a site.'
+        _hint2:
+            type: hint
+            tab: 'Outcome'
+            comment: 'What will happen if no action is taken. Not related to a site.'
         outcome_name:
             tab: 'Outcome'
             label: Outcome Name

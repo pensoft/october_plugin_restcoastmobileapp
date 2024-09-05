@@ -19,4 +19,4 @@ tabs:
             label: Content Blocks
             prompt: Add Block
             groups: $/pensoft/restcoastmobileapp/config/content_blocks.yaml
-
+            comment: 'Measure description related to the site and threat: Site → Threat → Measures list accordion → see more'
