@@ -3,10 +3,8 @@
 # ===================================
 
 tabs:
-
     fields:
         home_map_style:
-            tab: 'Home map'
             label: 'Home map Style (JSON File)'
             type: mediafinder
             mode: file

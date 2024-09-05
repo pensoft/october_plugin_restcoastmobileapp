@@ -96,7 +96,7 @@ class Plugin extends PluginBase
     {
         return [
             'restcoast' => [
-                'label' => 'Restcoast Content',
+                'label' => 'Mobile App',
                 'url' => \Backend::url('pensoft/restcoastmobileapp'),
                 'icon' => 'icon-picture-o',
                 'permissions' => ['pensoft.restcoast.*'],

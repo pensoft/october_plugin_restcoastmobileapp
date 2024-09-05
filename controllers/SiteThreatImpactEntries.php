@@ -48,6 +48,7 @@ class SiteThreatImpactEntries extends Controller
             $model = $widget->model;
             // Add a custom message field if no Measure Impact entries are available
             if (!count($model->measure_impact_entries)) {
+                $widget->removeField('_hint1');
                 $widget->removeField('outcomes');
                 $widget->removeField('measure_impact_entries');
 
