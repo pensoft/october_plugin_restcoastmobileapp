@@ -334,6 +334,8 @@ class SyncDataService
                 'name',
                 'country',
                 'content_blocks',
+                'lat',
+                'long',
                 'stakeholders',
                 'country_codes',
                 'image_gallery',
@@ -405,6 +407,10 @@ class SyncDataService
                         'countryCodes' => $countryCodes,
                         'imageGallery' => $imageGallery,
                         'stakeholders' => $stakeholders,
+                        'coordinates' => [
+                            'lat' => $site->lat,
+                            'lng' => $site->long,
+                        ],
                         'contentBlocks' => !empty($site->content_blocks) ?
                             $this->convertContentBlocksData(
                                 $site->content_blocks
