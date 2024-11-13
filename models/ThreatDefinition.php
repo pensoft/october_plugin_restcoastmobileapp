@@ -16,7 +16,7 @@ class ThreatDefinition extends Model
     public $rules = [
         'name' => 'required',
         'code' => 'required|unique:rcm_threat_definitions,code|max:16',
-        'image' => 'media_file_extension:image',
+        'image' => 'required|media_file_extension:image',
         'outcome_image' => 'media_file_extension:image',
         'short_description' => 'required',
     ];
