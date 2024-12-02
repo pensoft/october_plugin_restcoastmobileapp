@@ -409,7 +409,7 @@ class SyncDataService
                         'stakeholders' => $stakeholders,
                         'coordinates' => [
                             'lat' => $site->lat,
-                            'lng' => $site->long,
+                            'long' => $site->long,
                         ],
                         'contentBlocks' => !empty($site->content_blocks) ?
                             $this->convertContentBlocksData(
