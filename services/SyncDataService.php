@@ -290,7 +290,8 @@ class SyncDataService
                             $this->convertContentBlocksData(
                                 $threatDefinition->content_blocks
                             ) : [],
-                        'sites' => $sites
+                        'sites' => $sites,
+                        'outcome' => !empty($threatDefinition->base_outcome)
                     ]
                 ];
                 $fileName = "l/" . $lang . "/threat-definition/" . $threatDefinition->id . ".json";

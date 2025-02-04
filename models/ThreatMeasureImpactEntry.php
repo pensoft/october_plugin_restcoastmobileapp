@@ -114,4 +114,9 @@ class ThreatMeasureImpactEntry extends Model
     {
         $this->validateDataService->validateContentBlocks($this->content_blocks);
     }
+
+    public function getSiteNameAttribute()
+    {
+        return $this->site_threat_impact ? $this->site_threat_impact->site->name ?? '' : '';
+    }
 }

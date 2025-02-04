@@ -15,8 +15,7 @@ columns:
         type: text
     site_name:
         label: Site Name
-        relation: site_threat_impact
-        select: name
+        type: text
     created_at:
         label: Created at
         type: datetime
