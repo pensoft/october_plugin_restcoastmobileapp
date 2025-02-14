@@ -22,7 +22,7 @@ tabs:
             commentHtml: true
             comment: '<ul>
             <li>Aspect ratio - 1x1</li>
-            <li>Reccomended maximum size - 15kb</li>
+            <li>Recommended maximum size - 15kb</li>
             <li>File type - jpg</li>
             <li>Example dimensions - 128x128</li>
             </ul>'
