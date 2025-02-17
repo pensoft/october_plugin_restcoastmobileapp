@@ -1,6 +1,7 @@
 <?php namespace Pensoft\RestcoastMobileApp\Services;
 
 use Config;
+use File;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Pensoft\RestcoastMobileApp\Controllers\AppSettings;
@@ -20,6 +21,8 @@ class SyncDataService
 {
     protected $disk;
     private const ASSETS_PATH = '/u/assets';
+    private const MAX_IMAGE_SIZE = 307200;
+    private const DEFAULT_IMAGE_NAME = 'no-picture-available.jpg';
 
     public function __construct()
     {
@@ -82,6 +85,24 @@ class SyncDataService
     {
         if (empty($asset)) {
             return null;
+        }
+        $mediaFolder = Config::get(
+            'system.storage.media.folder',
+            'media'
+        );
+        // Check if the file is an image.
+        // If it's more than allowed, then use the default image
+        $assetPath = $mediaFolder . $asset;
+        try {
+            $mimeType = File::mimeType($assetPath);
+            if (in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])) {
+                $assetSize = Storage::size($assetPath);
+                if ($assetSize > self::MAX_IMAGE_SIZE) {
+                    $asset = '/' . self::DEFAULT_IMAGE_NAME;
+                }
+            }
+        } catch (\Exception $e) {
+            $asset = '/' . self::DEFAULT_IMAGE_NAME;
         }
 
         return self::ASSETS_PATH . $asset;
@@ -240,7 +261,6 @@ class SyncDataService
         }
         $threatDefinitions = $threatDefinitions->get();
         $languages = Locale::listAvailable();
-
         foreach ($languages as $lang => $label) {
             foreach ($threatDefinitions as $threatDefinition) {
                 $sites = [];
@@ -294,6 +314,7 @@ class SyncDataService
                         'outcome' => !empty($threatDefinition->base_outcome)
                     ]
                 ];
+
                 $fileName = "l/" . $lang . "/threat-definition/" . $threatDefinition->id . ".json";
                 $this->uploadJson(
                     $threatDefinitionsArray,
@@ -321,6 +342,7 @@ class SyncDataService
                 );
             }
         }
+
     }
 
     /**
