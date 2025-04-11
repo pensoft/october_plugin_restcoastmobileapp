@@ -90,13 +90,14 @@ class SyncDataService
             'system.storage.media.folder',
             'media'
         );
+
         // Check if the file is an image.
         // If it's more than allowed, then use the default image
-        $assetPath = $mediaFolder . $asset;
+        $assetPath = $mediaFolder . DIRECTORY_SEPARATOR . $asset;
         try {
-            $mimeType = File::mimeType($assetPath);
+            $mimeType = Storage::disk('local')->mimeType($assetPath);
             if (in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])) {
-                $assetSize = Storage::size($assetPath);
+                $assetSize = Storage::disk('local')->size($assetPath);
                 if ($assetSize > self::MAX_IMAGE_SIZE) {
                     $asset = '/' . self::DEFAULT_IMAGE_NAME;
                 }
