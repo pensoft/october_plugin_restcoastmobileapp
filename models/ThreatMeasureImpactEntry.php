@@ -6,11 +6,12 @@ use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\ThreatMeasureImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
+use Pensoft\RestcoastMobileApp\Traits\SyncMedia;
 
 class ThreatMeasureImpactEntry extends Model
 {
 
-    use Validation, JsonableFieldsHandler;
+    use Validation, JsonableFieldsHandler, SyncMedia;
 
     // Enable timestamps if needed
     public $timestamps = true;
@@ -118,5 +119,13 @@ class ThreatMeasureImpactEntry extends Model
     public function getSiteNameAttribute()
     {
         return $this->site_threat_impact ? $this->site_threat_impact->site->name ?? '' : '';
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getGroupedContentBlockRepeaters(): array
+    {
+        return ['content_blocks'];
     }
 }

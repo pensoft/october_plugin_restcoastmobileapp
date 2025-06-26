@@ -6,10 +6,11 @@ use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
+use Pensoft\RestcoastMobileApp\Traits\SyncMedia;
 
 class Site extends Model
 {
-    use Validation, JsonableFieldsHandler;
+    use Validation, JsonableFieldsHandler, SyncMedia;
 
     public $table = 'rcm_sites';
     private $validateDataService;
@@ -102,6 +103,33 @@ class Site extends Model
     public function beforeValidate()
     {
         $this->validateDataService->validateContentBlocks($this->content_blocks);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMediaPathFields(): array
+    {
+        return ['image', 'gmap_objects_file', 'gmap_style_file'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getGroupedContentBlockRepeaters(): array
+    {
+        return ['content_blocks'];
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getPlainMediaRepeaters(): array
+    {
+        return [
+            ['repeater' => 'image_gallery', 'fields' => ['image']],
+            ['repeater' => 'stakeholders', 'fields' => ['image']],
+        ];
     }
 
 }

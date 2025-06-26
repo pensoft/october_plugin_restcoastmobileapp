@@ -4,10 +4,11 @@ use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\ThreatDefinitionUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
+use Pensoft\RestcoastMobileApp\Traits\SyncMedia;
 
 class ThreatDefinition extends Model
 {
-    use Validation, JsonableFieldsHandler;
+    use Validation, JsonableFieldsHandler, SyncMedia;
 
     public $table = 'rcm_threat_definitions';
 
@@ -84,6 +85,22 @@ class ThreatDefinition extends Model
                 ]);
             }
         });
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMediaPathFields(): array
+    {
+        return ['image', 'outcome_image'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getGroupedContentBlockRepeaters(): array
+    {
+        return ['content_blocks', 'base_outcome'];
     }
 
 }

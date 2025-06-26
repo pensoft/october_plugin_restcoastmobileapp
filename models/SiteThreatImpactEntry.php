@@ -6,11 +6,12 @@ use Model;
 use October\Rain\Database\Traits\Validation;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
+use Pensoft\RestcoastMobileApp\Traits\SyncMedia;
 
 class SiteThreatImpactEntry extends Model
 {
 
-    use Validation, JsonableFieldsHandler;
+    use Validation, JsonableFieldsHandler, SyncMedia;
 
     // Enable timestamps if needed
     public $timestamps = true;
@@ -118,6 +119,24 @@ class SiteThreatImpactEntry extends Model
         $this->validateDataService->validateContentBlocks(
             $this->content_blocks
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getGroupedContentBlockRepeaters(): array
+    {
+        return ['content_blocks'];
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getNestedContentBlockRepeaters(): array
+    {
+        return [
+            ['repeater' => 'outcomes', 'content_blocks' => 'content_blocks'],
+        ];
     }
 
 }
