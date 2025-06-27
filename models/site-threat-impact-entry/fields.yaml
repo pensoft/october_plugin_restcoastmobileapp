@@ -42,6 +42,7 @@ tabs:
                         label: Measures
                         type: checkboxlist
                         options: 'listRelatedMeasureImpactEntries'
+                        required: true
                     scores:
                         type: repeater
                         label: Scores
