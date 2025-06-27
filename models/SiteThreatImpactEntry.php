@@ -4,13 +4,15 @@ namespace Pensoft\RestcoastMobileApp\Models;
 
 use Model;
 use October\Rain\Database\Traits\Validation;
+use October\Rain\Exception\ValidationException;
 use Pensoft\RestcoastMobileApp\Events\SiteThreatImpactEntryUpdated;
 use Pensoft\RestcoastMobileApp\Services\ValidateDataService;
+use Pensoft\RestcoastMobileApp\Traits\SyncMedia;
 
 class SiteThreatImpactEntry extends Model
 {
 
-    use Validation, JsonableFieldsHandler;
+    use Validation, JsonableFieldsHandler, SyncMedia;
 
     // Enable timestamps if needed
     public $timestamps = true;
@@ -113,11 +115,43 @@ class SiteThreatImpactEntry extends Model
         $this->validateDataService = new ValidateDataService();
     }
 
+    /**
+     * @throws \ValidationException
+     * @throws ValidationException
+     */
     public function beforeValidate()
     {
         $this->validateDataService->validateContentBlocks(
             $this->content_blocks
         );
+
+        foreach ($this->outcomes ?? [] as $index => $outcome) {
+            $measures = $outcome['measures'] ?? [];
+
+            if (empty($measures) || !array_filter($measures)) {
+                throw new \ValidationException([
+                    "outcomes[$index][measures]" => "At least one measure must be selected in outcome #" . ($index + 1),
+                ]);
+            }
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getGroupedContentBlockRepeaters(): array
+    {
+        return ['content_blocks'];
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getNestedContentBlockRepeaters(): array
+    {
+        return [
+            ['repeater' => 'outcomes', 'content_blocks' => 'content_blocks'],
+        ];
     }
 
 }

@@ -525,7 +525,7 @@ class SyncDataService
                 'threat_definition_id'
             )
             ->with('threat_definition', 'site');
-        if (!empty($siteThreatImpactEntry)) {
+        if (!empty($siteThreatImpactEntryId)) {
             $siteThreatImpactEntries->where(
                 'id',
                 '=',
@@ -564,6 +564,9 @@ class SyncDataService
                 $outcomes = $threatImpactEntry->outcomes;
                 if (!empty($outcomes)) {
                     foreach ($outcomes as $outcomeIndex => $outcome) {
+                        if ($outcome['measures'] === '') {
+                            $outcome['measures'] = [];
+                        }
                         $selectedMeasuresIds = array_map(function ($measure) {
                             return $measure;
                         }, $outcome['measures']);
